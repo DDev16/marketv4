@@ -1,0 +1,209 @@
+.my-tokens-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  color: #ffffff;
+  font-family: Arial, sans-serif;
+  background-size: cover;
+  background-repeat: no-repeat;
+  z-index: 0;  /* Assuming your navbar has a z-index higher than 1 */
+  
+}
+
+.tokens-heading {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  color: #61dafb;
+}
+
+.refresh-button-disabled {
+  pointer-events: none; /* Disable pointer events */
+  opacity: 0.5; /* Reduce opacity to indicate disabled state */
+}
+
+
+.refresh-button {
+  padding: 12px 24px;
+  background-color: #61dafb;
+  color: #000000;
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: none;
+  border: none;
+  border-radius: 8px;
+  transition: transform 0.3s ease-in-out;
+  margin-bottom: 16px;
+}
+
+.refresh-button:hover {
+  background-color: #000000;
+  color: #61dafb;
+}
+
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 64px;
+}
+
+.loading-text {
+  font-size: 24px;
+  margin-top: 16px;
+  color: #61dafb;
+}
+
+.token-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-gap: 16px;
+  margin-top: 32px;
+}
+
+.token-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.token-id {
+  font-size: 14px;
+  color: #888888;
+}
+
+
+
+@media screen and (max-width: 768px) {
+  .my-tokens-container {
+    padding: 20px;
+    width:300px;
+    display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  }
+
+  .tokens-heading {
+    font-size: 24px;
+  }
+
+  .refresh-button {
+    padding: 8px 16px;
+    font-size: 16px;
+  }
+
+  .loading-text {
+    font-size: 20px;
+  }
+
+  .token-card {
+    padding: 12px;
+  }
+
+  .token-id {
+    font-size: 12px;
+  }
+
+  .token-name {
+    font-size: 16px;
+  }
+
+  .token-description {
+    font-size: 12px;
+  }
+}
+
+
+
+.token-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 16px;
+  justify-items: center;
+  margin-top: 32px;
+}
+
+.token-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  transition: transform 0.3s ease;
+}
+
+.token-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.token-image {
+  width: 100%;
+  height: auto;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-top: 16px;
+}
+
+.token-video {
+  width: 100%;
+  height: auto;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-top: 16px;
+}
+
+.token-info {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.token-name {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.token-description {
+  font-size: 14px;
+  color: #888888;
+}
+
+
+@media screen and (max-width: 768px) {
+  .token-list {
+    grid-template-columns: 1fr; /* Set the grid to a single column */
+  }
+
+  .token-card {
+    width: 100%; /* Expand the card to the full width of the container */
+    padding: 24px;
+  }
+
+  .token-name {
+    font-size: 16px; /* Decrease the font size for the token name */
+  }
+
+  .token-description {
+    font-size: 12px; /* Decrease the font size for the token description */
+  }
+}

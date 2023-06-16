@@ -1,0 +1,120 @@
+.previewContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    border: 2px solid #ddd;
+    border-radius: 15px;
+    padding: 30px;
+    margin: 30px 0;
+    background: linear-gradient(to right, #fafafa 0%, #e9e9e9 100%);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  
+ 
+  
+  .logo {
+    display: flex;
+    justify-content: center;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #ddd;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .title {
+    text-align: center;
+    font-size: 2.5em;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+  }
+  
+  .banner {
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 15px;
+    width: 100%;
+    height: 400px;
+    border: 2px solid #ddd;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .description {
+    font-size: 1em;
+    color: #666;
+    text-align: justify;
+    line-height: 1.8;
+    max-width: 800px;
+    max-height: 200px;
+    overflow: auto;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+  }
+  
+  .category {
+    font-size: 1.4em;
+    color: #999;
+    text-align: center;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+  }
+  
+
+  .cardContainer {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    
+  }
+ 
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    margin: 10px;
+    text-align: center;
+    width: 400px; /* Adjust the width as desired */
+  }
+  
+ 
+   
+  .cardContainer img {
+    width: 350px; /* Adjust the width as desired */
+    object-fit: cover;
+    margin: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  
+  .cardContainer img:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  }
+  

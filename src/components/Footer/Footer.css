@@ -1,0 +1,66 @@
+/* Footer Styling */
+.footer {
+    background-color: #212529;
+    color: #fff;
+    padding: 10px 0;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+  }
+  
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .footer-row {
+    width: 100%;
+  }
+  
+  .footer-col {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .footer h4 {
+    margin-bottom: 10px;
+    font-size: 18px;
+  }
+  
+  .footer p {
+    font-size: 14px;
+  }
+  
+  .footer ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .footer ul li {
+    padding: 5px 0;
+  }
+  
+  .footer a {
+    color: #fff;
+    text-decoration: none;
+    transition: color .3s ease;
+  }
+  
+  .footer a:hover {
+    color: #007bff;
+  }
+  
+  .footer .list-inline-item {
+    display: inline-block;
+    padding-right: 5px;
+    font-size: 18px;
+  }
+  
+  /* Brand Logo Styling */
+  .logo {
+    width: 200px;
+    height: auto;
+    margin: 10px 0;
+  }
+  

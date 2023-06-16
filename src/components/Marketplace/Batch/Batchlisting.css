@@ -1,0 +1,35 @@
+/* BatchListing.css */
+.batch-listing-container {
+    margin: 20px;
+  }
+  
+  .batch-listing-input-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .batch-listing-input-group input {
+    margin-right: 10px;
+  }
+  
+  .batch-listing-add-token-button,
+  .batch-listing-remove-token-button {
+    margin-left: 10px;
+  }
+  
+  .batch-listing-list-tokens-button {
+    margin-top: 20px;
+  }
+  
+  .batch-listing-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+  }
+  
+  .batch-listing-loading-text {
+    margin-left: 10px;
+  }
+  

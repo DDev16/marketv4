@@ -1,0 +1,119 @@
+
+.navbar-topbar-wrapper {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 3;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+  padding: 25px; 
+  margin-top:70px; 
+  background: linear-gradient(to right, #2b5876, #4e4376);
+  color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height:100px;
+}
+
+.welcome-text {
+  font-size: 2.0em;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.sign-out-button {
+  background: #ef5350;
+  border: none;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.sign-out-button:hover {
+  background: #e53935;
+}
+
+.sidebar-toggle {
+  margin-right:500px;
+  margin-bottom:5px;
+  width:170px;
+  background: #252525;
+
+
+}
+
+.sidebar-toggle:hover {
+  background: #e53935;
+} 
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  padding: 10px 0; /* Changed the padding to make the links more space efficient */
+  border-radius: 4px;
+  transition: background 0.3s ease; 
+  text-decoration: none;
+  color: inherit;
+}
+
+.nav-icon {
+  margin-right: 15px;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.sidebar {
+  display: none;
+  position: absolute;
+  width: 150px; /* Increase width to fit the longer text */
+  max-height: auto; /* Auto height */
+  z-index: 1;
+  background: black;
+  border-radius: 4px;
+  padding: 10px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  overflow-y: auto; /* If contents overflow, show a scrollbar */
+}
+
+.dropdown .sidebar {
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (max-width: 768px) {
+  .navbar-topbar-wrapper {
+    position: static; /* instead of absolute */
+    
+  }
+
+  .header {
+    flex-direction: column; /* stack the items vertically on smaller screens */
+    height: auto;
+    padding: 15px;
+    margin-top: 0;
+
+  }
+
+  .welcome-text {
+    font-size: 1.5em;
+  }
+
+  .sidebar-toggle {
+    margin-right:0;
+    margin-bottom:5px;
+    width:auto;
+  }
+
+  .sidebar {
+    position: static;
+    width: 100%; /* Full width for mobile */
+  }
+}

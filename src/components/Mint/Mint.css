@@ -1,0 +1,150 @@
+/* Global styling for the mint container */
+.background {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url('../../assets/stock_back_low.gif') no-repeat center center fixed;
+  background-size: cover;
+}
+
+/* Rest of the CSS */
+
+@media screen and (max-width: 768px) {
+  .mint-container {
+    max-width: 90%;
+  }
+
+  .mint-title {
+    font-size: 2.5rem;
+  }
+
+  .mint-input {
+    font-size: 0.8rem;
+  }
+}
+
+.mint-container {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2rem;
+  max-width: 1000px;
+  width:800px;
+  margin: 0 auto;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.8);
+  position: relative;
+  z-index: 1;
+  margin-top:120px;
+  margin-bottom:100px;
+}
+
+.mint-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: 1.2px;
+  background: linear-gradient(135deg, #007bff, #00e5ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.mint-form {
+  display: grid;
+  gap: 2rem;
+}
+
+.mint-label {
+  color: #666;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+}
+
+.mint-input {
+  padding: 1rem;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 0.9rem;
+}
+
+.mint-input:focus {
+  box-shadow: 0px 5px 15px rgba(0, 123, 255, 0.15);
+  outline: none;
+  transform: scale(1.02);
+}
+
+.image-preview-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-preview {
+  max-width: 100%;
+  height: auto;
+  border-radius: 15px;
+  box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.12);
+}
+
+.mint-button {
+  padding: 1rem;
+  color: #fff;
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 1.1rem;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0px 5px 15px -10px #007bff;
+  overflow: hidden;
+  position: relative;
+  letter-spacing: 1px;
+}
+
+.mint-button:hover {
+  box-shadow: 0px 5px 15px -2px #007bff;
+  transform: scale(1.02);
+}
+
+.mint-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.form-error {
+  color: #ff0000;
+  font-weight: 600;
+  text-align: center;
+  font-size: 0.9rem;
+  padding-top: 0.5rem;
+}
+
+.mint-label-free {
+  font-size: 1rem;
+  color: #007bff;
+  margin-bottom: 10px;
+  position: relative;
+  display: inline-block;
+}
+
+.mint-label-free::after {
+  content: 'FREE';
+  font-size: 0.8rem;
+  background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+  color: white;
+  padding: 0.25em 0.6em;
+  border-radius: 2em;
+  position: absolute;
+  top: -10px;
+  right: -60px;
+}

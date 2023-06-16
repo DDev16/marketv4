@@ -1,0 +1,66 @@
+.profile-container {
+  max-width: 90%; /* Increase the value for a wider container */
+  margin-top:100px;
+  padding: 5%;
+  margin-left:0px;
+  background-color: #f2f2f2;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 30px;
+}
+
+.form-group {
+  margin-bottom: 5%;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"],
+textarea {
+  width: 100%;
+  padding: 2%;
+  border: none;
+  border-radius: 5px;
+  background-color: #f8f8f8;
+  font-size: 16px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+button.update-btn {
+  display: block;
+  width: 100%;
+  padding: 2%;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button.update-btn:hover {
+  background-color: #45a049;
+}
+
+
+

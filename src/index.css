@@ -11,3 +11,120 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+/* Navbar Styles */
+.navbar {
+  position: relative;
+  background-color: #252525;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  z-index: 50;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    padding: 10px;
+  }
+}
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-logo img {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.navbar-logo .app-name {
+  font-weight: 600;
+}
+
+.navbar-links {
+  display: flex;
+  list-style: none;
+}
+
+.navbar-links li {
+  margin-right: 15px;
+}
+
+.navbar-links a {
+  color: #ffffff;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-links a .nav-icon {
+  margin-right: 5px;
+  color: #ffffff;
+}
+
+.navbar-links a:hover {
+  color: #ffcc00;
+}
+
+@media (max-width: 768px) {
+  .navbar-links {
+    flex-direction: column;
+    margin-top: 10px;
+  }
+
+  .navbar-links li {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+}
+
+.network-select {
+  color: #ffffff;
+  background-color: #252525;
+  border: none;
+  margin-right: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  outline: none;
+  transition: background-color 0.3s ease;
+}
+
+.network-select:hover {
+  background-color: #333333;
+}
+
+.network-select:focus {
+  background-color: #444444;
+}
+
+.logo-image {
+  width: 50px;
+  height: 50px;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+
+
+@keyframes spin {
+  0% { transform: rotateY(0deg); }
+  100% { transform: rotateY(360deg); }
+}
+
+
+@keyframes fire {
+  0% {color: #FF4500;}
+  25% {color: #FF8C00;}
+  50% {color: #FFA500;}
+  75% {color: #FFD700;}
+  100% {color: #FF4500;}
+}
+
+

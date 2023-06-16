@@ -1,0 +1,128 @@
+// media queries
+@mixin w {
+    @media only screen and (max-width: 1419px) {
+      @content;
+    }
+  }
+  
+  @mixin x {
+    @media only screen and (max-width: 1339px) {
+      @content;
+    }
+  }
+  
+  @mixin d {
+    @media only screen and (max-width: 1179px) {
+      @content;
+    }
+  }
+  
+  @mixin t {
+    @media only screen and (max-width: 1023px) {
+      @content;
+    }
+  }
+  
+  @mixin m {
+    @media only screen and (max-width: 767px) {
+      @content;
+    }
+  }
+  
+  @mixin a {
+    @media only screen and (max-width: 639px) {
+      @content;
+    }
+  }
+  
+  @mixin s {
+    @media only screen and (max-width: 474px) {
+      @content;
+    }
+  }
+  
+
+  
+  $white: #ffffff;
+  $blue: #3772FF;
+  $blue-light: #4BC9F0;
+  $purple: #9757D7;
+  $purple-light: #CDB4DB;
+  $pink: #EF466F;
+  $green: #45B26B;
+  $asphalt: #E4D7CF;
+  $yellow: #FFD166;
+  
+  $neutrals1: #141416;
+  $neutrals2: #23262F;
+  $neutrals3: #353945;
+  $neutrals4: #5b5b5d;
+  $neutrals5: #535455;
+  $neutrals6: #b6b7bb;
+  $neutrals7: #e6e9ee;
+  $neutrals8: #FCFCFD;
+  $neutrals9: #374151;
+  
+ 
+  
+  
+ 
+    @if $direction == t {
+      border-width: 0 ($width / 2) px $height px ($width / 2) px;
+      border-color: transparent transparent $bg transparent;
+    }
+    @else if $direction == r {
+      border-width: ($height / 2) px 0 ($height / 2) px $width px;
+      border-color: transparent transparent transparent $bg;
+    }
+    @else if $direction == b {
+      border-width: $height px ($width / 2) px 0 ($width / 2) px;
+      border-color: $bg transparent transparent transparent;
+    }
+    @else if $direction == l {
+      border-width: ($height / 2) px $width px ($height / 2) px 0;
+      border-color: transparent $bg transparent transparent;
+    }
+    @else if $direction == tl {
+      border-width: $height px $width px 0 0;
+      border-color: $bg transparent transparent transparent;
+    }
+    @else if $direction == tr {
+      border-width: 0 $width px $height px 0;
+      border-color: transparent $bg transparent transparent;
+    }
+    @else if $direction == br {
+      border-width: 0 0 $height px $width px;
+      border-color: transparent transparent $bg transparent;
+    }
+    @else if $direction == bl {
+      border-width: $width px 0 0 $height px;
+      border-color: transparent transparent transparent $bg;
+    }
+  
+  
+  // example
+  // +arr(500,50, #000, l)
+  // +arr(500,50, #000, bl)
+  
+ 
+  
+
+  // theme
+  dark {
+    @at-root :global(.dark-mode) & {
+      @content;
+    }
+  }
+  
+  dark-body {
+    @at-root .dark-mode {
+      @content;
+    }
+  }
+  
+  dark-common {
+    @at-root .dark-mode & {
+      @content;
+    }
+  }

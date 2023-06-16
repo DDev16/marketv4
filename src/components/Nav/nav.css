@@ -1,0 +1,21 @@
+.disabled-link {
+    color: #cccccc;
+    cursor: default;
+    pointer-events: none;
+    opacity: 0.6;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+  }
+  
+  .disabled-link:hover {
+    opacity: 0.6;
+  }
+
+  .disabled-link {
+    pointer-events: none; 
+    color: #808080;
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  

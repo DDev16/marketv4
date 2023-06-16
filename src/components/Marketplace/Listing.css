@@ -1,0 +1,112 @@
+/* General Styles */
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: #f7f7f7;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #f2f2f2;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+p {
+  margin-bottom: 15px;
+  font-size: 18px;
+  color: #333;
+}
+
+button {
+  padding: 12px 24px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+/* Specific Styles */
+
+form div {
+  margin-bottom: 25px;
+}
+
+form div p:first-child {
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+form ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+form ul li {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #555;
+}
+
+form ul li:before {
+  content: "▸";
+  margin-right: 8px;
+  color: #999;
+}
+
+button[type="submit"] {
+  width: auto;
+  margin-top: 20px;
+}
+
+/* Styling for specific elements */
+
+input[name="contractAddress"],
+input[name="tokenId"],
+input[name="price"],
+input[name="royalty"] {
+  font-weight: bold;
+  font-size: 18px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: none;
+  padding: 12px;
+}
+
+p + p {
+  margin-top: 20px;
+}
+
+button[type="submit"] {
+  background-color: #2196f3;
+}
+
+button[type="submit"]:hover {
+  background-color: #0d8bf2;
+}
+
+button[type="submit"]:focus {
+  outline: none;
+}
+
+button[type="submit"]:active {
+  background-color: #0b78d7;
+}

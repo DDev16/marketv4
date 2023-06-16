@@ -1,0 +1,299 @@
+/* Set up CSS variables for easy customization */
+:root {
+  --primary-color: #333333;
+  --secondary-color: #ff6b6b;
+    --primary-font: Arial, sans-serif;
+    --light-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --dark-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
+    --main-border-radius: 15px;
+    --secondary-border-radius: 8px;
+    --main-font-color: #555;
+    --secondary-font-color: #777;
+    --error-font-color: #ff0000;
+    --primary-border-color: #ccc;
+    --secondary-border-color: #ddd;
+    --light-background-color: #f8f8f8;
+    --dark-background-color: #e0e0e0;
+    --hover-background-color: #f5f5f5;
+    --focus-outline-color: #aaa;
+  }
+  
+  body {
+    font-family: var(--primary-font);
+    color: var(--main-font-color);
+background: url('../../assets/stock_back_low.gif');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  
+  .nft-card, .token-card {
+    width: 100%;
+    max-width: 700px;
+    background-color: #fff;
+    border-radius: var(--main-border-radius);
+    box-shadow: var(--dark-shadow);
+    padding: 20px;
+    margin: 20px auto;
+    box-sizing: border-box;
+    overflow: auto;
+    transition: box-shadow 0.3s ease;
+    
+  }
+  
+  .nft-card:hover, .token-card:hover {
+    box-shadow: var(--light-shadow);
+  }
+  
+  .nft-name, .token-name {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    
+  }
+  
+  .nft-description, .token-description {
+    font-size: 16px;
+    color: var(--secondary-font-color);
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .nft-details {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .nft-info, .transaction {
+    width: 100%;
+    padding: 10px 0;
+    border-top: 1px solid var(--secondary-border-color);
+    word-break: break-all;
+  }
+  
+  .nft-field, .tx-field {
+    font-weight: 700;
+    margin-right: 10px;
+  }
+  
+  .tx-summary {
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .tx-summary:hover {
+    background-color: var(--hover-background-color);
+  }
+  
+  .tx-summary:active {
+    background-color: var(--dark-background-color);
+  }
+  
+  .tx-summary:focus {
+    outline: 2px solid var(--focus-outline-color);
+  }
+  
+  .block-hash {
+    font-size: 14px;
+    color: var(--secondary-font-color);
+    margin-bottom: 10px;
+    word-break: break-all;
+  }
+  
+  @media (max-width: 900px) {
+    .nft-card, .token-card {
+      padding: 15px;
+      max-width: 400px;
+
+    }
+  
+    .nft-name, .token-name {
+      font-size: 22px;
+    }
+  
+    .nft-description, .token-description {
+      font-size: 15px;
+    }
+  
+    .tx-details {
+      margin-left: 15px;
+      padding-left: 7px;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .nft-card, .token-card {
+      padding: 10px;
+      margin: 10px;
+    }
+  
+    .nft-name, .token-name {
+      font-size: 20px;
+    }
+  
+    .nft-description, .token-description {
+      font-size: 14px;
+    }
+  
+    .tx-details {
+      margin-left: 10px;
+      padding-left: 5px;
+    }
+  }
+  
+  .nft-list, .token-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+  }
+  
+
+
+  @media (max-width: 900px) {
+    .token-card {
+        width: 100%; /* If you want it to take full width on smaller screens */
+    }
+}
+  
+  
+  
+  media (max-width: 900px) {
+    .token-card img {
+      width: 400px;
+      height: 400px;
+    }
+  }
+  .nft-list select, .token-select {
+    margin-bottom: 20px;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: var(--secondary-border-radius);
+    border: 1px solid var(--primary-border-color);
+    background-color: var(--light-background-color);
+    color: var(--main-font-color);
+    width: 300px;
+    margin-top:150px;
+  }
+  
+  .loading, .error, .no-results {
+    font-size: 20px;
+    margin: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--secondary-border-radius);
+    box-shadow: var(--dark-shadow);
+  }
+  
+  .loading, .no-results {
+    color: var(--main-font-color);
+  
+    /* Adding an animation */
+    animation: fade-in-out 2s infinite;
+  }
+  
+  /* Fade in-out animation */
+  @keyframes fade-in-out {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  
+  .error {
+    color: var(--error-font-color);
+  
+    /* Add error pulse animation */
+    animation: error-pulse 2s infinite;
+  }
+  
+  /* Error pulse animation */
+  @keyframes error-pulse {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.1);
+      opacity: 0.6;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  .send-button {
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: var(--dark-shadow);
+    border-radius: var(--secondary-border-radius);
+  
+    /* Add a scale effect when hovered */
+    &:hover {
+      transform: scale(1.05);
+    }
+  
+    /* Add a little bounce when active/clicked */
+    &:active {
+      transform: scale(1.1);
+      transition: transform 0.1s;
+    }
+  }
+  
+  .input-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 10px;
+  }
+  
+  .input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+
+  
+  .input-group button {
+    padding: 10px 20px;
+    background-color: black;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+  }
+  
+  .input-group button:hover {
+    background-color: blue;
+  }
+  
+  /* Media Query for mobile devices */
+  @media screen and (max-width: 480px) {
+    .input-group input {
+      flex-basis: 90%;
+      margin-left: 8px;
+    }
+    
+    .amount-input {
+      margin: 0;
+    }
+  }
+  
