@@ -62,7 +62,11 @@ body {
   color: #444;
 }
 
-.collectionLogo, .collectionBanner {
+.collectionLogo {
+
+} 
+
+.collectionBanner {
   width: 100%;
   height: auto;
   display: block;

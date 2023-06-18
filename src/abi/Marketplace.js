@@ -657,9 +657,9 @@ const Marketplace = {
 					"type": "address[]"
 				},
 				{
-					"internalType": "uint256[][]",
+					"internalType": "uint256[]",
 					"name": "tokenIds",
-					"type": "uint256[][]"
+					"type": "uint256[]"
 				}
 			],
 			"stateMutability": "view",
@@ -728,6 +728,50 @@ const Marketplace = {
 					"internalType": "struct NFTMarketplace.Collection[]",
 					"name": "",
 					"type": "tuple[]"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "collectionId",
+					"type": "uint256"
+				}
+			],
+			"name": "getSpecificCollection",
+			"outputs": [
+				{
+					"internalType": "address",
+					"name": "owner",
+					"type": "address"
+				},
+				{
+					"internalType": "string",
+					"name": "name",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "logoIPFS",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "bannerIPFS",
+					"type": "string"
+				},
+				{
+					"internalType": "address[]",
+					"name": "contractAddresses",
+					"type": "address[]"
+				},
+				{
+					"internalType": "uint256[]",
+					"name": "tokenIds",
+					"type": "uint256[]"
 				}
 			],
 			"stateMutability": "view",

@@ -3,6 +3,33 @@ import styled, { keyframes } from 'styled-components';
 import { FaFire } from 'react-icons/fa';
 import videoSource from '../../assets/Ecommerce-Video-1.mp4'; // adjust the path accordingly
 
+// Styled Components
+const Wrapper = styled.section`
+  position: relative;
+  width: 120%;
+  height: 175vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  overflow: hidden;
+`;
+
+const VideoBackground = styled.video`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 120%;
+  min-height: 50%;
+  width: auto;
+  height: auto;
+  z-index: 0;
+  transform: translateX(-50%) translateY(-50%);
+`;
+
+
 // Keyframes
 const typing = keyframes`
   from { width: 0; }
@@ -37,7 +64,6 @@ const Heading = styled.h1`
     width: 100%; // allow the text to take up the full width of its container
     white-space: normal; // allow the text to wrap onto the next line
     animation: none; // remove the typing animation
-    margin-top: 0px;
   }
 `;
 
@@ -71,61 +97,8 @@ const IconWrapper = styled.div`
 
   @media (max-width: 600px) {
     font-size: 1.5em;
-    margin-top:280px;
-
   }
 `;
-
-// Styled Components
-const Wrapper = styled.section`
-  position: relative;
-  width: 120%;
-  height: 275vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  color: white;
-  overflow: hidden;
-
-
-  @media (min-width: 601px) {
-    justify-content: center;
-
-  }
-
-  @media (max-width: 600px) {
-    justify-content: flex-start;
-          height: 105vh;
-          margin: 0px;
-
-  }
-`;
-
-
-
-
-const VideoBackground = styled.video`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  min-width: 120%;
-  min-height: 50%;
-  width: auto;
-  height: auto;
-  z-index: 0;
-  transform: translateX(-50%) translateY(-50%);
-  margin-top:0px;
-`;
-
-
-
-
-
-
-
-
 
 // Hero Component
 const Hero = () => {
@@ -151,5 +124,3 @@ const Hero = () => {
 };
 
 export default Hero;
-
-

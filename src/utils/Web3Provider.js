@@ -46,8 +46,8 @@ const Web3Provider = ({ children }) => {
         } 
         else if (networkId === 31337) {
           // Flare network
-          contractAddress = '0x39eA0589139C1597A003d67b73b13006DfDB25A2';
-          marketplaceAddress = '0xF2c15D5186E39F8899FE662cf795732A3108E28A'; // add the Marketplace contract address for HArdhatnode
+          contractAddress = '0x909296a852aBc3f3235a485479e266Ea24E85418';
+          marketplaceAddress = '0x3857C14Ec0C727ac2aEcD5016283C76c6b5C860e'; // add the Marketplace contract address for HArdhatnode
         }else {
           // Add more conditions for other networks
           // ...

@@ -18,6 +18,7 @@ import './App.css';
 import CreateCollection from './components/Marketplace/Collection/CreateCollection';
 import MyCollections from './components/Marketplace/Collection/MyCollections.js'
 import AddToCollection from './components/Marketplace/Collection/AddToCollection';
+import CollectionPage from './components/Marketplace/Collection/CollectionPage';
 function App() {
   const [user, setUser] = React.useState(null);
 
@@ -40,6 +41,7 @@ function App() {
                   <Route path="/create-collection" element={<CreateCollection />} />
                   <Route path="/my-collections" element={<MyCollections />} />
                   <Route path="/add-to-collection" element={<AddToCollection />} />
+                  <Route path="/collections/:collectionId" element={<CollectionPage />} />
 
                   <Route path="/profile-settings" element={<ProfileSettings />} />
                   <Route path="/sign-in" element={<SignIn setUser={setUser} />} />

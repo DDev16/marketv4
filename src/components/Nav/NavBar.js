@@ -1,12 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { FiHome, FiPlusCircle, FiFolder, FiMenu, FiX, FiSettings } from 'react-icons/fi';
-import { FaWallet } from 'react-icons/fa';
+import { FiHome, FiPlusCircle, FiFolder, FiMenu, FiX,  } from 'react-icons/fi';
+import { FaDatabase, FaWallet } from 'react-icons/fa';
 import { Web3Context } from '../../utils/Web3Provider.js';
 import songbirdLogo from '../../assets/songbird-logo.png';
 import flareLogo from '../../assets/flarelogo.png';
-import '../Nav/nav.css'
 
 const StyledNav = styled.nav`
   position: relative;
@@ -94,27 +93,8 @@ const NavLinks = styled.ul`
   }
 `;
 
-const DisconnectButton = styled.button`
-  background: linear-gradient(135deg, blue, purple);
-  color: #ffffff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  font-size: 16px;
-  outline: none;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background: linear-gradient(135deg, purple, blue);
-  }
-`;
-
-
 const MenuButton = styled.button`
   display: none;
-  color: #ffffff;
-
 
   @media (max-width: 768px) {
     display: block;
@@ -162,21 +142,12 @@ const LogoImage = styled.img`
   }
 `;
 
-
-
-
-const AccountAddress = styled.span`
-  color: #ffffff;
-  margin-right: 10px;
-`;
-
 const NavBar = () => {
   const { web3 } = useContext(Web3Context);
   const [currentNetworkId, setCurrentNetworkId] = useState('');
   const [selectedNetwork, setSelectedNetwork] = useState(null);
   const [account, setAccount] = useState('');
   const [isOpen, setIsOpen] = useState(false);
-  const [isConnected, setIsConnected] = useState(false); // New state for connection status
 
   const handleNetworkChange = async (e) => {
     const networkId = parseInt(e.target.value, 10);
@@ -198,7 +169,6 @@ const NavBar = () => {
       }
     }
   };
-  
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
@@ -207,34 +177,6 @@ const NavBar = () => {
   const closeNav = () => {
     setIsOpen(false);
   };
-
- 
-
-  const handleConnectionToggle = async () => {
-    if (web3 && web3.currentProvider.isMetaMask) {
-      try {
-        if (isConnected) {
-          
-           // Connect to the network
-           await window.ethereum.request({
-            method: 'eth_requestAccounts',
-          });
-          setIsConnected(false);
-        } else {
-         
-          // Disconnect from the network
-          await window.ethereum.request({
-            method: 'wallet_requestPermissions',
-            params: [{ eth_accounts: {} }],
-          });
-          setIsConnected(true);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  };
-  
 
   useEffect(() => {
     const getCurrentNetworkId = async () => {
@@ -267,60 +209,63 @@ const NavBar = () => {
         <img src={require('../../assets/logo.png')} alt="Logo" />
         <span className="app-name">Flare Fire Blockchain Tools</span>
       </Logo>
-
-      <MenuButton onClick={handleToggle}>
-        {isOpen ? <FiX /> : <FiMenu />}
-      </MenuButton>
-      <NavLinks open={isOpen}>
-  <li onClick={closeNav}>
-    <Link to="/">
-      <FiHome className="nav-icon" />
-      Home
-    </Link>
-  </li>
-  <li onClick={closeNav}>
-    <Link to="/mint">
-      <FiPlusCircle className="nav-icon" />
-      Mint
-    </Link>
-    
-</li>
-<li onClick={closeNav}>
-    <Link to="/batch-mint">
-      <FiPlusCircle className="nav-icon" />
-      Batch Mint
-    </Link>
-
-</li>
-  <li onClick={closeNav}>
-    <Link to="/marketplace">
-      <FaWallet className="nav-icon" />
-      Marketplace
-    </Link>
-  </li>
-</NavLinks>
-  
-{web3 && isConnected && (
-    <Link to="/sign-in" style={{color: 'white'}}> 
-      <FiSettings className="nav-icon" />
-      Sign In
-    </Link>
-)}
-
-<DisconnectButton type="button" onClick={handleConnectionToggle}>
-  {isConnected ? 'Disconnect' : 'Connect'}
-</DisconnectButton>
-
-<div>
+      <div>
         <NetworkSelect value={currentNetworkId} onChange={handleNetworkChange}>
           <option value="14">Flare</option>
           <option value="19">Songbird</option>
           <option value="31337">Localhost</option>
         </NetworkSelect>
         {selectedNetwork && <LogoImage src={selectedNetwork} alt="Network logo" />}
-      </div>  
-{isConnected && <AccountAddress>{account}</AccountAddress>}
+      </div>
+      <span>{account}</span>
 
+      <MenuButton onClick={handleToggle}>
+        {isOpen ? <FiX /> : <FiMenu />}
+      </MenuButton>
+      <NavLinks open={isOpen}>
+        <li onClick={closeNav}>
+          <Link to="/">
+            <FiHome className="nav-icon" />
+            Home
+          </Link>
+        </li>
+        <li onClick={closeNav}>
+          <Link to="/mint">
+            <FiPlusCircle className="nav-icon" />
+            Mint
+          </Link>
+        </li>
+        <li onClick={closeNav}>
+          <Link to="/batch-mint">
+            <FiPlusCircle className="nav-icon" />
+            Batch Mint
+          </Link>
+        </li>
+        <li onClick={closeNav}>
+          <Link to="/my-tokens">
+            <FiFolder className="nav-icon" />
+            My NFTs
+          </Link>
+        </li>
+        <li onClick={closeNav}>
+          <Link to="/token-list">
+            <FaWallet className="nav-icon" />
+            Wallet
+          </Link>
+        </li>
+        <li onClick={closeNav}>
+          <Link to="/marketplace">
+            <FaDatabase className="nav-icon" />
+            Marketplace
+          </Link>
+        </li>
+        <li onClick={closeNav}>
+          <Link to="/sign-in">
+            <FaWallet className="nav-icon" />
+            Sign-In 
+          </Link>
+        </li>
+      </NavLinks>
     </StyledNav>
   );
 };
