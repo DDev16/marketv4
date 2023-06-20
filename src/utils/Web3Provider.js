@@ -37,8 +37,8 @@ const Web3Provider = ({ children }) => {
             marketplaceAddress = '0xbdEd0D2bf404bdcBa897a74E6657f1f12e5C6fb6';
           } else if (networkId === 31337) {
             // Hardhat network
-            contractAddress = '0x9Ec0E0F0F92F38DDB7d3E0249f988855B03146A4';
-            marketplaceAddress = '0x06c3FECAc1ec74a5b4EfA033bcf50BAfc0B052D3';
+            contractAddress = '0xbdEd0D2bf404bdcBa897a74E6657f1f12e5C6fb6';
+            marketplaceAddress = '0x2910E325cf29dd912E3476B61ef12F49cb931096';
           }
 
           const contractInstance = new web3Instance.eth.Contract(

@@ -11,6 +11,7 @@
   background-size: cover;
   background-repeat: no-repeat;
   z-index: 0;  /* Assuming your navbar has a z-index higher than 1 */
+  margin-top: 80px;
   
 }
 
