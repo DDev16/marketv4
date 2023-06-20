@@ -260,6 +260,12 @@ const NavBar = () => {
           </Link>
         </li>
         <li onClick={closeNav}>
+          <Link to="/all-collections">
+            <FaDatabase className="nav-icon" />
+            All Collections
+          </Link>
+        </li>
+        <li onClick={closeNav}>
           <Link to="/sign-in">
             <FaWallet className="nav-icon" />
             Sign-In 

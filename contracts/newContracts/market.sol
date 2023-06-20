@@ -16,12 +16,22 @@ contract NFTMarketplace is ReentrancyGuard, Ownable {
         bool isActive;
     }
 
-    
+    struct Collection {
+        string name;
+        string logoIPFS;
+        string bannerIPFS;
+        string description;
+        string category;
+        Token[] tokens;
+        bool isPublic;
+    }
+
     struct Token {
         address contractAddress;
         uint256 tokenId;
     }
-      struct TokenDetails {
+
+    struct TokenDetails {
         address contractAddress;
         uint256 tokenId;
         uint256 price;
@@ -29,11 +39,10 @@ contract NFTMarketplace is ReentrancyGuard, Ownable {
     }
 
     event TokenBought(
-    uint256 indexed tokenId,
-    uint256 royalty,
-    address indexed recipient
-);
-
+        uint256 indexed tokenId,
+        uint256 royalty,
+        address indexed recipient
+    );
 
     modifier onlyTokenOwner(address contractAddress, uint256 tokenId) {
         ERC721 tokenContract = ERC721(contractAddress);
@@ -42,39 +51,186 @@ contract NFTMarketplace is ReentrancyGuard, Ownable {
     }
 
     ERC721 public nftToken;
-    // Keep track of all active listings
-Token[] public activeListings;
-
-// A mapping to keep track of the index of each token in the activeListings array
-mapping(address => mapping(uint256 => uint256)) private listingIndex;
+    Token[] public activeListings;
+    mapping(address => mapping(uint256 => uint256)) private listingIndex;
     mapping(address => mapping(uint256 => Listing)) public listings;
-  
-
-
-     // Batch processing limits
+    mapping(address => Collection[]) public collections;
+    mapping(address => uint256) private collectionLengths;
     uint256 private constant BATCH_PROCESS_LIMIT = 50;
     uint256 public listingFee = 0.01 ether;
-  
-        
+    mapping(address => mapping(uint256 => bool)) private collectionTokens;
+
     event TokenListed(
         uint256 indexed tokenId,
         uint256 price,
         address indexed seller
     );
+
     event TokenSold(
         uint256 indexed tokenId,
         address indexed seller,
         address indexed buyer
     );
+
     event SaleCancelled(uint256 indexed tokenId, address indexed seller);
+    event CollectionCreated(address indexed owner, string name);
+    event CollectionUpdated(address indexed owner, uint256 collectionId);
+    event CollectionTransferred(
+        address indexed from,
+        address indexed to,
+        uint256 collectionId
+    );
 
+    event CollectionVisibilityChanged(address owner, uint256 collectionId, bool isPublic);
 
-      
-   constructor(address _tokenAddress) {
+    constructor(address _tokenAddress) {
         nftToken = ERC721(_tokenAddress);
     }
 
-     // Fetch all tokens for sale
+    function createCollection(
+        string memory name,
+        string memory logoIPFS,
+        string memory bannerIPFS,
+        string memory description,
+        string memory category
+    ) public {
+        Collection storage newCollection = collections[msg.sender].push();
+        newCollection.name = name;
+        newCollection.logoIPFS = logoIPFS;
+        newCollection.bannerIPFS = bannerIPFS;
+        newCollection.description = description;
+        newCollection.category = category;
+        emit CollectionCreated(msg.sender, name);
+    }
+
+    function updateCollection(
+        uint256 collectionId,
+        string memory name,
+        string memory logoIPFS,
+        string memory bannerIPFS,
+        string memory description,
+        string memory category
+    ) public {
+        require(collectionId < collections[msg.sender].length, "Collection does not exist");
+        Collection storage collection = collections[msg.sender][collectionId];
+        collection.name = name;
+        collection.logoIPFS = logoIPFS;
+        collection.bannerIPFS = bannerIPFS;
+        collection.description = description;
+        collection.category = category;
+        emit CollectionUpdated(msg.sender, collectionId);
+    }
+
+   function addToCollection(uint256 collectionId, address contractAddress, uint256 tokenId) public onlyTokenOwner(contractAddress, tokenId) {
+    require(!collectionTokens[contractAddress][tokenId], "Token already exists in the collection");
+    collections[msg.sender][collectionId].tokens.push(Token(contractAddress, tokenId));
+    collectionTokens[contractAddress][tokenId] = true;
+    emit CollectionUpdated(msg.sender, collectionId);
+}
+
+
+    function removeFromCollection(uint256 collectionId, address contractAddress, uint256 tokenId) public onlyTokenOwner(contractAddress, tokenId) {
+    Collection storage collection = collections[msg.sender][collectionId];
+    Token[] storage tokens = collection.tokens;
+    for (uint256 i = 0; i < tokens.length; i++) {
+        if (tokens[i].contractAddress == contractAddress && tokens[i].tokenId == tokenId) {
+            tokens[i] = tokens[tokens.length - 1];
+            tokens.pop();
+            collectionTokens[contractAddress][tokenId] = false;
+            emit CollectionUpdated(msg.sender, collectionId);
+            return;
+        }
+    }
+    revert("Token not found in collection");
+}
+
+    function setCollectionVisibility(uint256 collectionId, bool _isPublic) public {
+        require(collectionId < collections[msg.sender].length, "Collection does not exist");
+        collections[msg.sender][collectionId].isPublic = _isPublic;
+        emit CollectionVisibilityChanged(msg.sender, collectionId, _isPublic);
+    }
+
+    function deleteCollection(uint256 collectionId) public {
+    require(collectionId < collections[msg.sender].length, "Collection does not exist");
+    Collection storage collection = collections[msg.sender][collectionId];
+    for (uint256 i = 0; i < collection.tokens.length; i++) {
+        Token memory token = collection.tokens[i];
+        collectionTokens[token.contractAddress][token.tokenId] = false;
+    }
+    delete collections[msg.sender][collectionId];
+    emit CollectionUpdated(msg.sender, collectionId);
+}
+
+
+   function getCollection(address owner, uint256 collectionId) public view returns (string memory name, string memory logoIPFS, address[] memory contractAddresses, uint256[] memory tokenIds) {
+    require(collectionId < collections[owner].length, "Collection does not exist");
+    Collection memory collection = collections[owner][collectionId];
+    contractAddresses = new address[](collection.tokens.length);
+    tokenIds = new uint256[](collection.tokens.length);
+    
+    for (uint256 i = 0; i < collection.tokens.length; i++) {
+        contractAddresses[i] = collection.tokens[i].contractAddress;
+        tokenIds[i] = collection.tokens[i].tokenId;
+    }
+
+    return (collection.name, collection.logoIPFS, contractAddresses, tokenIds);
+}
+
+
+function getSpecificCollection(uint256 collectionId) public view returns (
+    address owner,
+    string memory name,
+    string memory logoIPFS,
+    string memory bannerIPFS,
+    address[] memory contractAddresses,
+    uint256[] memory tokenIds
+) {
+    require(collectionId < collections[msg.sender].length, "Collection does not exist");
+    Collection memory collection = collections[msg.sender][collectionId];
+    contractAddresses = new address[](collection.tokens.length);
+    tokenIds = new uint256[](collection.tokens.length);
+    
+    for (uint256 i = 0; i < collection.tokens.length; i++) {
+        contractAddresses[i] = collection.tokens[i].contractAddress;
+        tokenIds[i] = collection.tokens[i].tokenId;
+    }
+
+    return (
+        msg.sender,
+        collection.name,
+        collection.logoIPFS,
+        collection.bannerIPFS,
+        contractAddresses,
+        tokenIds
+    );
+}
+
+
+
+    function getCollectionsByOwner(address owner) public view returns (Collection[] memory) {
+        return collections[owner];
+    }
+
+    function getNumContracts(Collection memory collection) internal pure returns (uint256) {
+        uint256 count;
+        address[] memory uniqueContracts = new address[](collection.tokens.length);
+        for (uint256 i = 0; i < collection.tokens.length; i++) {
+            address contractAddress = collection.tokens[i].contractAddress;
+            bool found;
+            for (uint256 j = 0; j < count; j++) {
+                if (uniqueContracts[j] == contractAddress) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                uniqueContracts[count] = contractAddress;
+                count++;
+            }
+        }
+        return count;
+    }
+
     function getAllTokensForSale() external view returns (TokenDetails[] memory) {
         uint256 length = activeListings.length;
         TokenDetails[] memory tokens = new TokenDetails[](length);
@@ -93,139 +249,115 @@ mapping(address => mapping(uint256 => uint256)) private listingIndex;
         return tokens;
     }
 
-    // List a token for sale
-   function listToken(address contractAddress, uint256 tokenId, uint256 price) external payable onlyTokenOwner(contractAddress, tokenId) nonReentrant {
-    require(msg.value >= listingFee, "Listing fee not provided");
+    function listToken(address contractAddress, uint256 tokenId, uint256 price) external payable onlyTokenOwner(contractAddress, tokenId) nonReentrant {
+        require(msg.value >= listingFee, "Listing fee not provided");
 
-    ERC721 tokenContract = ERC721(contractAddress);
-    tokenContract.approve(address(this), tokenId);
+        ERC721 tokenContract = ERC721(contractAddress);
+        tokenContract.approve(address(this), tokenId);
 
-    Listing storage listing = listings[contractAddress][tokenId];
-    require(!listing.isActive, "Token is already listed for sale");
+        Listing storage listing = listings[contractAddress][tokenId];
+        require(!listing.isActive, "Token is already listed for sale");
 
-    listing.contractAddress = contractAddress;
-    listing.tokenId = tokenId;
-    listing.price = price;
-    listing.seller = msg.sender;
-    listing.isActive = true;
+        listing.contractAddress = contractAddress;
+        listing.tokenId = tokenId;
+        listing.price = price;
+        listing.seller = msg.sender;
+        listing.isActive = true;
 
+        Token memory token = Token(contractAddress, tokenId);
+        activeListings.push(token);
 
-    Token memory token = Token(contractAddress, tokenId);
-    activeListings.push(token);
-
-    emit TokenListed(tokenId, price, msg.sender);
-}
-
-function buyToken(address contractAddress, uint256 tokenId) external payable nonReentrant {
-    Listing storage listing = listings[contractAddress][tokenId];
-    require(listing.isActive, "Token is not for sale");
-    require(msg.value >= listing.price, "Insufficient funds to buy token");
-
-    // Instantiate the ERC721 contract and IERC2981 interface
-    ERC721 tokenContract = ERC721(listing.contractAddress);
-    IERC2981 royaltyContract = IERC2981(listing.contractAddress);
-
-    // Initialize royaltyRecipient and royaltyAmount
-    address royaltyRecipient;
-    uint256 royaltyAmount;
-
-    // Try to call royaltyInfo function
-    try royaltyContract.royaltyInfo(tokenId, listing.price) returns (address recipient, uint256 amount) {
-        royaltyRecipient = recipient;
-        royaltyAmount = amount;
-    } 
-    catch {
-        royaltyRecipient = address(0);
-        royaltyAmount = 0;
+        emit TokenListed(tokenId, price, msg.sender);
     }
 
-    // Check if there's enough for the royalty
-    require(listing.price >= royaltyAmount, "The price is less than the royalty.");
+    function buyToken(address contractAddress, uint256 tokenId) external payable nonReentrant {
+        Listing storage listing = listings[contractAddress][tokenId];
+        require(listing.isActive, "Token is not for sale");
+        require(msg.value >= listing.price, "Insufficient funds to buy token");
 
-    // Transfer funds to the seller minus the royalty
-    payable(listing.seller).transfer(listing.price - royaltyAmount);
+        ERC721 tokenContract = ERC721(listing.contractAddress);
+        IERC2981 royaltyContract = IERC2981(listing.contractAddress);
 
-    // If royaltyRecipient is not the zero address, pay the royalty
-    if (royaltyRecipient != address(0)) {
-        payable(royaltyRecipient).transfer(royaltyAmount);
+        address royaltyRecipient;
+        uint256 royaltyAmount;
+
+        try royaltyContract.royaltyInfo(tokenId, listing.price) returns (address recipient, uint256 amount) {
+            royaltyRecipient = recipient;
+            royaltyAmount = amount;
+        } catch {
+            royaltyRecipient = address(0);
+            royaltyAmount = 0;
+        }
+
+        require(listing.price >= royaltyAmount, "The price is less than the royalty.");
+
+        payable(listing.seller).transfer(listing.price - royaltyAmount);
+
+        if (royaltyRecipient != address(0)) {
+            payable(royaltyRecipient).transfer(royaltyAmount);
             emit TokenBought(tokenId, royaltyAmount, royaltyRecipient);
+        }
 
-    }
+        tokenContract.safeTransferFrom(listing.seller, msg.sender, listing.tokenId);
 
-    // Transfer token ownership to the buyer
-    tokenContract.safeTransferFrom(listing.seller, msg.sender, listing.tokenId);
+        emit TokenSold(listing.tokenId, listing.seller, msg.sender);
 
-    emit TokenSold(listing.tokenId, listing.seller, msg.sender);
+        delete listings[contractAddress][tokenId];
 
-    // Remove the listing
-    delete listings[contractAddress][tokenId];
-
-    // Update the activeListings array
-    for (uint256 i = 0; i < activeListings.length; i++) {
-        if (activeListings[i].contractAddress == contractAddress && activeListings[i].tokenId == tokenId) {
-            if (i != activeListings.length - 1) {
-                activeListings[i] = activeListings[activeListings.length - 1];
+        for (uint256 i = 0; i < activeListings.length; i++) {
+            if (activeListings[i].contractAddress == contractAddress && activeListings[i].tokenId == tokenId) {
+                if (i != activeListings.length - 1) {
+                    activeListings[i] = activeListings[activeListings.length - 1];
+                }
+                activeListings.pop();
+                break;
             }
-            activeListings.pop();
-            break;
         }
     }
-}
 
-function cancelListing(address contractAddress, uint256 tokenId) external onlyTokenOwner(contractAddress, tokenId) {
-    require(listings[contractAddress][tokenId].isActive, "Token is not listed for sale");
+    function cancelListing(address contractAddress, uint256 tokenId) external onlyTokenOwner(contractAddress, tokenId) {
+        require(listings[contractAddress][tokenId].isActive, "Token is not listed for sale");
 
-    delete listings[contractAddress][tokenId];
+        delete listings[contractAddress][tokenId];
 
-    emit SaleCancelled(tokenId, msg.sender);
-}
+        emit SaleCancelled(tokenId, msg.sender);
+    }
 
-
-     function setListingFee(uint256 _listingFee) external onlyOwner {
+    function setListingFee(uint256 _listingFee) external onlyOwner {
         listingFee = _listingFee;
     }
 
-
-
-   
-
-//  BATCH FUNCTIONS
-
-// Batch listing function
     function listTokens(address[] memory contractAddresses, uint256[] memory tokenIds, uint256[] memory prices) external payable nonReentrant {
-    require(contractAddresses.length == tokenIds.length && tokenIds.length == prices.length && prices.length > 0, "Mismatched input arrays");
-    require(msg.value >= listingFee * tokenIds.length, "Listing fee not provided");
+        require(contractAddresses.length == tokenIds.length && tokenIds.length == prices.length && prices.length > 0, "Mismatched input arrays");
+        require(msg.value >= listingFee * tokenIds.length, "Listing fee not provided");
 
-    uint256 tokensToProcess = contractAddresses.length;
-    uint256 startIndex = 0;
+        uint256 tokensToProcess = contractAddresses.length;
+        uint256 startIndex = 0;
 
-    while (tokensToProcess > 0) {
-        uint256 tokensInBatch = tokensToProcess > BATCH_PROCESS_LIMIT ? BATCH_PROCESS_LIMIT : tokensToProcess;
-        address[] memory contractAddressesBatch = new address[](tokensInBatch);
-        uint256[] memory tokenIdsBatch = new uint256[](tokensInBatch);
-        uint256[] memory pricesBatch = new uint256[](tokensInBatch);
+        while (tokensToProcess > 0) {
+            uint256 tokensInBatch = tokensToProcess > BATCH_PROCESS_LIMIT ? BATCH_PROCESS_LIMIT : tokensToProcess;
+            address[] memory contractAddressesBatch = new address[](tokensInBatch);
+            uint256[] memory tokenIdsBatch = new uint256[](tokensInBatch);
+            uint256[] memory pricesBatch = new uint256[](tokensInBatch);
 
-        for (uint256 i = 0; i < tokensInBatch; i++) {
-            contractAddressesBatch[i] = contractAddresses[startIndex + i];
-            tokenIdsBatch[i] = tokenIds[startIndex + i];
-            pricesBatch[i] = prices[startIndex + i];
+            for (uint256 i = 0; i < tokensInBatch; i++) {
+                contractAddressesBatch[i] = contractAddresses[startIndex + i];
+                tokenIdsBatch[i] = tokenIds[startIndex + i];
+                pricesBatch[i] = prices[startIndex + i];
+            }
+
+            processListings(contractAddressesBatch, tokenIdsBatch, pricesBatch);
+
+            startIndex += tokensInBatch;
+            tokensToProcess -= tokensInBatch;
         }
-
-        processListings(contractAddressesBatch, tokenIdsBatch, pricesBatch);
-
-        startIndex += tokensInBatch;
-        tokensToProcess -= tokensInBatch;
     }
-}
 
-
-    // Internal function to process batch listings
     function processListings(address[] memory contractAddresses, uint256[] memory tokenIds, uint256[] memory prices) internal {
         for (uint256 i = 0; i < contractAddresses.length; i++) {
             address contractAddress = contractAddresses[i];
             uint256 tokenId = tokenIds[i];
             uint256 price = prices[i];
-
 
             ERC721 tokenContract = ERC721(contractAddress);
             require(tokenContract.ownerOf(tokenId) == msg.sender, "Only token owner can perform this action");
@@ -238,59 +370,48 @@ function cancelListing(address contractAddress, uint256 tokenId) external onlyTo
         }
     }
 
-    // Batch buying function
-   function buyTokens(address[] memory contractAddresses, uint256[] memory tokenIds) external payable nonReentrant {
-    require(contractAddresses.length == tokenIds.length, "Mismatched input arrays");
+    function buyTokens(address[] memory contractAddresses, uint256[] memory tokenIds) external payable nonReentrant {
+        require(contractAddresses.length == tokenIds.length, "Mismatched input arrays");
 
-    for (uint256 i = 0; i < contractAddresses.length; i++) {
-        address contractAddress = contractAddresses[i];
-        uint256 tokenId = tokenIds[i];
+        for (uint256 i = 0; i < contractAddresses.length; i++) {
+            address contractAddress = contractAddresses[i];
+            uint256 tokenId = tokenIds[i];
 
-        Listing storage listing = listings[contractAddress][tokenId];
-        require(listing.isActive, "Token is not for sale");
-        require(msg.value >= listing.price, "Insufficient funds to buy token");
+            Listing storage listing = listings[contractAddress][tokenId];
+            require(listing.isActive, "Token is not for sale");
+            require(msg.value >= listing.price, "Insufficient funds to buy token");
 
-        // Instantiate the ERC721 contract and IERC2981 interface
-        ERC721 tokenContract = ERC721(listing.contractAddress);
-        IERC2981 royaltyContract = IERC2981(listing.contractAddress);
+            ERC721 tokenContract = ERC721(listing.contractAddress);
+            IERC2981 royaltyContract = IERC2981(listing.contractAddress);
 
-        // Initialize royaltyRecipient and royaltyAmount
-        address royaltyRecipient;
-        uint256 royaltyAmount;
+            address royaltyRecipient;
+            uint256 royaltyAmount;
 
-        // Try to call royaltyInfo function
-        try royaltyContract.royaltyInfo(tokenId, listing.price) returns (address recipient, uint256 amount) {
-            royaltyRecipient = recipient;
-            royaltyAmount = amount;
-        } 
-        catch {
-            royaltyRecipient = address(0);
-            royaltyAmount = 0;
+            try royaltyContract.royaltyInfo(tokenId, listing.price) returns (address recipient, uint256 amount) {
+                royaltyRecipient = recipient;
+                royaltyAmount = amount;
+            } catch {
+                royaltyRecipient = address(0);
+                royaltyAmount = 0;
+            }
+
+            require(listing.price >= royaltyAmount, "The price is less than the royalty.");
+
+            payable(listing.seller).transfer(listing.price - royaltyAmount);
+
+            if (royaltyRecipient != address(0)) {
+                payable(royaltyRecipient).transfer(royaltyAmount);
+                emit TokenBought(listing.tokenId, royaltyAmount, royaltyRecipient);
+            }
+
+            tokenContract.safeTransferFrom(listing.seller, msg.sender, listing.tokenId);
+
+            emit TokenSold(listing.tokenId, listing.seller, msg.sender);
+
+            delete listings[contractAddress][tokenId];
         }
-
-        // Check if there's enough for the royalty
-        require(listing.price >= royaltyAmount, "The price is less than the royalty.");
-
-        // Transfer funds to the seller minus the royalty
-        payable(listing.seller).transfer(listing.price - royaltyAmount);
-
-        // If royaltyRecipient is not the zero address, pay the royalty
-        if (royaltyRecipient != address(0)) {
-            payable(royaltyRecipient).transfer(royaltyAmount);
-            emit TokenBought(listing.tokenId, royaltyAmount, royaltyRecipient);
-        }
-
-        // Transfer token ownership to the buyer
-        tokenContract.safeTransferFrom(listing.seller, msg.sender, listing.tokenId);
-
-        emit TokenSold(listing.tokenId, listing.seller, msg.sender);
-
-        delete listings[contractAddress][tokenId];
     }
-}
 
-
-    // Batch canceling listings function
     function cancelListings(address[] memory contractAddresses, uint256[] memory tokenIds) external {
         require(contractAddresses.length == tokenIds.length, "Mismatched input arrays");
 
@@ -306,17 +427,10 @@ function cancelListing(address contractAddress, uint256 tokenId) external onlyTo
         }
     }
 
-
-
-
-       function withdrawFees() external onlyOwner {
+    function withdrawFees() external onlyOwner {
         uint256 balance = address(this).balance;
         require(balance > 0, "No fees to withdraw");
 
         payable(owner()).transfer(balance);
-
-        
     }
-    
-
 }

@@ -19,6 +19,7 @@ import CreateCollection from './components/Marketplace/Collection/CreateCollecti
 import MyCollections from './components/Marketplace/Collection/MyCollections.js'
 import AddToCollection from './components/Marketplace/Collection/AddToCollection';
 import CollectionPage from './components/Marketplace/Collection/CollectionPage';
+import AllCollections from './components/Marketplace/Collection/GetAllCollections';
 function App() {
   const [user, setUser] = React.useState(null);
 
@@ -40,6 +41,8 @@ function App() {
                   <Route path="/marketplace" element={<MarketList />} />
                   <Route path="/create-collection" element={<CreateCollection />} />
                   <Route path="/my-collections" element={<MyCollections />} />
+                  <Route path="/all-collections" element={<AllCollections />} />
+
                   <Route path="/add-to-collection" element={<AddToCollection />} />
                   <Route path="/collections/:collectionId" element={<CollectionPage />} />
 

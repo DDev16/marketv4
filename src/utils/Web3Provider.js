@@ -1,68 +1,68 @@
 import React, { useState, useEffect, createContext } from 'react';
 import Web3 from 'web3';
 import MyNFT from '../abi/MyNFT.js'; 
-import Marketplace from '../abi/Marketplace.js'; // import the Marketplace ABI
+import Marketplace from '../abi/Marketplace.js';
 
 export const Web3Context = createContext();
 
 const Web3Provider = ({ children }) => {
   const [web3, setWeb3] = useState(null);
   const [contract, setContract] = useState(null);
-  const [marketplaceContract, setMarketplaceContract] = useState(null); // new state for the Marketplace contract
+  const [marketplaceContract, setMarketplaceContract] = useState(null);
   const [initialized, setInitialized] = useState(false);
-  const [connected, setConnected] = useState(false); // state to track connection status
+  const [connected, setConnected] = useState(false);
 
   useEffect(() => {
     const initializeWeb3 = async () => {
       if (window.ethereum) {
-        const web3Instance = new Web3(window.ethereum);
+        try {
+          // Request account access
+          await window.ethereum.request({ method: 'eth_requestAccounts' });
+          setConnected(true);
 
-        if (!initialized) {
-          await window.ethereum.enable();
+          const web3Instance = new Web3(window.ethereum);
+          setWeb3(web3Instance);
+          
+          const networkId = await web3Instance.eth.net.getId();
+          let contractAddress = '';
+          let marketplaceAddress = '';
+
+          if (networkId === 19) {
+            // Songbird network
+            contractAddress = '0xcE925a80BD00882bF50A16207B2fD4d9B76a5521';
+            marketplaceAddress = '0x902Eca4dA5342120DC4f64b106c5518eC83751DA';
+          } else if (networkId === 14) {
+            // Flare network
+            contractAddress = '0x92Dd5BF315b84F1fA0fB9865ca9130a45f99e117';
+            marketplaceAddress = '0xbdEd0D2bf404bdcBa897a74E6657f1f12e5C6fb6';
+          } else if (networkId === 31337) {
+            // Hardhat network
+            contractAddress = '0x5863902c7B67483254E70ED561B454E69752E763';
+            marketplaceAddress = '0xe45a1e7f99aaa9854Ef947C218D4EEedB214dC92';
+          }
+
+          const contractInstance = new web3Instance.eth.Contract(
+            MyNFT.abi,
+            contractAddress
+          );
+          const marketplaceInstance = new web3Instance.eth.Contract(
+            Marketplace.abi,
+            marketplaceAddress
+          );
+          setContract(contractInstance);
+          setMarketplaceContract(marketplaceInstance);
           setInitialized(true);
-          setConnected(true); // set connection status to true on initialization
+        } catch (error) {
+          window.alert('Failed to connect to MetaMask');
         }
-        setWeb3(web3Instance);
-        setContract(null); // Reset contract when network changes
 
         const handleNetworkChange = () => {
-          window.location.reload(); // Reload the page on network change
+          setInitialized(false);  // Will cause the useEffect hook to re-run and re-initialize everything
+          initializeWeb3();
         };
+        
 
         window.ethereum.on('chainChanged', handleNetworkChange);
-
-        const networkId = await web3Instance.eth.net.getId();
-        let contractAddress = '';
-        let marketplaceAddress = ''; 
-
-        if (networkId === 19) {
-          // Songbird network
-          contractAddress = '0x3ED889c5E4e5251E48ceEE2C32b1e8dcC005D82E';
-          marketplaceAddress = '0xc45b1866BCFaf694bcF53108B69beC496750941B'; // add the Marketplace contract address for Songbird
-        } else if (networkId === 14) {
-          // Flare network
-          contractAddress = '0x92Dd5BF315b84F1fA0fB9865ca9130a45f99e117';
-          marketplaceAddress = '0xbdEd0D2bf404bdcBa897a74E6657f1f12e5C6fb6'; // add the Marketplace contract address for Flare
-        } 
-        else if (networkId === 31337) {
-          // Flare network
-          contractAddress = '0x5863902c7B67483254E70ED561B454E69752E763';
-          marketplaceAddress = '0x3857C14Ec0C727ac2aEcD5016283C76c6b5C860e'; // add the Marketplace contract address for HArdhatnode
-        }else {
-          // Add more conditions for other networks
-          // ...
-        }
-
-        const contractInstance = new web3Instance.eth.Contract(
-          MyNFT.abi,
-          contractAddress
-        );
-        const marketplaceInstance = new web3Instance.eth.Contract(
-          Marketplace.abi,
-          marketplaceAddress
-        ); // create instance of Marketplace contract
-        setContract(contractInstance);
-        setMarketplaceContract(marketplaceInstance); // store the instance of Marketplace contract
       } else {
         window.alert('You need to install MetaMask!');
       }
@@ -74,13 +74,13 @@ const Web3Provider = ({ children }) => {
   const handleConnectDisconnect = async () => {
     if (window.ethereum) {
       if (connected) {
-        window.ethereum.removeAllListeners('chainChanged'); // Remove the network change listener
+        window.ethereum.removeAllListeners('chainChanged');
         setContract(null);
         setMarketplaceContract(null);
-        setConnected(false); // set connection status to false on disconnect
+        setConnected(false);
       } else {
-        await window.ethereum.enable();
-        setConnected(true); // set connection status to true on connect
+        await window.ethereum.request({ method: 'eth_requestAccounts' });
+        setConnected(true);
       }
     }
   };

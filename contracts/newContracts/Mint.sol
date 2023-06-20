@@ -209,5 +209,4 @@ contract MyNFTmint is ERC721, Ownable, ReentrancyGuard, IERC2981 {
     function withdrawFees() public onlyOwner {
         payable(owner()).transfer(address(this).balance);
     }
-
 }

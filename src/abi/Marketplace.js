@@ -545,6 +545,25 @@ const Marketplace = {
 		{
 			"inputs": [
 				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"name": "collectionOwners",
+			"outputs": [
+				{
+					"internalType": "address",
+					"name": "",
+					"type": "address"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
 					"internalType": "address",
 					"name": "",
 					"type": "address"
@@ -586,6 +605,57 @@ const Marketplace = {
 					"internalType": "bool",
 					"name": "isPublic",
 					"type": "bool"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "page",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "pageSize",
+					"type": "uint256"
+				}
+			],
+			"name": "getAllCollections",
+			"outputs": [
+				{
+					"components": [
+						{
+							"internalType": "string",
+							"name": "name",
+							"type": "string"
+						},
+						{
+							"internalType": "string",
+							"name": "logoIPFS",
+							"type": "string"
+						},
+						{
+							"internalType": "string",
+							"name": "bannerIPFS",
+							"type": "string"
+						},
+						{
+							"internalType": "string",
+							"name": "description",
+							"type": "string"
+						},
+						{
+							"internalType": "uint256",
+							"name": "collectionId",
+							"type": "uint256"
+						}
+					],
+					"internalType": "struct NFTMarketplace.CollectionData[]",
+					"name": "",
+					"type": "tuple[]"
 				}
 			],
 			"stateMutability": "view",

@@ -63,7 +63,11 @@ body {
 }
 
 .collectionLogo {
-
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 10px auto;
+  border-radius: 5px;
 } 
 
 .collectionBanner {

@@ -3,7 +3,7 @@ import brand from '../../assets/logo.png';
 import '../../index.css';
 import MarketListings from '../Marketplace/MarketListings/MarketListings';
 import Hero from '../Hero/Hero';
-
+import AllCollections from '../../components/Marketplace/Collection/GetAllCollections.js'
 const Home = () => {
   return (
     
@@ -22,6 +22,7 @@ const Home = () => {
         <a href="/mint" style={styles.buttonLink}>Begin your creative expedition here</a>
       </button>
       {/* Add more information or features of the dapp */}
+      <AllCollections />
   <MarketListings />
     </div>
   );
