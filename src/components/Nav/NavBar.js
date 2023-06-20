@@ -242,18 +242,6 @@ const NavBar = () => {
           </Link>
         </li>
         <li onClick={closeNav}>
-          <Link to="/my-tokens">
-            <FiFolder className="nav-icon" />
-            My NFTs
-          </Link>
-        </li>
-        <li onClick={closeNav}>
-          <Link to="/token-list">
-            <FaWallet className="nav-icon" />
-            Wallet
-          </Link>
-        </li>
-        <li onClick={closeNav}>
           <Link to="/marketplace">
             <FaDatabase className="nav-icon" />
             Marketplace

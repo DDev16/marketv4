@@ -27,17 +27,20 @@ const Mint = () => {
   useEffect(() => {
     const fetchFreeMints = async () => {
       try {
-        const accounts = await web3.eth.getAccounts();
-        const user = accounts[0];
-        const numFreeMints = await contract.methods.getRemainingFreeMints(user).call();
-        setFreeMints(numFreeMints);
+        if (web3 && contract) {
+          const accounts = await web3.eth.getAccounts();
+          const user = accounts[0];
+          const numFreeMints = await contract.methods.getRemainingFreeMints(user).call();
+          setFreeMints(numFreeMints);
+        }
       } catch (error) {
         console.error(error);
       }
     };
-
+  
     fetchFreeMints();
   }, [web3, contract]);
+  
 
   const handleFileUpload = async (e) => {
     try {

@@ -290,6 +290,45 @@ const TOKEN_ABI = {
 					"type": "uint256"
 				}
 			],
+			"name": "getTokenDetails",
+			"outputs": [
+				{
+					"internalType": "string",
+					"name": "name",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "description",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "uri",
+					"type": "string"
+				},
+				{
+					"internalType": "address",
+					"name": "royaltyRecipient",
+					"type": "address"
+				},
+				{
+					"internalType": "uint256",
+					"name": "royaltyBasisPoints",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "tokenId",
+					"type": "uint256"
+				}
+			],
 			"name": "getTokenInfo",
 			"outputs": [
 				{

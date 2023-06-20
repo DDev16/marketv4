@@ -1,7 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Web3Context } from '../../../utils/Web3Provider.js';
 import { useNavigate } from 'react-router-dom';
-import styles from '../../../components/Marketplace/Collection/GetAllCollections.module.css'; // Updated import statement
+import styles from '../../../components/Marketplace/Collection/GetAllCollections.module.css';
+
 const CollectionCard = ({ collection, navigateToCollectionPage }) => {
   return (
     <div className={styles.collectionCard} onClick={() => navigateToCollectionPage(collection.collectionId)}>
@@ -19,7 +20,9 @@ const MyCollections = () => {
   const { web3, marketplaceContract } = useContext(Web3Context);
   const [collections, setCollections] = useState([]);
   const [currentPage, setCurrentPage] = useState(2);
-  const collectionsPerPage = 10; // set the number of collections per page
+  const [searchName, setSearchName] = useState('');
+  const [searchCollectionId, setSearchCollectionId] = useState('');
+  const collectionsPerPage = 10;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -60,11 +63,47 @@ const MyCollections = () => {
     }
   };
 
+  const handleNameChange = (event) => {
+    setSearchName(event.target.value);
+  };
+
+  const handleCollectionIdChange = (event) => {
+    setSearchCollectionId(event.target.value);
+  };
+
+  const filterCollections = (collection) => {
+    const nameMatch = collection.name.toLowerCase().includes(searchName.toLowerCase());
+    const idMatch = collection.collectionId.includes(searchCollectionId);
+    return nameMatch && idMatch;
+  };
+
+  const filteredCollections = collections.filter(filterCollections);
+
   return (
     <div className={styles.myCollectionsContainer}>
-      <h1 className={styles.myCollectionsTitle}> AllCollections</h1>
+      <h1 className={styles.myCollectionsTitle}> Collections</h1>
+      <button className={styles.myPageButton} onClick={prevPage}>Previous Page</button>
+      <button className={styles.myPageButton} onClick={nextPage}>Next Page</button>
+      <div className={styles.searchContainer}>
+      <input
+  type="text"
+  placeholder="Search by name"
+  value={searchName}
+  onChange={handleNameChange}
+  className={styles.searchInput}
+/>
+
+<input
+  type="text"
+  placeholder="Search by collection ID"
+  value={searchCollectionId}
+  onChange={handleCollectionIdChange}
+  className={styles.searchInput}
+/>
+
+      </div>
       <div className={styles.myCollectionsList}>
-        {collections.map((collection, index) => (
+        {filteredCollections.map((collection, index) => (
           <CollectionCard
             key={index}
             collection={collection}
@@ -72,8 +111,7 @@ const MyCollections = () => {
           />
         ))}
       </div>
-      <button className={styles.myPageButton} onClick={prevPage}>Previous Page</button>
-      <button className={styles.myPageButton} onClick={nextPage}>Next Page</button>
+
     </div>
   );
 };

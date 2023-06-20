@@ -1,5 +1,5 @@
 .collectionsContainer {
-  max-width: 1200px;
+  max-width: 100%;
   margin: 0 auto;
   padding: 20px;
   font-family: Arial, sans-serif;
@@ -71,11 +71,11 @@ body {
 } 
 
 .collectionBanner {
+  height: 200px; /* set a fixed height */
   width: 100%;
-  height: auto;
-  display: block;
-  margin: 10px auto;
-  border-radius: 5px;
+  object-fit: cover;
+  border-radius: 10px;
+  transition: all 0.3s ease-in-out; /* Smooth transition for all changes */
 }
 
 .collectionDescription {

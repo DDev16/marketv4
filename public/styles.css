@@ -1,0 +1,27 @@
+/* Commenting out or removing this line will make the default cursor visible */
+/* * { cursor: none; } */
+
+body {
+    cursor: url('starter-northern-lights-pointer.png') 5 5, auto;
+  }
+  
+  #customCursor {
+    position: absolute;
+    width: 75px;
+    height: 75px;
+    pointer-events: none; /* Makes sure your cursor doesn't interfere with clicking */
+    z-index: 100000; /* Ensures your cursor is on top of everything else */
+  }
+  
+  .expand {
+    animation: expand 0.5s ease;
+  }
+  
+  /* Mobile Styles */
+  @media (max-width: 767px) {
+    #customCursor {
+      width: 50px;
+      height: 50px;
+    }
+  }
+  

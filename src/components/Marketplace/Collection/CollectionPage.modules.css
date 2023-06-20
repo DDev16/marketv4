@@ -25,6 +25,51 @@
     background-color: var(--color-background);
     margin-top: var(--spacing-xlarge);
   }
+
+  .collectionPage h1 {
+    position: relative;
+    font-size: 80px;
+    color: transparent;
+    background-image: linear-gradient(to bottom right, #007bff, #ff00f7);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow:
+        1px 1px 0 #007bff,
+        2px 2px 0 #888, 
+        3px 3px 0 #777, 
+        4px 4px 0 #666, 
+        5px 5px 0 #555, 
+        6px 6px 0 #444, 
+        7px 7px 0 #333, 
+        8px 8px 7px rgba(0, 0, 0, 0.1),
+        9px 9px 8px rgba(0, 0, 0, 0.2),
+        10px 10px 9px rgba(0, 0, 0, 0.3),
+        11px 11px 10px rgba(0, 0, 0, 0.4),
+        12px 12px 11px rgba(0, 0, 0, 0.5),
+        13px 13px 12px rgba(0, 0, 0, 0.6);
+    transition: all 0.1s ease-in-out;
+}
+
+.collectionPage h1:hover {
+    text-shadow:
+        1px 1px 0 #007bff,
+        2px 2px 0 #888, 
+        3px 3px 0 #777, 
+        4px 4px 0 #666, 
+        5px 5px 0 #555, 
+        6px 6px 0 #444, 
+        7px 7px 0 #333, 
+        8px 8px 7px rgba(0, 0, 0, 0.1),
+        9px 9px 8px rgba(0, 0, 0, 0.2),
+        10px 10px 9px rgba(0, 0, 0, 0.3),
+        11px 11px 10px rgba(0, 0, 0, 0.4),
+        12px 12px 11px rgba(0, 0, 0, 0.5),
+        13px 13px 12px rgba(0, 0, 0, 0.6),
+        14px 14px 13px rgba(0, 0, 0, 0.7);
+    transform: scale(1.05);
+}
+
   
   .collectionlogo {
     display: flex;
@@ -56,8 +101,9 @@
   }
   
   .description {
-    margin-top: 40px;
+    margin-top: 50px;
   }
+  
   
   .cardContainer {
     display: flex;

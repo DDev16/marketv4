@@ -12,12 +12,11 @@ const Home = () => {
 
       <img src={brand} alt="Logo" style={{ ...styles.logo, ...styles.spinAnimation }} />
       <h1 style={styles.heading}>Empowering Innovation: Building Robust Dapps for the Community</h1>
-<p style={styles.description}>In the era of digital renaissance, we are dedicated to fostering innovation and pushing the boundaries of what's possible. Welcome to our platform, an all-encompassing hub for decentralized applications (Dapps) meticulously designed for the thriving EVM (Ethereum Virtual Machine) community.</p>
-<p style={styles.description}>We offer you the opportunity to create unique, vibrant NFTs without any prior coding knowledge. Our tools are not just about technological prowess, they are about unlocking your creative potential and letting it shine in the vast expanse of the digital world.</p>
-<p style={styles.description}>Our platform is more than a Dapp, it's a creative companion meticulously curated for you. We've seamlessly integrated cutting-edge features to simplify the process of minting NFTs and interacting with them. Whether you are an artist, a collector, or a digital enthusiast seeking to explore the transformative blockchain landscape, our platform has been designed with you in mind.</p>
-<p style={styles.description}>Our genesis is rooted in the profound respect for the Songbird/Flare Networks community. Our platform serves as a conduit, bridging the gap between your artistic vision and the global audience. We are not just a toolset, but a catalyst that fosters creativity and propels innovation in the thriving NFT marketplace.</p>
-<p style={styles.description}>In an ever-evolving blockchain world, we are committed to consistently pushing the boundaries of what Dapps can achieve on the EVM. With a fervent commitment to continuous growth and evolution, we aspire to explore uncharted territories and redefine the standards of building on the EVM.</p>
-<p style={{ ...styles.descriptionText, ...styles.fireAnimation }}>Jumpstart your digital art journey with us! Enjoy 2 Free mints on us!</p>
+
+      <p style={styles.description}>Welcome to our digital hub, your gateway to effortless NFT creation and collection building. Harnessing the power of the Ethereum Virtual Machine, we offer intuitive tools for you to mint unique NFTs, create diverse NFT collections, and easily add your NFTs to your personal collection - all without needing any coding knowledge.</p>
+      <p style={styles.description}>Whether you're an artist, a collector, or a blockchain enthusiast, our platform is designed with you in mind. We've integrated cutting-edge features that simplify your journey in the blockchain landscape. Our platform serves as more than just a set of tools; it's a creative companion meticulously curated for you.</p>
+      <p style={styles.description}>Rooted deeply in the Songbird/Flare Networks community, we see ourselves as a conduit, bridging the gap between your artistic vision and the global audience. We're not just a toolset; we're a catalyst fostering creativity and propelling innovation in the bustling NFT market.</p>
+      <p style={styles.description}>Join us in redefining what's possible on the EVM, as we consistently push the boundaries of what decentralized applications (Dapps) can achieve. We're committed to continual growth, evolution, and exploring uncharted territories in an ever-evolving blockchain world.</p><p style={{ ...styles.descriptionText, ...styles.fireAnimation }}>Jumpstart your digital art journey with us! Enjoy 2 Free mints on us!</p>
       <button style={{ ...styles.button, ...styles.popButton }}>
         <a href="/mint" style={styles.buttonLink}>Begin your creative expedition here</a>
       </button>
@@ -72,7 +71,7 @@ const styles = {
     color: 'white',
   },
   descriptionText: {
-    fontSize: '60px',
+    fontSize: '30px',
     marginBottom: '32px',
     textAlign: 'center',
     lineHeight: '1.5',

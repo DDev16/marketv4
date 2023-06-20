@@ -38,14 +38,19 @@ const CollectionPage = () => {
           .call({ from: ownerAddress });
 
         if (fetchedCollection) {
-          setCollection({
+          console.log('Fetched Collection:', fetchedCollection);
+
+          const collectionData = {
             name: fetchedCollection.name,
             logoIPFS: fetchedCollection.logoIPFS,
             bannerIPFS: fetchedCollection.bannerIPFS,
             description: fetchedCollection.description,
             contractAddresses: fetchedCollection.contractAddresses,
             tokenIds: fetchedCollection.tokenIds,
-          });
+          };
+
+          console.log('Collection Data:', collectionData);
+          setCollection(collectionData);
 
           const fetchedCards = await Promise.all(
             fetchedCollection.tokenIds.map(async (tokenId, index) => {
@@ -53,19 +58,25 @@ const CollectionPage = () => {
               const contract = new web3.eth.Contract(ERC721_ABI, contractAddress);
               const tokenURI = await contract.methods.tokenURI(tokenId).call({ from: ownerAddress });
               const ipfsUrl = tokenURI.replace('ipfs://', '');
-console.log(`Fetching IPFS data from: https://ipfs.io/ipfs/${ipfsUrl}`);
-const cardDetailsResponse = await fetch(`https://ipfs.io/ipfs/${ipfsUrl}`);
+              console.log(`Fetching IPFS data from: https://ipfs.io/ipfs/${ipfsUrl}`);
+              const cardDetailsResponse = await fetch(`https://ipfs.io/ipfs/${ipfsUrl}`);
               const cardDetails = await cardDetailsResponse.json();
               cardDetails.image = cardDetails.image || cardDetails.imageUrl;
+
+              const { name, description } = cardDetails;
+              console.log('Card Details:', cardDetails);
               return {
                 tokenId,
                 contractAddress,
                 tokenURI,
+                name,
+                description,
                 ...cardDetails,
               };
             })
           );
 
+          console.log('Fetched Cards:', fetchedCards);
           setCards(fetchedCards);
         } else {
           console.error('Collection not found');
@@ -87,6 +98,7 @@ const cardDetailsResponse = await fetch(`https://ipfs.io/ipfs/${ipfsUrl}`);
   return (
     <div className="collectionPage">
       <h1>{collection.name}</h1>
+      
       <div className="collectionlogo">
         <img src={`https://ipfs.io/ipfs/${collection.logoIPFS}`} alt="Logo" />
       </div>
@@ -96,23 +108,20 @@ const cardDetailsResponse = await fetch(`https://ipfs.io/ipfs/${ipfsUrl}`);
       <p className="description">{collection.description}</p>
 
       <div className="cardContainer">
-      {cards.map((card, index) => (
-    <div className="card" key={index}>
-        {
-  card.image.toLowerCase().endsWith('.mp4') ?
-  <video controls src={`https://ipfs.io/ipfs/${card.image.replace(/ipfs:\/\//g, '')}`} alt={`NFT Card ${index + 1}`} /> :
-  <img src={`https://ipfs.io/ipfs/${card.image.replace(/ipfs:\/\//g, '')}`} alt={`NFT Card ${index + 1}`} />
-}
+        {cards.map((card, index) => (
+          <div className="card" key={index}>
+            {card.image.toLowerCase().endsWith('.mp4') ? (
+              <video controls src={`https://ipfs.io/ipfs/${card.image.replace(/ipfs:\/\//g, '')}`} alt={`NFT Card ${index + 1}`} />
+            ) : (
+              <img src={`https://ipfs.io/ipfs/${card.image.replace(/ipfs:\/\//g, '')}`} alt={`NFT Card ${index + 1}`} />
+            )}
 
-        <p>Token ID: {card.tokenId}</p>
-        <p>Name: {card.name}</p>
-
-        <p>Description: {card.description}</p>
-
-        <p>Contract Address: {card.contractAddress}</p>
-    </div>
-))}
-
+            <p>Token ID: {card.tokenId}</p>
+            <p>Name: {card.name}</p>
+            <p>Description: {card.description}</p>
+            <p>Contract Address: {card.contractAddress}</p>
+          </div>
+        ))}
       </div>
     </div>
   );

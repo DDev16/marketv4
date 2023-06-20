@@ -5,27 +5,65 @@
   justify-content: center;
   align-items: center;
   padding: 2em;
-  background-color: #f5f5f5;
+  /* background-color: #f5f5f5; */
   border-radius: 10px;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out; /* Smooth transition for all changes */
+  margin-top:40px;
 }
 
+/* Collection title styles */
 .myCollectionsTitle {
-  font-size: 2em;
+  font-size: 5em;
   font-weight: bold;
   color: #333;
   margin-bottom: 2em;
   text-transform: uppercase;
   letter-spacing: 2px;
-  transition: color 0.3s ease-in-out;
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Enhanced smooth transition */
+  text-shadow: 3px 3px 0 rgba(0,0,0,0.2); /* Adds a shadow to the text */
+  /* Gradient color */
+  background: linear-gradient(to right, #0072ff, #00c6ff); 
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; /* Use gradient as text color */
+  /* 3D transformation effect */
+  transform: perspective(600px) rotateX(20deg);
+  /* Shadow effect */
+  box-shadow: 10px 10px 30px rgba(0,0,0,0.2);
+  padding: 15px;
+  border-radius: 10px;
+  /* Animation */
+  animation: titleAnimation 3s ease-in-out infinite;
 }
 
+/* Hover effect */
+.myCollectionsTitle:hover {
+  box-shadow: 15px 15px 40px #00FFFF; /* Neon blue shadow effect */
+  transform: perspective(600px) rotateX(25deg); /* Enhanced 3D transformation effect */
+}
+
+/* Keyframes for animation */
+@keyframes titleAnimation {
+  0%, 100% {
+    text-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+    box-shadow: 10px 10px 30px rgba(0,0,0,0.2);
+    transform: perspective(600px) rotateX(20deg);
+  }
+  50% {
+    text-shadow: 3px 3px 15px #00FFFF; /* Neon blue text shadow during animation */
+    box-shadow: 15px 15px 40px #00FFFF; /* Neon blue box shadow during animation */
+    transform: perspective(600px) rotateX(25deg); /* Temporarily enhance the 3D effect in the animation */
+  }
+}
+
+
+
+/* Grid for the collection list */
 .myCollectionsList {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 2em;
   width: 100%;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out; /* Smooth transition for all changes */
 }
 
 .myPageButton {
@@ -37,7 +75,7 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease-in-out;
+  transition: background-color 0.3s ease-in-out; /* Smooth transition for background color */
 }
 
 .myPageButton:hover {
@@ -54,7 +92,7 @@
   border-radius: 10px;
   box-shadow: 0px 10px 20px rgba(0,0,0,0.1);
   cursor: pointer;
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: transform 0.3s, box-shadow 0.3s; /* Smooth transition for transform and box-shadow */
 }
 
 .collectionCard:hover {
@@ -62,20 +100,23 @@
   box-shadow: 0px 10px 30px rgba(0,0,0,0.2);
 }
 
-.collectionID,
+/* Limit the height of descriptions and make them scrollable */
 .collectionDescription {
   color: #666;
   font-size: 0.9em;
-  transition: color 0.3s ease-in-out;
+  max-height: 100px; /* Adjust as needed */
+  overflow-y: auto; /* Enable vertical scrolling */
+  transition: color 0.3s ease-in-out; /* Smooth color transition */
 }
 
+.collectionID,
 .collectionName {
   font-size: 1.3em;
   color: #333;
   margin: 1em 0;
   text-transform: uppercase;
   letter-spacing: 2px;
-  transition: color 0.3s ease-in-out;
+  transition: color 0.3s ease-in-out; /* Smooth color transition */
 }
 
 .collectionLogo {
@@ -83,17 +124,17 @@
   height: auto;
   object-fit: cover;
   border-radius: 10px;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out; /* Smooth transition for all changes */
+  margin-bottom:10px;
 }
 
 .collectionBanner {
-  width: 100%;
   height: 100px; /* set a fixed height */
-  object-fit: cover; /* scale the image to cover the area while maintaining aspect ratio */
+  width: 100%;
+  object-fit: cover;
   border-radius: 10px;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out; /* Smooth transition for all changes */
 }
-
 
 .collectionButton {
   margin-top: 1em;
@@ -104,9 +145,76 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease-in-out;
+  transition: background-color 0.3s ease-in-out; /* Smooth transition for background color */
 }
 
 .collectionButton:hover {
   background-color: #0056b3;
+}
+
+/* Media queries for further mobile responsiveness */
+@media only screen and (max-width: 480px) {
+  .myCollectionsContainer {
+    padding: 0.5em;
+  }
+
+  .myCollectionsTitle {
+    font-size: 1.5em;
+  }
+
+  .collectionCard {
+    padding: 0.5em;
+  }
+
+  .collectionDescription {
+    font-size: 0.8em;
+    max-height: 60px;
+  }
+
+  .collectionID,
+  .collectionName {
+    font-size: 0.8em;
+  }
+
+  .collectionLogo {
+    margin-bottom: 3px;
+  }
+
+  .collectionBanner {
+    height: 60px;
+  }
+
+  .collectionButton {
+    margin-top: 0.5em;
+    padding: 0.5em;
+    font-size: 0.8em;
+  }
+}
+
+
+/* Add these styles to the existing CSS file (GetAllCollections.module.css) */
+
+/* Search container */
+.searchContainer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+/* Search input */
+.searchInput {
+  width: 200px;
+  height: 36px;
+  padding: 8px;
+  margin: 0 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+/* Optional: Add hover and focus styles for the search input */
+.searchInput:hover,
+.searchInput:focus {
+  outline: none;
+  border-color: #999;
 }

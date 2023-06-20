@@ -63,29 +63,34 @@ const BatchMint = () => {
   };
 
   const handleImageUpload = async (index) => {
-    try {
-      const file = mintData[index].file;
-      setUploading(true);
-      const metadata = await client.store({
-        name: mintData[index].name,
-        description: mintData[index].description,
-        image: new File([file], file.name, { type: file.type }),
-      });
+  try {
+    const file = mintData[index].file;
+    setUploading(true);
+    
+    const name = useSharedData ? mintData[0].name : mintData[index].name;
+    const description = useSharedData ? mintData[0].description : mintData[index].description;
 
-      setMintData((prevState) => {
-        const newState = [...prevState];
-        newState[index].uri = metadata.url;
-        return newState;
-      });
+    const metadata = await client.store({
+      name: name,
+      description: description,
+      image: new File([file], file.name, { type: file.type }),
+    });
 
-      setError(null);
-    } catch (error) {
-      console.error('Error while uploading image:', error);
-      setError(`Error while uploading image: ${error.message}`);
-    } finally {
-      setUploading(false);
-    }
-  };
+    setMintData((prevState) => {
+      const newState = [...prevState];
+      newState[index].uri = metadata.url;
+      return newState;
+    });
+
+    setError(null);
+  } catch (error) {
+    console.error('Error while uploading image:', error);
+    setError(`Error while uploading image: ${error.message}`);
+  } finally {
+    setUploading(false);
+  }
+};
+
 
   const handleAllImagesUpload = async () => {
     for (let i = 0; i < mintData.length; i++) {
