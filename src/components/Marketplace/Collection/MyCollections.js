@@ -5,7 +5,7 @@ import styles from '../../../components/Marketplace/Collection/MyCollections.mod
 import AddToCollection from '../../../components/Marketplace/Collection/AddToCollection.js';
 import { useNavigate } from 'react-router-dom';
 import { Alert, Spinner } from 'react-bootstrap'; 
-
+import BulkAddToCollection from './BulkAdd/BulkAddToCollection.js';
 const CollectionCard = React.memo(({ collection, navigateToCollectionPage }) => {
   const handleClick = useCallback(() => navigateToCollectionPage(collection.id), [navigateToCollectionPage, collection.id]);
 
@@ -100,6 +100,7 @@ const MyCollections = () => {
   return (
     <>
       <AddToCollection />
+      <BulkAddToCollection />
       <div className={styles.collectionsContainer}>
         <h1 className={styles.title}>My Collections</h1>
         <div className={styles.cardsContainer}>

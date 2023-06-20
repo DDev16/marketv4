@@ -280,6 +280,7 @@ function getSpecificCollection(uint256 collectionId) public view returns (
 
 
 
+
     function getCollectionsByOwner(address owner) public view returns (Collection[] memory) {
         return collections[owner];
     }
@@ -436,6 +437,25 @@ function getHottestCollections(uint256 count) public view returns (CollectionDat
 
     return allCollections;
 }
+function bulkAddToCollection(uint256 collectionId, address[] memory contractAddresses, uint256[] memory tokenIds) public onlyOwner {
+    require(collectionId < collections[msg.sender].length, "Collection does not exist");
+    require(contractAddresses.length == tokenIds.length, "Mismatched input arrays");
+
+    Collection storage collection = collections[msg.sender][collectionId];
+
+    for (uint256 i = 0; i < contractAddresses.length; i++) {
+        address contractAddress = contractAddresses[i];
+        uint256 tokenId = tokenIds[i];
+
+        require(!collectionTokens[contractAddress][tokenId], "Token already exists in the collection");
+
+        collection.tokens.push(Token(contractAddress, tokenId));
+        collectionTokens[contractAddress][tokenId] = true;
+    }
+
+    emit CollectionUpdated(msg.sender, collectionId);
+}
+
 
 
     function cancelListing(address contractAddress, uint256 tokenId) external onlyTokenOwner(contractAddress, tokenId) {

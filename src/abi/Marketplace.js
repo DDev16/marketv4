@@ -3,6 +3,124 @@ const Marketplace = {
 		{
 			"inputs": [
 				{
+					"internalType": "uint256",
+					"name": "collectionId",
+					"type": "uint256"
+				},
+				{
+					"internalType": "address",
+					"name": "contractAddress",
+					"type": "address"
+				},
+				{
+					"internalType": "uint256",
+					"name": "tokenId",
+					"type": "uint256"
+				}
+			],
+			"name": "addToCollection",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "collectionId",
+					"type": "uint256"
+				},
+				{
+					"internalType": "address[]",
+					"name": "contractAddresses",
+					"type": "address[]"
+				},
+				{
+					"internalType": "uint256[]",
+					"name": "tokenIds",
+					"type": "uint256[]"
+				}
+			],
+			"name": "bulkAddToCollection",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "contractAddress",
+					"type": "address"
+				},
+				{
+					"internalType": "uint256",
+					"name": "tokenId",
+					"type": "uint256"
+				}
+			],
+			"name": "buyToken",
+			"outputs": [],
+			"stateMutability": "payable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address[]",
+					"name": "contractAddresses",
+					"type": "address[]"
+				},
+				{
+					"internalType": "uint256[]",
+					"name": "tokenIds",
+					"type": "uint256[]"
+				}
+			],
+			"name": "buyTokens",
+			"outputs": [],
+			"stateMutability": "payable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "contractAddress",
+					"type": "address"
+				},
+				{
+					"internalType": "uint256",
+					"name": "tokenId",
+					"type": "uint256"
+				}
+			],
+			"name": "cancelListing",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address[]",
+					"name": "contractAddresses",
+					"type": "address[]"
+				},
+				{
+					"internalType": "uint256[]",
+					"name": "tokenIds",
+					"type": "uint256[]"
+				}
+			],
+			"name": "cancelListings",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
 					"internalType": "address",
 					"name": "_tokenAddress",
 					"type": "address"
@@ -100,6 +218,98 @@ const Marketplace = {
 			"type": "event"
 		},
 		{
+			"inputs": [
+				{
+					"internalType": "string",
+					"name": "name",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "logoIPFS",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "bannerIPFS",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "description",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "category",
+					"type": "string"
+				}
+			],
+			"name": "createCollection",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "collectionId",
+					"type": "uint256"
+				}
+			],
+			"name": "deleteCollection",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "contractAddress",
+					"type": "address"
+				},
+				{
+					"internalType": "uint256",
+					"name": "tokenId",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "price",
+					"type": "uint256"
+				}
+			],
+			"name": "listToken",
+			"outputs": [],
+			"stateMutability": "payable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address[]",
+					"name": "contractAddresses",
+					"type": "address[]"
+				},
+				{
+					"internalType": "uint256[]",
+					"name": "tokenIds",
+					"type": "uint256[]"
+				},
+				{
+					"internalType": "uint256[]",
+					"name": "prices",
+					"type": "uint256[]"
+				}
+			],
+			"name": "listTokens",
+			"outputs": [],
+			"stateMutability": "payable",
+			"type": "function"
+		},
+		{
 			"anonymous": false,
 			"inputs": [
 				{
@@ -119,6 +329,36 @@ const Marketplace = {
 			"type": "event"
 		},
 		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "collectionId",
+					"type": "uint256"
+				},
+				{
+					"internalType": "address",
+					"name": "contractAddress",
+					"type": "address"
+				},
+				{
+					"internalType": "uint256",
+					"name": "tokenId",
+					"type": "uint256"
+				}
+			],
+			"name": "removeFromCollection",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "renounceOwnership",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
 			"anonymous": false,
 			"inputs": [
 				{
@@ -136,6 +376,37 @@ const Marketplace = {
 			],
 			"name": "SaleCancelled",
 			"type": "event"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "collectionId",
+					"type": "uint256"
+				},
+				{
+					"internalType": "bool",
+					"name": "_isPublic",
+					"type": "bool"
+				}
+			],
+			"name": "setCollectionVisibility",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "_listingFee",
+					"type": "uint256"
+				}
+			],
+			"name": "setListingFee",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
 		},
 		{
 			"anonymous": false,
@@ -215,6 +486,64 @@ const Marketplace = {
 		{
 			"inputs": [
 				{
+					"internalType": "address",
+					"name": "newOwner",
+					"type": "address"
+				}
+			],
+			"name": "transferOwnership",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "collectionId",
+					"type": "uint256"
+				},
+				{
+					"internalType": "string",
+					"name": "name",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "logoIPFS",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "bannerIPFS",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "description",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "category",
+					"type": "string"
+				}
+			],
+			"name": "updateCollection",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "withdrawFees",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
 					"internalType": "uint256",
 					"name": "",
 					"type": "uint256"
@@ -234,101 +563,6 @@ const Marketplace = {
 				}
 			],
 			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "uint256",
-					"name": "collectionId",
-					"type": "uint256"
-				},
-				{
-					"internalType": "address",
-					"name": "contractAddress",
-					"type": "address"
-				},
-				{
-					"internalType": "uint256",
-					"name": "tokenId",
-					"type": "uint256"
-				}
-			],
-			"name": "addToCollection",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "address",
-					"name": "contractAddress",
-					"type": "address"
-				},
-				{
-					"internalType": "uint256",
-					"name": "tokenId",
-					"type": "uint256"
-				}
-			],
-			"name": "buyToken",
-			"outputs": [],
-			"stateMutability": "payable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "address[]",
-					"name": "contractAddresses",
-					"type": "address[]"
-				},
-				{
-					"internalType": "uint256[]",
-					"name": "tokenIds",
-					"type": "uint256[]"
-				}
-			],
-			"name": "buyTokens",
-			"outputs": [],
-			"stateMutability": "payable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "address",
-					"name": "contractAddress",
-					"type": "address"
-				},
-				{
-					"internalType": "uint256",
-					"name": "tokenId",
-					"type": "uint256"
-				}
-			],
-			"name": "cancelListing",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "address[]",
-					"name": "contractAddresses",
-					"type": "address[]"
-				},
-				{
-					"internalType": "uint256[]",
-					"name": "tokenIds",
-					"type": "uint256[]"
-				}
-			],
-			"name": "cancelListings",
-			"outputs": [],
-			"stateMutability": "nonpayable",
 			"type": "function"
 		},
 		{
@@ -397,52 +631,6 @@ const Marketplace = {
 				}
 			],
 			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "string",
-					"name": "name",
-					"type": "string"
-				},
-				{
-					"internalType": "string",
-					"name": "logoIPFS",
-					"type": "string"
-				},
-				{
-					"internalType": "string",
-					"name": "bannerIPFS",
-					"type": "string"
-				},
-				{
-					"internalType": "string",
-					"name": "description",
-					"type": "string"
-				},
-				{
-					"internalType": "string",
-					"name": "category",
-					"type": "string"
-				}
-			],
-			"name": "createCollection",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "uint256",
-					"name": "collectionId",
-					"type": "uint256"
-				}
-			],
-			"name": "deleteCollection",
-			"outputs": [],
-			"stateMutability": "nonpayable",
 			"type": "function"
 		},
 		{
@@ -790,52 +978,6 @@ const Marketplace = {
 			"type": "function"
 		},
 		{
-			"inputs": [
-				{
-					"internalType": "address",
-					"name": "contractAddress",
-					"type": "address"
-				},
-				{
-					"internalType": "uint256",
-					"name": "tokenId",
-					"type": "uint256"
-				},
-				{
-					"internalType": "uint256",
-					"name": "price",
-					"type": "uint256"
-				}
-			],
-			"name": "listToken",
-			"outputs": [],
-			"stateMutability": "payable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "address[]",
-					"name": "contractAddresses",
-					"type": "address[]"
-				},
-				{
-					"internalType": "uint256[]",
-					"name": "tokenIds",
-					"type": "uint256[]"
-				},
-				{
-					"internalType": "uint256[]",
-					"name": "prices",
-					"type": "uint256[]"
-				}
-			],
-			"name": "listTokens",
-			"outputs": [],
-			"stateMutability": "payable",
-			"type": "function"
-		},
-		{
 			"inputs": [],
 			"name": "listingFee",
 			"outputs": [
@@ -916,125 +1058,6 @@ const Marketplace = {
 				}
 			],
 			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "uint256",
-					"name": "collectionId",
-					"type": "uint256"
-				},
-				{
-					"internalType": "address",
-					"name": "contractAddress",
-					"type": "address"
-				},
-				{
-					"internalType": "uint256",
-					"name": "tokenId",
-					"type": "uint256"
-				}
-			],
-			"name": "removeFromCollection",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [],
-			"name": "renounceOwnership",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "uint256",
-					"name": "collectionId",
-					"type": "uint256"
-				},
-				{
-					"internalType": "bool",
-					"name": "_isPublic",
-					"type": "bool"
-				}
-			],
-			"name": "setCollectionVisibility",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "uint256",
-					"name": "_listingFee",
-					"type": "uint256"
-				}
-			],
-			"name": "setListingFee",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "address",
-					"name": "newOwner",
-					"type": "address"
-				}
-			],
-			"name": "transferOwnership",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "uint256",
-					"name": "collectionId",
-					"type": "uint256"
-				},
-				{
-					"internalType": "string",
-					"name": "name",
-					"type": "string"
-				},
-				{
-					"internalType": "string",
-					"name": "logoIPFS",
-					"type": "string"
-				},
-				{
-					"internalType": "string",
-					"name": "bannerIPFS",
-					"type": "string"
-				},
-				{
-					"internalType": "string",
-					"name": "description",
-					"type": "string"
-				},
-				{
-					"internalType": "string",
-					"name": "category",
-					"type": "string"
-				}
-			],
-			"name": "updateCollection",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [],
-			"name": "withdrawFees",
-			"outputs": [],
-			"stateMutability": "nonpayable",
 			"type": "function"
 		}
 	]

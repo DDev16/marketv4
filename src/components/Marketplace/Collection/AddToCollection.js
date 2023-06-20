@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { Web3Context } from '../../../utils/Web3Provider.js';
 import './AddToCollection.css';
 

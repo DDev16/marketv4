@@ -1,0 +1,121 @@
+/* BulkAddToCollection.css */
+
+
+.bulk-add-to-collection {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+    max-width: 2200px;
+    margin: 0 auto;
+    padding: 30px;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+    border-radius: 5px;
+    box-shadow: 0px 10px 30px 0px rgba(154, 154, 154, 0.15);
+    background-color: #fff;
+    transition: all 0.3s ease;
+}
+
+.bulk-add-to-collection h2 {
+    width: 100%;
+    margin-bottom: 25px;
+    text-align: center;
+    font-size: 28px;
+    color: #333;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+}
+
+.bulk-add-to-collection label {
+    margin-top: 15px;
+    font-size: 16px;
+    color: #666;
+}
+
+.bulk-add-to-collection input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    font-size: 18px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.bulk-add-to-collection input:focus {
+    border-color: #007BFF;
+    outline: none;
+}
+
+.bulk-add-to-collection button {
+    margin-top: 20px;
+    padding: 12px 24px;
+    font-size: 18px;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: #007BFF;
+    box-shadow: 0px 10px 15px 0px rgba(0, 123, 255, 0.1);
+}
+
+.bulk-add-to-collection button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.bulk-add-to-collection button:hover:not(:disabled) {
+    background-color: #0056b3;
+    box-shadow: 0px 15px 20px 0px rgba(0, 86, 179, 0.15);
+    transform: translateY(-3px);
+}
+
+.bulk-add-to-collection button:active {
+    transform: translateY(0);
+    box-shadow: 0px 5px 10px 0px rgba(0, 86, 179, 0.15);
+}
+
+
+.bulk-add-to-collection button.remove-token {
+    margin-top: 10px;
+    padding: 8px 16px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #ff4d4d;
+    box-shadow: 0px 10px 15px 0px rgba(255, 77, 77, 0.1);
+}
+
+.bulk-add-to-collection button.remove-token:hover:not(:disabled) {
+    background-color: #cc0000;
+    box-shadow: 0px 15px 20px 0px rgba(204, 0, 0, 0.15);
+}
+
+.bulk-add-to-collection button:disabled {
+    position: relative;
+}
+
+.bulk-add-to-collection button:disabled::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin-top: -10px;
+    margin-left: -10px;
+    border: 2px solid #fff;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

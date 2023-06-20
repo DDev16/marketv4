@@ -2,8 +2,8 @@
 /* * { cursor: none; } */
 
 body {
-    cursor: url('starter-northern-lights-pointer.png') 5 5, auto;
-  }
+  cursor: url('starter-northern-lights-pointer.png') 5 5, auto;
+}
   
   #customCursor {
     position: absolute;
@@ -25,3 +25,18 @@ body {
     }
   }
   
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0);
+    }
+    100% {
+      transform: rotate(1turn);
+    }
+  }
+  
+  .spin {
+    animation: spin 0.5s linear;
+  }
+  
+
