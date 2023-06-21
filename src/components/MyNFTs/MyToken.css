@@ -160,8 +160,8 @@
 .token-image {
   width: 100%;
   height: auto;
-  max-height: 300px;
-  object-fit: cover;
+  max-height: 500px;
+  object-fit: fill;
   border-radius: 8px;
   margin-top: 16px;
 }

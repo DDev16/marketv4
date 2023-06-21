@@ -7,6 +7,9 @@ import { useNavigate } from 'react-router-dom';
 import { Alert, Spinner } from 'react-bootstrap'; 
 import BulkAddToCollection from './BulkAdd/BulkAddToCollection.js';
 import MyTokens from '../../../components/MyNFTs/MyTokens.js'
+import ListAllTokens from '../Collection/ListAllTokenForSale';
+import '../Listing.css';
+
 const CollectionCard = React.memo(({ collection, navigateToCollectionPage }) => {
   const handleClick = useCallback(() => navigateToCollectionPage(collection.id), [navigateToCollectionPage, collection.id]);
 
@@ -58,10 +61,11 @@ const MyCollections = () => {
         const accounts = await web3.eth.getAccounts();
         const ownerAddress = accounts[0];
         const fetchedCollections = await marketplaceContract.methods.getCollectionsByOwner(ownerAddress).call();
-        const collectionsWithId = fetchedCollections.map((collection, index) => ({
+        const collectionsWithId = fetchedCollections.map((collection) => ({
           ...collection,
-          id: index,
+          id: collection.collectionId, // change index to collection.collectionId
         }));
+        
   
         setCollections(collectionsWithId);
       } catch (fetchError) {
@@ -102,6 +106,8 @@ const MyCollections = () => {
     <>
       <AddToCollection />
       <BulkAddToCollection />
+      <ListAllTokens />
+
       <div className={styles.collectionsContainer}>
         <h1 className={styles.title}>My Collections</h1>
         <div className={styles.cardsContainer}>

@@ -13,6 +13,7 @@ const BatchListing = () => {
   ]);
   const [currentAccount, setCurrentAccount] = useState('');
   const [tokenOwners, setTokenOwners] = useState([]);
+  const [approvalGiven, setApprovalGiven] = useState(false);
 
   useEffect(() => {
     const loadAccount = async () => {
@@ -23,6 +24,23 @@ const BatchListing = () => {
     };
     loadAccount();
   }, [web3]);
+
+  useEffect(() => {
+    const loadApprovalStatus = () => {
+      const approvalStatus = localStorage.getItem('approvalGiven');
+      setApprovalGiven(approvalStatus === 'true');
+    };
+
+    loadApprovalStatus();
+  }, []);
+
+  useEffect(() => {
+    const saveApprovalStatus = () => {
+      localStorage.setItem('approvalGiven', approvalGiven);
+    };
+
+    saveApprovalStatus();
+  }, [approvalGiven]);
 
   useEffect(() => {
     const loadOwners = async () => {
