@@ -7,7 +7,7 @@
     align-items: flex-start;
     justify-content: center;
     width: 100%;
-    max-width: 2200px;
+    max-width: 2000px;
     margin: 0 auto;
     padding: 30px;
     box-sizing: border-box;
@@ -79,43 +79,4 @@
 .bulk-add-to-collection button:active {
     transform: translateY(0);
     box-shadow: 0px 5px 10px 0px rgba(0, 86, 179, 0.15);
-}
-
-
-.bulk-add-to-collection button.remove-token {
-    margin-top: 10px;
-    padding: 8px 16px;
-    font-size: 16px;
-    color: #fff;
-    background-color: #ff4d4d;
-    box-shadow: 0px 10px 15px 0px rgba(255, 77, 77, 0.1);
-}
-
-.bulk-add-to-collection button.remove-token:hover:not(:disabled) {
-    background-color: #cc0000;
-    box-shadow: 0px 15px 20px 0px rgba(204, 0, 0, 0.15);
-}
-
-.bulk-add-to-collection button:disabled {
-    position: relative;
-}
-
-.bulk-add-to-collection button:disabled::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 20px;
-    height: 20px;
-    margin-top: -10px;
-    margin-left: -10px;
-    border: 2px solid #fff;
-    border-top-color: transparent;
-    border-radius: 50%;
-    animation: spin 0.6s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
 }

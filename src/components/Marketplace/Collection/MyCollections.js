@@ -6,6 +6,7 @@ import AddToCollection from '../../../components/Marketplace/Collection/AddToCol
 import { useNavigate } from 'react-router-dom';
 import { Alert, Spinner } from 'react-bootstrap'; 
 import BulkAddToCollection from './BulkAdd/BulkAddToCollection.js';
+import MyTokens from '../../../components/MyNFTs/MyTokens.js'
 const CollectionCard = React.memo(({ collection, navigateToCollectionPage }) => {
   const handleClick = useCallback(() => navigateToCollectionPage(collection.id), [navigateToCollectionPage, collection.id]);
 
@@ -107,6 +108,7 @@ const MyCollections = () => {
           {renderCollections}
         </div>
       </div>
+      <MyTokens />
     </>
   );
 };

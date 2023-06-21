@@ -10,7 +10,13 @@ const Home = () => {
     <div style={styles.container}>
             <Hero />
 
+      
       <img src={brand} alt="Logo" style={{ ...styles.logo, ...styles.spinAnimation }} />
+      <pre>
+          <code>
+            IgnisLibertas
+          </code>
+        </pre>
       <h1 style={styles.heading}>Empowering Innovation: Building Robust Dapps for the Community</h1>
 
       <p style={styles.description}>Welcome to our digital hub, your gateway to effortless NFT creation and collection building. Harnessing the power of the Ethereum Virtual Machine, we offer intuitive tools for you to mint unique NFTs, create diverse NFT collections, and easily add your NFTs to your personal collection - all without needing any coding knowledge.</p>

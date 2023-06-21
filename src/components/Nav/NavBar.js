@@ -207,7 +207,7 @@ const NavBar = () => {
     <StyledNav>
       <Logo>
         <img src={require('../../assets/logo.png')} alt="Logo" />
-        <span className="app-name">Flare Fire Blockchain Tools</span>
+        <span className="app-name">Flare Fire </span>
       </Logo>
       <div>
         <NetworkSelect value={currentNetworkId} onChange={handleNetworkChange}>
