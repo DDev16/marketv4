@@ -163,7 +163,7 @@ const NavBar = () => {
           setSelectedNetwork(flareLogo);
         } else if (networkId === 31337) {
           setSelectedNetwork(null);
-        }
+        }  
       } catch (error) {
         console.error(error);
       }
@@ -190,7 +190,7 @@ const NavBar = () => {
             setSelectedNetwork(flareLogo);
           } else if (networkId === 31337) {
             setSelectedNetwork(null);
-          }
+          }  
 
           const accounts = await web3.eth.getAccounts();
           setAccount(accounts[0]);

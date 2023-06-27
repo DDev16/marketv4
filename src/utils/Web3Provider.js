@@ -37,9 +37,10 @@ const Web3Provider = ({ children }) => {
             marketplaceAddress = '0xbdEd0D2bf404bdcBa897a74E6657f1f12e5C6fb6';
           } else if (networkId === 31337) {
             // Hardhat network
-            contractAddress = '0xE6E340D132b5f46d1e472DebcD681B2aBc16e57E';
-            marketplaceAddress = '0x6447dF3D871432e42D9516113dc9065A8101bc63';
+            contractAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
+            marketplaceAddress = '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707';
           }
+          
 
           const contractInstance = new web3Instance.eth.Contract(
             MyNFT.abi,

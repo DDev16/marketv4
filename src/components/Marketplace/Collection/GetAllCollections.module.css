@@ -86,7 +86,7 @@
 .collectionCard {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   padding: 2em;
   background-color: #fff;
   border-radius: 10px;
@@ -111,6 +111,7 @@
 
 .collectionID,
 .collectionName {
+  
   font-size: 1.3em;
   color: #333;
   margin: 1em 0;
@@ -126,9 +127,13 @@
   border-radius: 10px;
   transition: all 0.3s ease-in-out; /* Smooth transition for all changes */
   margin-bottom:10px;
+  display: flex;
+
 }
 
 .collectionBanner {
+  display: flex;
+
   height: 100px; /* set a fixed height */
   width: 100%;
   object-fit: cover;

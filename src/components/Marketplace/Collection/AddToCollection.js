@@ -23,7 +23,7 @@ const AddToCollection = () => {
   const addToCollection = async () => {
     try {
       const accounts = await web3.eth.getAccounts();
-      await marketplaceContract.methods.addToCollection(collectionId, contractAddress, tokenId).send({ from: accounts[0] });
+      await marketplaceContract.methods.addTokenToCollection(collectionId, contractAddress, tokenId).send({ from: accounts[0] });
       console.log('Token added to the collection successfully');
     } catch (error) {
       console.error('An error occurred while adding the token to the collection:', error);

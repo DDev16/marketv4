@@ -19,7 +19,7 @@ const CollectionCard = ({ collection, navigateToCollectionPage }) => {
 const MyCollections = () => {
   const { web3, marketplaceContract } = useContext(Web3Context);
   const [collections, setCollections] = useState([]);
-  const [currentPage, setCurrentPage] = useState(2);
+  const [currentPage, setCurrentPage] = useState(1);
   const [searchName, setSearchName] = useState('');
   const [searchCollectionId, setSearchCollectionId] = useState('');
   const collectionsPerPage = 10;
