@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { Web3Context } from '../../../utils/Web3Provider.js';
 import styles from '../../../components/Marketplace/Collection/CollectionPage.modules.css';
+import QRCode from 'qrcode.react';
+import 'canvas-toBlob';
 
 const ERC721_ABI = [
   {
@@ -21,6 +23,20 @@ const CollectionPage = () => {
   const { web3, marketplaceContract } = useContext(Web3Context);
   const [collection, setCollection] = useState(null);
   const [tokens, setTokens] = useState([]);
+  const [qrCodeUrl, setQRCodeUrl] = useState('');
+
+  const qrRef = useRef();
+
+  const downloadQRCode = () => {
+    const canvas = qrRef.current.querySelector('canvas');
+    canvas.toBlob((blob) => {
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'qr_code.png';
+      link.click();
+      URL.revokeObjectURL(link.href);
+    });
+  };
 
   useEffect(() => {
     const fetchCollectionDetails = async () => {
@@ -93,6 +109,18 @@ const CollectionPage = () => {
     }
   }, [web3, marketplaceContract, collectionId]);
 
+  const generateQRCodeUrl = () => {
+    const baseUrl = 'http://localhost:3000/collections/';
+    const collectionUrl = `${baseUrl}${collectionId}`;
+    setQRCodeUrl(collectionUrl);
+  };
+
+  useEffect(() => {
+    if (collection) {
+      generateQRCodeUrl();
+    }
+  }, [collection]);
+
   if (!collection) {
     return <div>Loading...</div>;
   }
@@ -109,6 +137,11 @@ const CollectionPage = () => {
         <img src={`https://ipfs.io/ipfs/${collection.bannerIPFS}`} alt="Banner" />
       </div>
       <p className="description">{collection.description}</p>
+  
+      <div className="qrCode" ref={qrRef}>
+        {qrCodeUrl && <QRCode value={qrCodeUrl} />}
+        <button onClick={downloadQRCode}>Download QR Code</button>
+      </div>
   
       <div className="cardContainer">
         {tokens.map((token, index) => (
@@ -128,7 +161,6 @@ const CollectionPage = () => {
       </div>
     </div>
   );
-  
 };
 
 export default CollectionPage;

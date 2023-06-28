@@ -29,16 +29,16 @@ const Web3Provider = ({ children }) => {
 
           if (networkId === 19) {
             // Songbird network
-            contractAddress = '0xcE925a80BD00882bF50A16207B2fD4d9B76a5521';
-            marketplaceAddress = '0x902Eca4dA5342120DC4f64b106c5518eC83751DA';
+            contractAddress = '0x55480bF0b78aDda52c28EeF85635c84312667D4C';
+            marketplaceAddress = '0xD19684A90fA3Dd21d2eA3bBe87C80F7cbe40e443';
           } else if (networkId === 14) {
             // Flare network
-            contractAddress = '0x92Dd5BF315b84F1fA0fB9865ca9130a45f99e117';
-            marketplaceAddress = '0xbdEd0D2bf404bdcBa897a74E6657f1f12e5C6fb6';
+            contractAddress = '0x8d1A663F84c5a7cf0c0458848089783d0a0A3b6A';
+            marketplaceAddress = '0x73710334E4E5CA4482F5526faBEa45bce503BD98';
           } else if (networkId === 31337) {
             // Hardhat network
             contractAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
-            marketplaceAddress = '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707';
+            marketplaceAddress = '0x3857C14Ec0C727ac2aEcD5016283C76c6b5C860e';
           }
           
 

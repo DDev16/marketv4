@@ -32,7 +32,7 @@ const BulkAddToCollection = () => {
             const contractAddresses = tokens.map(token => token.contractAddress);
             const tokenIds = tokens.map(token => Number(token.tokenId));
 
-            await marketplaceContract.methods.bulkAddToCollection(
+            await marketplaceContract.methods.BulkAddToCollection(
                 collectionId,
                 contractAddresses,
                 tokenIds

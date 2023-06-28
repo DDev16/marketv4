@@ -22,7 +22,7 @@ const MyCollections = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchName, setSearchName] = useState('');
   const [searchCollectionId, setSearchCollectionId] = useState('');
-  const collectionsPerPage = 10;
+  const collectionsPerPage = 17;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,7 +30,9 @@ const MyCollections = () => {
 
     const fetchCollections = async () => {
       const accounts = await web3.eth.getAccounts();
-      const allCollections = await marketplaceContract.methods.getAllCollections(currentPage - 1, collectionsPerPage).call({ from: accounts[0] });
+      // Calculate startIndex based on currentPage and collectionsPerPage
+      const startIndex = (currentPage - 1) * collectionsPerPage;
+      const allCollections = await marketplaceContract.methods.getAllCollections(startIndex, collectionsPerPage).call({ from: accounts[0] });
 
       const flattenedCollections = allCollections.map((collection, index) => {
         return {
@@ -43,11 +45,19 @@ const MyCollections = () => {
         };
       });
 
-      setCollections(flattenedCollections);
+      // Filtering collections after fetching
+      const filteredCollections = flattenedCollections.filter(collection => {
+        const nameMatch = collection.name.toLowerCase().includes(searchName.toLowerCase());
+        const idMatch = collection.collectionId.includes(searchCollectionId);
+        return nameMatch && idMatch;
+      });
+
+      setCollections(filteredCollections);
     };
 
     fetchCollections();
-  }, [web3, marketplaceContract, currentPage]);
+}, [web3, marketplaceContract, currentPage, searchName, searchCollectionId]);
+
 
   const navigateToCollectionPage = (id) => {
     navigate(`/collections/${id}`);
@@ -71,14 +81,6 @@ const MyCollections = () => {
     setSearchCollectionId(event.target.value);
   };
 
-  const filterCollections = (collection) => {
-    const nameMatch = collection.name.toLowerCase().includes(searchName.toLowerCase());
-    const idMatch = collection.collectionId.includes(searchCollectionId);
-    return nameMatch && idMatch;
-  };
-
-  const filteredCollections = collections.filter(filterCollections);
-
   return (
     <div className={styles.myCollectionsContainer}>
       <h1 className={styles.myCollectionsTitle}> Collections</h1>
@@ -86,24 +88,24 @@ const MyCollections = () => {
       <button className={styles.myPageButton} onClick={nextPage}>Next Page</button>
       <div className={styles.searchContainer}>
       <input
-  type="text"
-  placeholder="Search by name"
-  value={searchName}
-  onChange={handleNameChange}
-  className={styles.searchInput}
-/>
+        type="text"
+        placeholder="Search by name"
+        value={searchName}
+        onChange={handleNameChange}
+        className={styles.searchInput}
+      />
 
-<input
-  type="text"
-  placeholder="Search by collection ID"
-  value={searchCollectionId}
-  onChange={handleCollectionIdChange}
-  className={styles.searchInput}
-/>
+      <input
+        type="text"
+        placeholder="Search by collection ID"
+        value={searchCollectionId}
+        onChange={handleCollectionIdChange}
+        className={styles.searchInput}
+      />
 
       </div>
       <div className={styles.myCollectionsList}>
-        {filteredCollections.map((collection, index) => (
+        {collections.map((collection, index) => (
           <CollectionCard
             key={index}
             collection={collection}
