@@ -55,15 +55,17 @@ contract NFTMarketplace is ReentrancyGuard, Ownable {
 
     ERC721 public nftToken;
     Token[] public activeListings;
-    mapping(uint256 => Collection) public collections;
     mapping(address => mapping(uint256 => uint256)) private listingIndex;
     mapping(address => mapping(uint256 => Listing)) public listings;
 
     uint256 private constant BATCH_PROCESS_LIMIT = 50;
     uint256 public listingFee = 0.01 ether;
     uint256 public totalCollections;
-  uint256 public collectionCount = 0;
-        
+    uint256 public collectionCount = 0;
+    mapping(uint256 => Token[]) public collectionTokens;
+    mapping(uint256 => Collection) public collections;
+    
+
     event TokenListed(
         uint256 indexed tokenId,
         uint256 price,
@@ -106,6 +108,28 @@ contract NFTMarketplace is ReentrancyGuard, Ownable {
     totalCollections++; // Increment totalCollections here
 }
 
+function addTokenToCollection(uint256 collectionId, address contractAddress, uint256 tokenId) public onlyTokenOwner(contractAddress, tokenId) {
+    // Check if the collection exists
+    require(collections[collectionId].owner != address(0), "Collection does not exist");
+
+    // Check if the caller is the owner of the collection
+    require(collections[collectionId].owner == msg.sender, "Only the collection owner can add tokens");
+
+    // Add the token to the collection
+    collectionTokens[collectionId].push(Token(contractAddress, tokenId));
+}
+
+    function getCollectionDetails(uint256 collectionId) public view returns (Collection memory, Token[] memory) {
+        require(collections[collectionId].owner != address(0), "Collection does not exist");
+
+        Collection memory collection = collections[collectionId];
+        Token[] memory tokens = collectionTokens[collectionId];
+
+        return (collection, tokens);
+    }
+
+
+
 
 function getAllCollections(uint256 startIndex, uint256 pageSize) public view returns (Collection[] memory) {
     require(startIndex < collectionCount, "Start index out of range");
@@ -125,6 +149,33 @@ function getAllCollections(uint256 startIndex, uint256 pageSize) public view ret
 
     return paginatedCollections;
 }
+
+
+function getCollectionCount() public view returns (uint256) {
+    return collectionCount;
+}
+
+    // This is the updated function, now it accepts separate arrays for tokenIds and contractAddresses.
+    function BulkAddToCollection(uint256 collectionId, address[] memory contractAddresses, uint256[] memory tokenIds) public {
+        // Check if the collection exists
+        require(collections[collectionId].owner != address(0), "Collection does not exist");
+
+        // Check if the caller is the owner of the collection
+        require(collections[collectionId].owner == msg.sender, "Only the collection owner can add tokens");
+
+        // Check the limit of tokens that can be added
+        require(tokenIds.length <= BATCH_PROCESS_LIMIT, "Exceeds batch process limit");
+        require(tokenIds.length == contractAddresses.length, "Mismatched input arrays");
+
+        for (uint256 i = 0; i < tokenIds.length; i++) {
+            // Check if the caller is the owner of each token
+            require(ERC721(contractAddresses[i]).ownerOf(tokenIds[i]) == msg.sender, "Only token owner can perform this action");
+
+            // Add the tokens to the collection
+            collectionTokens[collectionId].push(Token(contractAddresses[i], tokenIds[i]));
+        }
+    }
+
 
     function getCollectionsByOwner(address owner) public view returns (Collection[] memory) {
         uint256 count = 0;

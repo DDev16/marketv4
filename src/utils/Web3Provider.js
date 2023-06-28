@@ -29,8 +29,8 @@ const Web3Provider = ({ children }) => {
 
           if (networkId === 19) {
             // Songbird network
-            contractAddress = '0x55480bF0b78aDda52c28EeF85635c84312667D4C';
-            marketplaceAddress = '0xD19684A90fA3Dd21d2eA3bBe87C80F7cbe40e443';
+            contractAddress = '0xcd61F8F6E215CE93F7724a6BB4F5641b108D0276';
+            marketplaceAddress = '0xA5Fc39c439746AED8db3bb57CdEA9FB446A54694';
           } else if (networkId === 14) {
             // Flare network
             contractAddress = '0x8d1A663F84c5a7cf0c0458848089783d0a0A3b6A';

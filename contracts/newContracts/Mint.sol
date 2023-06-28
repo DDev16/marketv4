@@ -7,7 +7,6 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/interfaces/IERC2981.sol";
 
-
 contract MyNFTmint is ERC721, Ownable, ReentrancyGuard, IERC2981 {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
@@ -132,10 +131,9 @@ contract MyNFTmint is ERC721, Ownable, ReentrancyGuard, IERC2981 {
     }
 
     function getRoyaltyBasisPoints(uint256 tokenId) public view returns (uint256) {
-    require(_exists(tokenId), "ERC721: Query for nonexistent token");
-    return _royalties[tokenId];
-}
-
+        require(_exists(tokenId), "ERC721: Query for nonexistent token");
+        return _royalties[tokenId];
+    }
 
     function tokensOfOwner(address owner)
         public
@@ -208,5 +206,30 @@ contract MyNFTmint is ERC721, Ownable, ReentrancyGuard, IERC2981 {
 
     function withdrawFees() public onlyOwner {
         payable(owner()).transfer(address(this).balance);
+    }
+
+    function getTokenDetails(uint256 tokenId)
+        public
+        view
+        returns (
+            string memory name,
+            string memory description,
+            string memory uri,
+            address royaltyRecipient,
+            uint256 royaltyBasisPoints
+        )
+    {
+        require(
+            _exists(tokenId),
+            "ERC721URIStorage: URI query for nonexistent token"
+        );
+        TokenInfo memory info = _tokenInfos[tokenId];
+        return (
+            info.name,
+            info.description,
+            info.uri,
+            _royaltyRecipients[tokenId],
+            _royalties[tokenId]
+        );
     }
 }
