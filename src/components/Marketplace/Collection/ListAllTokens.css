@@ -1,0 +1,111 @@
+/* General Styles */
+.my-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: #f7f7f7;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-top:0px;
+  }
+  
+  .my-input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #f2f2f2;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .my-paragraph {
+    margin-bottom: 15px;
+    font-size: 18px;
+    color: #333;
+  }
+  
+  .my-button {
+    padding: 12px 24px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease;
+  }
+  
+  .my-button:hover {
+    background-color: #45a049;
+  }
+  
+  /* Specific Styles */
+  .my-form div {
+    margin-bottom: 25px;
+  }
+  
+  .my-form div .my-paragraph:first-child {
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+  
+  .my-form ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+  }
+  
+  .my-form ul li {
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #555;
+  }
+  
+  .my-form ul li:before {
+    content: "▸";
+    margin-right: 8px;
+    color: #999;
+  }
+  
+  .my-button[type="submit"] {
+    width: auto;
+    margin-top: 20px;
+  }
+  
+  /* Styling for specific elements */
+  .my-input[name="contractAddress"],
+  .my-input[name="tokenId"],
+  .my-input[name="price"],
+  .my-input[name="royalty"] {
+    font-weight: bold;
+    font-size: 18px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: none;
+    padding: 12px;
+  }
+  
+  .my-paragraph + .my-paragraph {
+    margin-top: 20px;
+  }
+  
+  .my-button[type="submit"] {
+    background-color: #2196f3;
+  }
+  
+  .my-button[type="submit"]:hover {
+    background-color: #0d8bf2;
+  }
+  
+  .my-button[type="submit"]:focus {
+    outline: none;
+  }
+  
+  .my-button[type="submit"]:active {
+    background-color: #0b78d7;
+  }
+  

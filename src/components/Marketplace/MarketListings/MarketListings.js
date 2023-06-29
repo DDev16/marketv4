@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Web3Context } from '../../../utils/Web3Provider';
 import './MarketListings.css';
 import Loading from '../../Loading/Loading';
-
+import Modal from 'react-modal';
 
 const ERC721_ABI = [
   {
@@ -54,21 +54,32 @@ const MarketListings = () => {
   const [tokens, setTokens] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [failedImages, setFailedImages] = useState([]);
-  const [account, setAccount] = useState(null); // Add a state for the account
+  const [account, setAccount] = useState(null);
   const [purchaseSuccess, setPurchaseSuccess] = useState(false);
+  const [selectedImage, setSelectedImage] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredTokens, setFilteredTokens] = useState([]);
 
+  const openImageModal = (imageUrl) => {
+    setSelectedImage(imageUrl);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedImage('');
+    setIsModalOpen(false);
+  };
 
   const buyToken = async (contractAddress, tokenId, price) => {
     try {
-      // Call the buyToken function on the marketplaceContract
       await marketplaceContract.methods.buyToken(contractAddress, tokenId).send({ value: price, from: account });
-      setPurchaseSuccess(true); // Set purchase success flag to display success message
-      // Perform any additional actions after a successful purchase
+      setPurchaseSuccess(true);
     } catch (error) {
       console.error('Error buying token:', error);
     }
   };
-  // Load the current account when the component mounts
+
   useEffect(() => {
     const loadAccount = async () => {
       const accounts = await web3.eth.getAccounts();
@@ -152,11 +163,10 @@ const MarketListings = () => {
                 imageUrl = metadata.image;
               }
 
-
               const { contractAddress, tokenId, price, seller } = token;
-              const royalty = await contract.methods.royaltyInfo(tokenId, price).call(); // Fetch royalty info from the smart contract
+              const royalty = await contract.methods.royaltyInfo(tokenId, price).call();
               const royaltyReceiver = royalty[0];
-              const royaltyAmount = royalty[1]
+              const royaltyAmount = royalty[1];
 
               return {
                 contractAddress,
@@ -184,7 +194,24 @@ const MarketListings = () => {
     fetchTokensForSale();
   }, [web3, contract, marketplaceContract]);
 
- 
+  useEffect(() => {
+    // Filter the tokens based on the search query
+    const filtered = tokens.filter((token) => {
+      const { metadata, contractAddress, tokenId, price } = token;
+      const lowercaseQuery = searchQuery.toLowerCase();
+  
+      return (
+        metadata.name.toLowerCase().includes(lowercaseQuery) ||
+        contractAddress.toLowerCase().includes(lowercaseQuery) ||
+        tokenId.toString().includes(searchQuery) || // Update this line to check for exact token ID match
+        price.toString().toLowerCase().includes(lowercaseQuery)
+      );
+    });
+  
+    setFilteredTokens(filtered);
+  }, [tokens, searchQuery]);
+  
+
   if (isLoading) {
     return <Loading />;
   }
@@ -192,32 +219,68 @@ const MarketListings = () => {
   return (
     <div className="marketListings">
       <div className="marketTitle">
-      <p>NFT's For Sale</p>
+        <p>NFT's For Sale</p>
       </div>
-      {tokens.map((token, index) => (
+
+      <input
+        type="text"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        placeholder="Search by name, contract address, token ID, or price"
+      />
+
+      {(searchQuery ? filteredTokens : tokens).map((token, index) => (
         <div key={index} className="marketListings__token">
           {failedImages.includes(token.tokenId) ? (
             <p>Failed to load image for this token</p>
           ) : token.isVideo ? (
-            <video className="marketListings__tokenImage" src={token.imageUrl} alt={`Token ${token.tokenId}`} controls />
+            <video
+              className="marketListings__tokenImage"
+              src={token.imageUrl}
+              alt={`Token ${token.tokenId}`}
+              controls
+            />
           ) : (
-            <img className="marketListings__tokenImage" src={token.imageUrl} alt={`Token ${token.tokenId}`} />
+            <img
+              className="marketListings__tokenImage"
+              src={token.imageUrl}
+              alt={`Token ${token.tokenId}`}
+              onClick={() => openImageModal(token.imageUrl)}
+            />
           )}
           <p className="marketListings__tokenInfo">Name: {token.metadata.name}</p>
-          <p className="marketListings__tokenInfo">Description: {token.metadata.description}</p>
-          <p className="marketListings__tokenInfo">Contract Address: {token.contractAddress}</p>
+          <div className="descriptionContainer">
+            <p className="marketListings__tokenInfo">Description: {token.metadata.description}</p>
+          </div>
+          <p className="marketListings__tokenInfo">
+            Contract Address: {token.contractAddress.substring(0, 6)}...
+            {token.contractAddress.substring(token.contractAddress.length - 4)}
+          </p>
           <p className="marketListings__tokenInfo">Token ID: {token.tokenId}</p>
-          <p className="marketListings__tokenInfo">Price: {parseFloat(web3.utils.fromWei(token.price, 'ether')).toFixed(2)} ETH</p>
+          <p className="marketListings__tokenInfo">
+            Price: {parseFloat(web3.utils.fromWei(token.price, 'ether')).toFixed(2)} ETH
+          </p>
           <p className="marketListings__tokenInfo">Royalty: {web3.utils.fromWei(token.royaltyAmount, 'ether')} ETH</p>
-          <p className="marketListings__tokenInfo">Seller: {token.seller}</p>
+          <p className="marketListings__tokenInfo">
+            Seller: {token.seller.substring(0, 6)}...
+            {token.contractAddress.substring(token.contractAddress.length - 4)}
+          </p>
           <button onClick={() => buyToken(token.contractAddress, token.tokenId, token.price)} className="buyButton">
             Buy
           </button>
         </div>
       ))}
       {purchaseSuccess && <p className="successMessage">Purchase successful!</p>}
+
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        contentLabel="Token Image"
+        className="imageModal"
+      >
+        {selectedImage && <img className="modalImage" src={selectedImage} alt="Token" />}
+      </Modal>
     </div>
-    
   );
 };
 
