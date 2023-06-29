@@ -35,11 +35,17 @@ const Web3Provider = ({ children }) => {
             // Flare network
             contractAddress = '0x8d1A663F84c5a7cf0c0458848089783d0a0A3b6A';
             marketplaceAddress = '0x73710334E4E5CA4482F5526faBEa45bce503BD98';
-          } else if (networkId === 31337) {
-            // Hardhat network
-            contractAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
-            marketplaceAddress = '0x3857C14Ec0C727ac2aEcD5016283C76c6b5C860e';
+          } else if (networkId === 5) {
+            // Goerli Test network
+            contractAddress = '0xEd5bc9165bd0602daf166D1f7cf8B9D001a189be';
+            marketplaceAddress = '0xCAb7Cf9AA9aFD7E3d3B0c70F302454fc09D68dC6';
           }
+          
+          else if (networkId === 31337) {
+            // Hardhat network
+            contractAddress = '0xbdEd0D2bf404bdcBa897a74E6657f1f12e5C6fb6';
+            marketplaceAddress = '0x8A791620dd6260079BF849Dc5567aDC3F2FdC318';
+          } 
           
 
           const contractInstance = new web3Instance.eth.Contract(

@@ -191,6 +191,9 @@ const MarketListings = () => {
 
   return (
     <div className="marketListings">
+      <div className="marketTitle">
+      <p>NFT's For Sale</p>
+      </div>
       {tokens.map((token, index) => (
         <div key={index} className="marketListings__token">
           {failedImages.includes(token.tokenId) ? (

@@ -161,6 +161,8 @@ const NavBar = () => {
           setSelectedNetwork(songbirdLogo);
         } else if (networkId === 14) {
           setSelectedNetwork(flareLogo);
+        } else if (networkId === 5) {
+          setSelectedNetwork(null);
         } else if (networkId === 31337) {
           setSelectedNetwork(null);
         }  
@@ -188,9 +190,15 @@ const NavBar = () => {
             setSelectedNetwork(songbirdLogo);
           } else if (networkId === 14) {
             setSelectedNetwork(flareLogo);
-          } else if (networkId === 31337) {
+            
+          } 
+          else if (networkId === 5) {
             setSelectedNetwork(null);
-          }  
+          } 
+          
+          else if (networkId === 31337) {
+            setSelectedNetwork(null);
+          } 
 
           const accounts = await web3.eth.getAccounts();
           setAccount(accounts[0]);
@@ -213,6 +221,7 @@ const NavBar = () => {
         <NetworkSelect value={currentNetworkId} onChange={handleNetworkChange}>
           <option value="14">Flare</option>
           <option value="19">Songbird</option>
+          <option value="5">Goerli</option>
           <option value="31337">Localhost</option>
         </NetworkSelect>
         {selectedNetwork && <LogoImage src={selectedNetwork} alt="Network logo" />}

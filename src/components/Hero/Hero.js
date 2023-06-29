@@ -6,7 +6,7 @@ import videoSource from '../../assets/Ecommerce-Video-1.mp4'; // adjust the path
 // Styled Components
 const Wrapper = styled.section`
   position: relative;
-  width: 120%;
+  width: 104.5%;
   height: 175vh;
   display: flex;
   flex-direction: column;

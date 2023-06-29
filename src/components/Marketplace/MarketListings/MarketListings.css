@@ -1,14 +1,48 @@
 /* MarketListingsStyles.css */
 
 .marketListings {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    padding: 2em;
-    background-color: #F6F8FA;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f2f2f2;
     margin-top:50px;
+    width:1900px;
   }
+
+  
+  .marketTitle {
+    font-family: 'Arial', sans-serif;
+    font-size: 36px;
+    font-weight: bold;
+    color: #ff3366;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+  }
+  
+
+  .marketTitle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ff3366;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .marketTitle p {
+    font-family: 'Arial', sans-serif;
+    font-size: 36px;
+    font-weight: bold;
+    color: #ffffff;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 2px;
+    margin: 0;
+  }
+  
   
   .marketListings__token {
     border: 1px solid #eee;

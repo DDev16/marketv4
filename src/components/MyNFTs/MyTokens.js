@@ -32,7 +32,7 @@ const MyTokens = () => {
     try {
       const accounts = await web3.eth.getAccounts();
       const account = accounts[0];
-      const listingFee = web3.utils.toWei('0.21', 'ether');  // Convert 0.01 Ether to wei
+      const listingFee = web3.utils.toWei('0.01', 'ether');  // Convert 0.01 Ether to wei
   
       
     // Approve all tokens for marketplace contract
