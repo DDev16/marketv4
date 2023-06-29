@@ -19,14 +19,13 @@
 
 .topDivider {
   position: relative;
-  height: 75px;
+  height: 115px;
   width: 100%;  /* Ensure the divider spans the entire width */
-  /* background: 
+  background: 
     radial-gradient(circle at 50% 0, transparent, #000 75%),
-    linear-gradient(-60deg, #0062ff, #33CCFF, #0062ff, #33CCFF); Adjust the gradient colors to be blue to light blue */
-  background-size: 200% 200%;
+    linear-gradient(-60deg, #0062ff, #33CCFF, #0062ff, #33CCFF);
   animation: gradientSlide 3s linear infinite;
-  filter: drop-shadow(0 0 10px #33CCFF); /* Add glow effect */
+  filter: drop-shadow(0 0 10px #33CCFF);
 }
 
 .topDivider::before {

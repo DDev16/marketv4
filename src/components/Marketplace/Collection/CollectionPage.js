@@ -83,12 +83,21 @@ const CollectionPage = () => {
 
               const { name, description } = cardDetails;
               console.log('Card Details:', cardDetails);
+              
+              const isForSale = await marketplaceContract.methods.isTokenForSale(contractAddress, tokenId).call({ from: ownerAddress });
+              let tokenPrice;
+              if (isForSale) {
+                tokenPrice = await marketplaceContract.methods.getTokenPrice(contractAddress, tokenId).call({ from: ownerAddress });
+              }
+
               return {
                 tokenId,
                 contractAddress,
                 tokenURI,
                 name,
                 description,
+                isForSale: isForSale || false,
+                tokenPrice: tokenPrice || '0',
                 ...cardDetails,
               };
             })
@@ -120,6 +129,24 @@ const CollectionPage = () => {
       generateQRCodeUrl();
     }
   }, [collection]);
+
+  const buyToken = async (contractAddress, tokenId) => {
+    try {
+      if (!web3) {
+        console.error('Web3 object is not initialized');
+        return;
+      }
+      const accounts = await web3.eth.getAccounts();
+      const buyerAddress = accounts[0];
+      const token = tokens.find((t) => t.tokenId === tokenId && t.contractAddress === contractAddress);
+      const price = token.tokenPrice;
+      await marketplaceContract.methods.buyToken(contractAddress, tokenId).send({ from: buyerAddress, value: price });
+      console.log('Token bought successfully!');
+    } catch (error) {
+      console.error('Error buying token:', error);
+    }
+  };
+
 
   if (!collection) {
     return <div>Loading...</div>;
@@ -156,6 +183,15 @@ const CollectionPage = () => {
             <p>Name: {token.name}</p>
             <p>Description: {token.description}</p>
             <p>Contract Address: {token.contractAddress}</p>
+            {token.isForSale && (
+              <div>
+                <p>Price: {web3.utils.fromWei(token.tokenPrice, 'ether')} ETH</p>
+                <button onClick={() => buyToken(token.contractAddress, token.tokenId)}>Buy</button>
+
+
+
+</div>
+            )}
           </div>
         ))}
       </div>

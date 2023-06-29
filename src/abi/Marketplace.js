@@ -154,22 +154,17 @@ const Marketplace = {
 		{
 			"inputs": [
 				{
-					"internalType": "address[]",
-					"name": "contractAddresses",
-					"type": "address[]"
+					"internalType": "uint256",
+					"name": "collectionId",
+					"type": "uint256"
 				},
 				{
-					"internalType": "uint256[]",
-					"name": "tokenIds",
-					"type": "uint256[]"
-				},
-				{
-					"internalType": "uint256[]",
-					"name": "prices",
-					"type": "uint256[]"
+					"internalType": "uint256",
+					"name": "price",
+					"type": "uint256"
 				}
 			],
-			"name": "listTokens",
+			"name": "listCollectionForSale",
 			"outputs": [],
 			"stateMutability": "payable",
 			"type": "function"
@@ -177,6 +172,19 @@ const Marketplace = {
 		{
 			"inputs": [],
 			"name": "renounceOwnership",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "_listingFee",
+					"type": "uint256"
+				}
+			],
+			"name": "setListingFee",
 			"outputs": [],
 			"stateMutability": "nonpayable",
 			"type": "function"
@@ -220,24 +228,6 @@ const Marketplace = {
 		{
 			"inputs": [
 				{
-					"internalType": "uint256",
-					"name": "collectionId",
-					"type": "uint256"
-				},
-				{
-					"internalType": "uint256",
-					"name": "price",
-					"type": "uint256"
-				}
-			],
-			"name": "listCollectionForSale",
-			"outputs": [],
-			"stateMutability": "payable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
 					"internalType": "address",
 					"name": "contractAddress",
 					"type": "address"
@@ -254,6 +244,29 @@ const Marketplace = {
 				}
 			],
 			"name": "listToken",
+			"outputs": [],
+			"stateMutability": "payable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address[]",
+					"name": "contractAddresses",
+					"type": "address[]"
+				},
+				{
+					"internalType": "uint256[]",
+					"name": "tokenIds",
+					"type": "uint256[]"
+				},
+				{
+					"internalType": "uint256[]",
+					"name": "prices",
+					"type": "uint256[]"
+				}
+			],
+			"name": "listTokens",
 			"outputs": [],
 			"stateMutability": "payable",
 			"type": "function"
@@ -295,19 +308,6 @@ const Marketplace = {
 			],
 			"name": "SaleCancelled",
 			"type": "event"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "uint256",
-					"name": "_listingFee",
-					"type": "uint256"
-				}
-			],
-			"name": "setListingFee",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
 		},
 		{
 			"anonymous": false,
@@ -821,6 +821,54 @@ const Marketplace = {
 					"internalType": "struct NFTMarketplace.Token[]",
 					"name": "",
 					"type": "tuple[]"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "contractAddress",
+					"type": "address"
+				},
+				{
+					"internalType": "uint256",
+					"name": "tokenId",
+					"type": "uint256"
+				}
+			],
+			"name": "getTokenPrice",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "contractAddress",
+					"type": "address"
+				},
+				{
+					"internalType": "uint256",
+					"name": "tokenId",
+					"type": "uint256"
+				}
+			],
+			"name": "isTokenForSale",
+			"outputs": [
+				{
+					"internalType": "bool",
+					"name": "",
+					"type": "bool"
 				}
 			],
 			"stateMutability": "view",

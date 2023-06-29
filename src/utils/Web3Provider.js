@@ -44,7 +44,7 @@ const Web3Provider = ({ children }) => {
           else if (networkId === 31337) {
             // Hardhat network
             contractAddress = '0xbdEd0D2bf404bdcBa897a74E6657f1f12e5C6fb6';
-            marketplaceAddress = '0x8A791620dd6260079BF849Dc5567aDC3F2FdC318';
+            marketplaceAddress = '0x4A679253410272dd5232B3Ff7cF5dbB88f295319';
           } 
           
 
