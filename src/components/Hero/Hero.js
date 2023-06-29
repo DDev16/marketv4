@@ -15,7 +15,15 @@ const Wrapper = styled.section`
   text-align: center;
   color: white;
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    height: 175vh;
+    width:375px;
+    padding: 20px;
+    top:0;
+  }
 `;
+
 
 const VideoBackground = styled.video`
   position: absolute;

@@ -27,6 +27,7 @@
   animation: gradientSlide 3s linear infinite;
   filter: drop-shadow(0 0 10px #33CCFF);
   margin-top:0px;
+  
 }
 
 
@@ -328,21 +329,26 @@
 
 @media only screen and (max-width: 768px) {
   .myCollectionsContainer {
-    width: 420px;
+    width: 400px;
+    margin-top:30px;
+    
   }
 
 
  .topDivider {
-  width: 520px;
+  width: 400px;
   margin-top: 0px;
 
  }
   .myCollectionsTitle {
     font-size: 3.5em;
+    margin-right:25px;
   }
 
   .collectionCard {
     padding: 1em;
+    margin-right:30px;
+    width:250px;
   }
 
   .collectionDescription {
@@ -372,7 +378,7 @@
 
 @media only screen and (max-width: 480px) {
   .myCollectionsContainer {
-    padding: 0.5em;
+    padding: 3em;
   }
 
   .myCollectionsTitle {

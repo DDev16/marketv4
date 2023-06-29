@@ -118,3 +118,42 @@
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
   }
   
+
+  @media (max-width: 768px) {
+    .previewContainer {
+      padding: 20px;
+      margin: 20px 0;
+    }
+  
+    .logo {
+      width: 150px;
+      height: 150px;
+    }
+  
+    .title {
+      font-size: 2em;
+    }
+  
+    .description {
+      max-width: 400px;
+    }
+  
+    .category {
+      font-size: 1.2em;
+    }
+  
+    .cardContainer {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .card {
+      width: 100%;
+      margin: 20px 0;
+    }
+  
+    .cardContainer img {
+      width: 90%;
+    }
+  }
+  

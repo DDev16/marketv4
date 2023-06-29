@@ -1,6 +1,6 @@
 .profile-container {
-  max-width: 90%; /* Increase the value for a wider container */
-  margin-top:100px;
+  max-width: 100%; 
+  margin-top:50px;
   padding: 5%;
   margin-left:0px;
   background-color: #f2f2f2;
@@ -62,5 +62,26 @@ button.update-btn:hover {
   background-color: #45a049;
 }
 
+/* Mobile responsive styles */
+@media screen and (max-width: 600px) {
+  .profile-container {
+    padding: 3%; /* Smaller padding on mobile */
+    margin-top: 0px;
+  }
 
+  h2 {
+    font-size: 20px; /* Smaller text on mobile */
+    margin-bottom: 20px;
+  }
 
+  input[type="text"],
+  input[type="email"],
+  textarea {
+    font-size: 14px; /* Smaller text on mobile */
+  }
+
+  button.update-btn {
+    padding: 3%; /* Smaller padding on mobile */
+    font-size: 14px; /* Smaller text on mobile */
+  }
+}
