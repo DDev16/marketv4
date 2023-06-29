@@ -1,4 +1,4 @@
-/* General Styles */
+
 .my-form {
     display: flex;
     flex-direction: column;
@@ -43,7 +43,7 @@
     background-color: #45a049;
   }
   
-  /* Specific Styles */
+
   .my-form div {
     margin-bottom: 25px;
   }
@@ -76,7 +76,7 @@
     margin-top: 20px;
   }
   
-  /* Styling for specific elements */
+  
   .my-input[name="contractAddress"],
   .my-input[name="tokenId"],
   .my-input[name="price"],

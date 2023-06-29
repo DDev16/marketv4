@@ -4,7 +4,7 @@
   padding: 20px;
   font-family: Arial, sans-serif;
   margin-top: 0px;
-  background-color: #f0f0f0; /* Replace with your desired background color */
+  background-color: #f0f0f0;
 }
 
 .title {
@@ -71,11 +71,11 @@ body {
 } 
 
 .collectionBanner {
-  height: 200px; /* set a fixed height */
+  height: 200px;
   width: 100%;
   object-fit: cover;
   border-radius: 10px;
-  transition: all 0.3s ease-in-out; /* Smooth transition for all changes */
+  transition: all 0.3s ease-in-out; 
 }
 
 .collectionDescription {
@@ -109,7 +109,7 @@ body {
   font-size: 1.5rem;
 }
 
-/* Responsive styles */
+
 @media (max-width: 800px) {
 
   .collectionsContainer {

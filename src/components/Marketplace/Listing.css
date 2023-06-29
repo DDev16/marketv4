@@ -1,4 +1,4 @@
-/* General Styles */
+
 
 form {
   display: flex;
@@ -44,7 +44,7 @@ button:hover {
   background-color: #45a049;
 }
 
-/* Specific Styles */
+
 
 form div {
   margin-bottom: 25px;
@@ -78,7 +78,7 @@ button[type="submit"] {
   margin-top: 20px;
 }
 
-/* Styling for specific elements */
+
 
 input[name="contractAddress"],
 input[name="tokenId"],

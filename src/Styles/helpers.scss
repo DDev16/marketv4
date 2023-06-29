@@ -1,4 +1,4 @@
-// media queries
+
 @mixin w {
     @media only screen and (max-width: 1419px) {
       @content;
@@ -108,7 +108,7 @@
  
   
 
-  // theme
+ 
   dark {
     @at-root :global(.dark-mode) & {
       @content;

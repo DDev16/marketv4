@@ -1,14 +1,14 @@
 
-/* Container styles */
+
 .myCollectionsContainer {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: 0;  /* ensure no padding at the top */
+  padding-top: 0; 
   background-color: #f5f5f5;
   border-radius: 10px;
-  transition: all 0.3s ease-in-out; /* Smooth transition for all changes */
+  transition: all 0.3s ease-in-out; 
   margin-top:40px;
   width:1900px;
 }
@@ -20,7 +20,7 @@
 .topDivider {
   position: relative;
   height: 125px;
-  width: 100%;  /* Ensure the divider spans the entire width */
+  width: 100%;  
   background: 
     radial-gradient(circle at 50% 0, transparent, #000 75%),
     linear-gradient(-60deg, #0062ff, #33CCFF, #0062ff, #33CCFF);
@@ -52,7 +52,7 @@
   z-index: 2;
 }
 
-/* Collection title styles */
+
 .myCollectionsTitle {
   font-size: 8em;
   font-weight: bold;
@@ -60,29 +60,28 @@
   margin-bottom: 0.5em;
   text-transform: uppercase;
   letter-spacing: 2px;
-  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Enhanced smooth transition */
-  text-shadow: 3px 3px 0 rgba(0,0,0,0.2); /* Adds a shadow to the text */
-  /* Gradient color */
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  text-shadow: 3px 3px 0 rgba(0,0,0,0.2); 
+
   background: linear-gradient(to right, #0072ff, #00c6ff); 
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent; /* Use gradient as text color */
-  /* 3D transformation effect */
+  -webkit-text-fill-color: transparent; 
+ 
   transform: perspective(600px) rotateX(20deg);
-  /* Shadow effect */
+
   box-shadow: 10px 10px 30px rgba(0,0,0,0.2);
   padding: 15px;
   border-radius: 10px;
-  /* Animation */
+
   animation: titleAnimation 3s ease-in-out infinite;
 }
 
-/* Hover effect */
 .myCollectionsTitle:hover {
-  box-shadow: 15px 15px 40px #00FFFF; /* Neon blue shadow effect */
-  transform: perspective(600px) rotateX(25deg); /* Enhanced 3D transformation effect */
+  box-shadow: 15px 15px 40px #00FFFF; 
+  transform: perspective(600px) rotateX(25deg); 
 }
 
-/* Keyframes for animation */
+
 @keyframes titleAnimation {
   0%, 100% {
     text-shadow: 3px 3px 0 rgba(0,0,0,0.2);
@@ -90,27 +89,27 @@
     transform: perspective(600px) rotateX(20deg);
   }
   50% {
-    text-shadow: 3px 3px 15px #00FFFF; /* Neon blue text shadow during animation */
-    box-shadow: 15px 15px 40px #00FFFF; /* Neon blue box shadow during animation */
-    transform: perspective(600px) rotateX(25deg); /* Temporarily enhance the 3D effect in the animation */
+    text-shadow: 3px 3px 15px #00FFFF; 
+    box-shadow: 15px 15px 40px #00FFFF; 
+    transform: perspective(600px) rotateX(25deg); 
   }
 }
 
 
 
-/* Grid for the collection list */
+
 .myCollectionsList {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 2em;
   width: 100%;
   margin-left:30px;
-  transition: all 0.3s ease-in-out; /* Smooth transition for all changes */
+  transition: all 0.3s ease-in-out;
 }
 
 
 
-/* CollectionCard styles */
+
 .collectionCard {
   display: flex;
   flex-direction: column;
@@ -121,7 +120,7 @@
   box-shadow: 0px 10px 20px rgba(0,0,0,0.8);
   cursor: pointer;
   margin-bottom:30px;
-  transition: transform 0.3s, box-shadow 0.3s; /* Smooth transition for transform and box-shadow */
+  transition: transform 0.3s, box-shadow 0.3s; 
 }
 
 .collectionCard:hover {
@@ -129,13 +128,13 @@
   box-shadow: 0px 10px 30px rgba(0,0,0,0.2);
 }
 
-/* Limit the height of descriptions and make them scrollable */
+
 .collectionDescription {
   color: #666;
   font-size: 0.9em;
-  max-height: 100px; /* Adjust as needed */
-  overflow-y: auto; /* Enable vertical scrolling */
-  transition: color 0.3s ease-in-out; /* Smooth color transition */
+  max-height: 100px; 
+  overflow-y: auto; 
+  transition: color 0.3s ease-in-out;
   margin-top:30px;
 }
 
@@ -144,9 +143,9 @@
   color: blue;
   margin: 1em 0;
   letter-spacing: 2px;
-  font-weight: bold; /* Make the text bold */
-  transition: color 0.3s ease-in-out; /* Smooth color transition */
-  /* Additional Styles */
+  font-weight: bold; 
+  transition: color 0.3s ease-in-out; 
+
   display: inline-block;
   padding: 0.5em;
   border-radius: 5px;
@@ -162,8 +161,8 @@
   margin: 1em 0;
   text-transform: uppercase;
   letter-spacing: 2px;
-  transition: color 0.3s ease-in-out; /* Smooth color transition /
-  / Additional Styles */
+  transition: color 0.3s ease-in-out; 
+  
   display: inline-block;
   padding: 0.5em;
   border: 2px solid #333;
@@ -177,7 +176,7 @@
   height: auto;
   object-fit: cover;
   border-radius: 10px;
-  transition: all 0.3s ease-in-out; /* Smooth transition for all changes */
+  transition: all 0.3s ease-in-out; 
   margin-bottom:10px;
   display: flex;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.9);
@@ -188,13 +187,13 @@
 .collectionBanner {
   display: flex;
 
-  height: 100px; /* set a fixed height */
+  height: 100px; 
   width: 100%;
   object-fit: cover;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.9);
 
   border-radius: 10px;
-  transition: all 0.3s ease-in-out; /* Smooth transition for all changes */
+  transition: all 0.3s ease-in-out; 
 }
 
 .collectionButton {
@@ -206,14 +205,14 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease-in-out; /* Smooth transition for background color */
+  transition: background-color 0.3s ease-in-out; 
 }
 
 .collectionButton:hover {
   background-color: #0056b3;
 }
 
-/* Media queries for further mobile responsiveness */
+
 @media only screen and (max-width: 480px) {
   .myCollectionsContainer {
     padding: 0.5em;
@@ -252,7 +251,7 @@
   }
 }
 
-/* Page numbers */
+
 .paginationContainer {
   margin-top: 1em;
   display: flex;
@@ -279,7 +278,7 @@
   color: #fff;
 }
 
-/* Search container */
+
 .searchContainer {
   margin-top: 1em;
   display: flex;
@@ -300,16 +299,14 @@
 }
 
 
-/* Add these styles to the existing CSS file (GetAllCollections.module.css) */
 
-/* Search container */
 .searchContainer {
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
 }
 
-/* Search input */
+
 .searchInput {
   width: 200px;
   height: 36px;
@@ -320,7 +317,7 @@
   font-size: 14px;
 }
 
-/* Optional: Add hover and focus styles for the search input */
+
 .searchInput:hover,
 .searchInput:focus {
   outline: none;
@@ -328,7 +325,7 @@
 }
 
 
-/* Media queries for further mobile responsiveness */
+
 @media only screen and (max-width: 768px) {
   .myCollectionsContainer {
     width: 420px;

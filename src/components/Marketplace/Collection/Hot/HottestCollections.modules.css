@@ -71,7 +71,7 @@
 
 
 
-///
+
 
 .carousel .control-arrow, .carousel.carousel-slider .control-arrow {
   background: #FF4500;
@@ -80,9 +80,8 @@
   opacity: 0.8;
   transition: all 0.3s ease-in-out;
   position: absolute;
-  top: 50%; /* this aligns the top edge of the arrow to the middle of the carousel */
-  transform: translateY(-50%); /* this moves the arrow up by half its height, centering it vertically */
-  border-radius: 50%;
+  top: 50%; 
+  transform: translateY(-50%); 
   z-index: 5;
 }
 

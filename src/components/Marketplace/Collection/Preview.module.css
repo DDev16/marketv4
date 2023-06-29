@@ -98,13 +98,13 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     margin: 10px;
     text-align: center;
-    width: 400px; /* Adjust the width as desired */
+    width: 400px; 
   }
   
  
    
   .cardContainer img {
-    width: 350px; /* Adjust the width as desired */
+    width: 350px; 
     object-fit: cover;
     margin: 10px;
     border-radius: 8px;
