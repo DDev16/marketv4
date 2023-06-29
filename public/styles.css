@@ -9,7 +9,7 @@
     position: absolute;
     width: 75px;
     height: 75px;
-    pointer-events: none; /* Makes sure your cursor doesn't interfere with clicking */
+    pointer-events: none; 
      z-index: 100000; Ensures your cursor is on top of everything else 
   }
    
@@ -31,7 +31,7 @@
     animation: spin 0.5s linear;
   }
    
-  /* Mobile Styles */
+
    @media (max-width: 767px) {
     #customCursor {
       width: 50px;
