@@ -17,8 +17,10 @@ const Wrapper = styled.section`
   overflow: hidden;
 
   @media (max-width: 768px) {
-    height: auto;
+    height: 175vh;
+    width:375px;
     padding: 20px;
+    top:0;
   }
 `;
 
