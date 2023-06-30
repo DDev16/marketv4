@@ -2,14 +2,14 @@ import React from 'react';
 import brand from '../../assets/logo.png';
 import '../../index.css';
 import MarketListings from '../Marketplace/MarketListings/MarketListings';
-// import Hero from '../Hero/Hero';
+import Hero from '../Hero/Hero';
 import AllCollections from '../../components/Marketplace/Collection/GetAllCollections.js'
 import HottestCollections from '../../components/Marketplace/Collection/Hot/HottestCollections.js'
 const Home = () => {
   return (
     
     <div style={styles.container}>
-            {/* <Hero /> */}
+            <Hero />
 
       
       <img src={brand} alt="Logo" style={{ ...styles.logo, ...styles.spinAnimation }} />

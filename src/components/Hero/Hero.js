@@ -14,14 +14,13 @@ const Wrapper = styled.section`
   justify-content: center;
   text-align: center;
   color: white;
-  overflow: auto;
+  overflow: hidden;
 
   @media (max-width: 768px) {
-    width: 100%;
+    height: auto;
     padding: 20px;
   }
 `;
-
 
 
 const VideoBackground = styled.video`
