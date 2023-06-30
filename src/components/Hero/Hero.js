@@ -14,7 +14,7 @@ const Wrapper = styled.section`
   justify-content: center;
   text-align: center;
   color: white;
-  overflow: hidden;
+  
 
   @media (max-width: 768px) {
     height: 175vh;
