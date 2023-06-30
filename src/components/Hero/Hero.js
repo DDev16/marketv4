@@ -14,15 +14,14 @@ const Wrapper = styled.section`
   justify-content: center;
   text-align: center;
   color: white;
-  
+  overflow: auto;
 
   @media (max-width: 768px) {
-    height: 175vh;
-    width:375px;
+    width: 100%;
     padding: 20px;
-    top:0;
   }
 `;
+
 
 
 const VideoBackground = styled.video`
