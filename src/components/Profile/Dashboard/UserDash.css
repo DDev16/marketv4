@@ -4,6 +4,8 @@
   top: 0;
   width: 100%;
   z-index: 3;
+  margin-top:10px; 
+
 }
 
 .header {

@@ -1,6 +1,76 @@
 import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import { FaEnvelope, FaLock } from "react-icons/fa";
+import { GrGoogle } from "react-icons/gr";
 import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, googleAuthProvider, signInWithPopup } from "../../utils/Firebase.js";
-import '../../components/Profile/Settings/SignIn.css';
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f4f4;
+`;
+
+const Title = styled.h1`
+  color: #333;
+  font-size: 2.5em;
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  margin: 1em 0;
+  width: 300px;
+`;
+
+const InputGroup = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 1em;
+  padding: 0.5em;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+`;
+
+const Input = styled.input`
+  flex-grow: 1;
+  border: none;
+  outline: none;
+  font-size: 1em;
+  color: #333;
+`;
+
+const Button = styled.button`
+  padding: 0.5em 1em;
+  color: #fff;
+  font-size: 1em;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+`;
+
+const GoogleButton = styled(Button)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #db4437;
+
+  &:hover {
+    background-color: #c23321;
+  }
+`;
+
+const Error = styled.p`
+  color: #f00;
+  text-align: center;
+`;
 
 const SignIn = ({ setUser }) => {
   const [email, setEmail] = useState("");
@@ -70,41 +140,56 @@ const SignIn = ({ setUser }) => {
     }
   }
 
-  return (
-    <div className="signin">
-      <button className="signin__googleButton" onClick={signInWithGoogle}>Sign in with Google</button>
-      <form className="signin__form" onSubmit={handleSignUp}>
-        <input
-          type="text"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
-        />
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-        />
-        <button type="submit">Sign Up</button>
-      </form>
-      <form className="signin__form" onSubmit={handleSignIn}>
-        <input
-          type="text"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
-        />
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-        />
-        <button type="submit">Sign In</button>
-      </form>
-      {error && <p className="signin__error">{error}</p>}
-    </div>
+ return (
+    <Wrapper>
+      <Title>Sign In</Title>
+      <GoogleButton onClick={signInWithGoogle}>
+        <GrGoogle /> Sign in with Google
+      </GoogleButton>
+      <Form onSubmit={handleSignUp}>
+        <InputGroup>
+          <FaEnvelope />
+          <Input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+          />
+        </InputGroup>
+        <InputGroup>
+          <FaLock />
+          <Input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+          />
+        </InputGroup>
+        <Button type="submit">Sign Up</Button>
+      </Form>
+      <Form onSubmit={handleSignIn}>
+        <InputGroup>
+          <FaEnvelope />
+          <Input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+          />
+        </InputGroup>
+        <InputGroup>
+          <FaLock />
+          <Input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+          />
+        </InputGroup>
+        <Button type="submit">Sign In</Button>
+      </Form>
+      {error && <Error>{error}</Error>}
+    </Wrapper>
   );
 };
 

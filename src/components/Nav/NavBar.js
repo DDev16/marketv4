@@ -1,146 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import { FiHome, FiPlusCircle, FiFolder, FiMenu, FiX,  } from 'react-icons/fi';
 import { FaDatabase, FaWallet } from 'react-icons/fa';
 import { Web3Context } from '../../utils/Web3Provider.js';
 import songbirdLogo from '../../assets/songbird-logo.png';
 import flareLogo from '../../assets/flarelogo.png';
-
-const StyledNav = styled.nav`
-  position: relative;
-  background-color: #252525;
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px;
-  z-index: 50;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  font-family: 'Roboto', sans-serif;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    padding: 10px;
-  }
-`;
-
-const Logo = styled.div`
-  display: flex;
-  align-items: center;
-  font-size: 24px;
-  font-weight: 700;
-
-  img {
-    width: 60px;
-    height: 60px;
-    margin-right: 10px;
-    border-radius: 50%;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-  }
-
-  .app-name {
-    color: #ffffff;
-    letter-spacing: 1px;
-  }
-`;
-
-const NavLinks = styled.ul`
-  display: flex;
-  list-style: none;
-
-  li {
-    margin-right: 20px;
-  }
-
-  a {
-    color: #ffffff;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    font-size: 18px;
-    transition: color 0.3s ease;
-
-    .nav-icon {
-      margin-right: 5px;
-      color: #ffffff;
-    }
-
-    &:hover {
-      color: #ffcc00;
-    }
-  }
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    margin-top: 10px;
-    transform: ${({ open }) => (open ? 'translateX(0)' : 'translateX(-100%)')};
-    transition: transform 0.3s ease-in-out;
-    position: absolute;
-    background-color: #252525;
-    top: 60px;
-    left: 0;
-    padding: 2rem;
-    width: 100%;
-    height: 100vh;
-
-    li {
-      margin-right: 0;
-      margin-bottom: 10px;
-    }
-  }
-`;
-
-const MenuButton = styled.button`
-  display: none;
-
-  @media (max-width: 768px) {
-    display: block;
-    background: transparent;
-    border: none;
-    color: #ffffff;
-    font-size: 2.5rem;
-    cursor: pointer;
-  }
-`;
-
-const NetworkSelect = styled.select`
-  color: #ffffff;
-  background-color: #252525;
-  border: none;
-  margin-right: 10px;
-  padding: 10px;
-  border-radius: 5px;
-  font-size: 16px;
-  outline: none;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #333333;
-  }
-
-  &:focus {
-    background-color: #444444;
-  }
-`;
-
-const LogoImage = styled.img`
-  width: 60px;
-  height: 60px;
-  margin-right: 10px;
-  border-radius: 50%;
-  background-color: #ffffff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  object-fit: cover;
-  transform: scale(1);
-  transition: transform 0.3s ease;
-
-  &:hover {
-    transform: scale(1.1);
-  }
-`;
+import '../../components/Nav/nav.css'
 
 const NavBar = () => {
   const { web3 } = useContext(Web3Context);
@@ -211,27 +76,34 @@ const NavBar = () => {
     getCurrentNetworkId();
   }, [web3]);
 
+
+  function shortenAddress(address, frontChars = 6, backChars = 4) {
+    if (!address) return "";
+    const length = address.length;
+    if (length < frontChars + backChars) return address;
+    return address.substring(0, frontChars) + '...' + address.substring(length - backChars);
+  }
+  
   return (
-    <StyledNav>
-      <Logo>
+    <nav className="navbar">
+      <div className="logo">
         <img src={require('../../assets/logo.png')} alt="Logo" />
-        <span className="app-name">Flare Fire </span>
-      </Logo>
+        <span className="app-name">Flare Fire</span>
+      </div>
       <div>
-        <NetworkSelect value={currentNetworkId} onChange={handleNetworkChange}>
+        <select className="network-select" value={currentNetworkId} onChange={handleNetworkChange}>
           <option value="14">Flare</option>
           <option value="19">Songbird</option>
           <option value="5">Goerli</option>
           <option value="31337">Localhost</option>
-        </NetworkSelect>
-        {selectedNetwork && <LogoImage src={selectedNetwork} alt="Network logo" />}
+        </select>
+        {selectedNetwork && <img className="logo-image" src={selectedNetwork} alt="Network logo" />}
       </div>
-      <span>{account}</span>
-
-      <MenuButton onClick={handleToggle}>
+      <span>{shortenAddress(account)}</span>
+      <button className="menu-button" onClick={handleToggle}>
         {isOpen ? <FiX /> : <FiMenu />}
-      </MenuButton>
-      <NavLinks open={isOpen}>
+      </button>
+      <ul className={isOpen ? "nav-links open desktop-nav" : "nav-links desktop-nav"}>
         <li onClick={closeNav}>
           <Link to="/">
             <FiHome className="nav-icon" />
@@ -268,8 +140,8 @@ const NavBar = () => {
             Sign-In 
           </Link>
         </li>
-      </NavLinks>
-    </StyledNav>
+      </ul>
+    </nav>
   );
 };
 

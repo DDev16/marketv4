@@ -1,21 +1,135 @@
-.disabled-link {
-    color: #cccccc;
-    cursor: default;
-    pointer-events: none;
-    opacity: 0.6;
-    text-decoration: none;
-    transition: opacity 0.3s ease;
-  }
-  
-  .disabled-link:hover {
-    opacity: 0.6;
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #1a1a1d;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em;
+  background-color: #27272a;
+  color: #fff;
+  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  width: 60px;
+  height: 60px;
+}
+
+.app-name {
+  margin-left: 1em;
+  font-size: 1.8em;
+  color: #fff;
+}
+
+.network-select {
+  background: #4b59f7;
+  color: #fff;
+  border: none;
+  padding: 1em;
+  font-size: 1em;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.network-select:hover {
+  background: #667eea;
+}
+
+.logo-image {
+  width: 30px;
+  height: 30px;
+  margin-left: 1em;
+}
+
+.menu-button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 2em;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.menu-button:hover {
+  color: #667eea;
+}
+
+.nav-links {
+  list-style: none;
+  display: none;
+  background-color: #27272a;
+  width: 100%;
+  position: absolute;
+  top: 100%;
+  left: 0;
+}
+
+.nav-links.open {
+  display: flex;
+  flex-direction: column;
+  transition: display 0.3s ease-in-out;
+}
+
+.nav-links li {
+  padding: 1em 2em;
+  border-bottom: 1px solid #101522;
+}
+
+.nav-links a {
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #667eea;
+}
+
+.nav-icon {
+  margin-right: 0.5em;
+}
+
+/* Responsive Styles */
+@media screen and (min-width: 768px) {
+  .navbar {
+    padding: 1em 2em;
   }
 
-  .disabled-link {
-    pointer-events: none; 
-    color: #808080;
-    opacity: 0.6;
-    cursor: not-allowed;
+  .app-name {
+    font-size: 2.2em;
   }
-  
-  
+
+  .network-select {
+    font-size: 1.2em;
+  }
+
+  .menu-button {
+    display: none;
+  }
+
+  .nav-links {
+    display: none;
+    justify-content: space-between;
+    width: 50%;
+    position: initial;
+    background-color: initial;
+  }
+
+  .nav-links li {
+    border-bottom: none;
+    padding: initial;
+    margin: 0 1em;
+  }
+
+  .nav-links a {
+    font-size: 1.2em;
+  }
+}

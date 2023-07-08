@@ -5,6 +5,7 @@ import MarketListings from '../Marketplace/MarketListings/MarketListings';
 import Hero from '../Hero/Hero';
 import AllCollections from '../../components/Marketplace/Collection/GetAllCollections.js'
 import HottestCollections from '../../components/Marketplace/Collection/Hot/HottestCollections.js'
+import PunkWorld from '../Pworld/PunkWorld';
 const Home = () => {
   return (
     
@@ -27,6 +28,8 @@ const Home = () => {
       <button style={{ ...styles.button, ...styles.popButton }}>
         <a href="/mint" style={styles.buttonLink}>Begin your creative expedition here</a>
       </button>
+
+      <PunkWorld />
       {/* Add more information or features of the dapp */}
       <HottestCollections />
       <AllCollections />
