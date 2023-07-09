@@ -2,11 +2,15 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Web3Context } from '../../../utils/Web3Provider.js';
 import { NFTStorage, File } from 'nft.storage';
 import '../../../components/Marketplace/Collection/CreateCollection.css';
-import Preview from './Preview'; // Import the Preview component
+import Preview from './Preview';
+import Loading from '../../../components/Loading/Loading'; // import Loading component
+import Swal from 'sweetalert2'; // import sweetalert2 for notifications
 
+// Instantiate the NFTStorage client
 const client = new NFTStorage({
   token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDdGOTA4QjNBRDJGMDFGNjE2MjU1MTA0ODIwNjFmNTY5Mzc2QTg3MjYiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY3OTI5MDE5ODQyMCwibmFtZSI6Ik5FV0VTVCJ9.FGtIrIhKhgSx-10iVlI4sM_78o7jSghZsG5BpqZ4xfA',
 });
+
 
 const CreateCollection = () => {
   const { web3, marketplaceContract } = useContext(Web3Context);
@@ -36,28 +40,31 @@ const CreateCollection = () => {
         setAccount(accounts[0]);
       });
     }
+
+    // autofocus on name input
+    const nameInput = document.getElementById('name');
+    if (nameInput) {
+      nameInput.focus();
+    }
   }, [web3]);
 
   const handleCreateCollection = async (event) => {
     event.preventDefault();
-    console.log('Form submitted');
     try {
       setLoading(true);
       setSuccess(false);
 
-      console.log('Uploading files to IPFS');
       const logoIPFS = await uploadToIPFS(logo);
       const bannerIPFS = await uploadToIPFS(banner);
 
-      console.log('Files uploaded, creating collection on contract');
       await marketplaceContract.methods
         .createCollection(name, logoIPFS, bannerIPFS, description, category)
         .send({ from: account });
 
-      console.log('Collection created successfully');
+      Swal.fire('Success', 'Collection created successfully', 'success'); // show success notification
       setSuccess(true);
     } catch (error) {
-      console.error('Failed to create collection:', error);
+      Swal.fire('Error', 'Failed to create collection: ' + error.message, 'error'); // show error notification
     } finally {
       setLoading(false);
     }
@@ -65,10 +72,8 @@ const CreateCollection = () => {
 
   const uploadToIPFS = async (file) => {
     try {
-      console.log('Starting upload for:', file.name);
       const content = new File([file], file.name, { type: file.type });
       const cid = await client.storeBlob(content);
-      console.log('Upload successful, IPFS hash:', cid);
       return cid;
     } catch (error) {
       console.error('Failed to upload to IPFS:', error);
@@ -87,6 +92,7 @@ const CreateCollection = () => {
 
   return (
     <div className="create-collection-form">
+      {loading && <Loading />} {/* Show Loading component when loading */}
       <form onSubmit={handleCreateCollection}>
         <h2>Create Collection</h2>
         <div>
@@ -96,12 +102,10 @@ const CreateCollection = () => {
         <div>
           <label htmlFor="logo">Logo:</label>
           <input type="file" id="logo" accept="image/*" onChange={handleLogoChange} required />
-          <p>Recommended size: 200x200 pixels</p>
         </div>
         <div>
           <label htmlFor="banner">Banner:</label>
           <input type="file" id="banner" accept="image/*" onChange={handleBannerChange} required />
-          <p>Recommended size: 1200x300 pixels</p>
         </div>
         <div>
           <label htmlFor="description">Description:</label>
@@ -110,9 +114,20 @@ const CreateCollection = () => {
         <div>
           <label htmlFor="category">Category:</label>
           <select id="category" value={category} onChange={(e) => setCategory(e.target.value)} required>
-            <option value="">Select category</option>
-            <option value="Arts">Arts</option>
-          </select>
+  <option value="">Select category</option>
+  <option value="Arts">Arts</option>
+  <option value="Metaverse">Metaverse</option>
+  <option value="Utility">Utility</option>
+  <option value="Collectibles">Collectibles</option>
+  <option value="Gaming">Gaming</option>
+  <option value="Music">Music</option>
+  <option value="Sports">Sports</option>
+  <option value="Virtual Real Estate">Virtual Real Estate</option>
+  <option value="Fashion">Fashion</option>
+  <option value="Celebrity/Influencer">Celebrity/Influencer</option>
+  <option value="Memes">Memes</option>
+</select>
+
         </div>
         <button type="submit" disabled={loading}>
           {loading ? 'Creating...' : 'Create'}

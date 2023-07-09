@@ -4,7 +4,7 @@
   top: 0;
   width: 100%;
   z-index: 3;
-  margin-top:10px; 
+  margin-top:15px; 
 
 }
 
@@ -92,15 +92,19 @@
 
 @media screen and (max-width: 768px) {
   .navbar-topbar-wrapper {
-    position: static; /* instead of absolute */
-    
+    position: static;
+    top: 0;
+    width: 100%;
+    z-index: 3;
+    margin-top:0px; 
+  
   }
 
   .header {
     flex-direction: column; /* stack the items vertically on smaller screens */
     height: auto;
     padding: 15px;
-    margin-top: 0;
+    margin-top: 0px;
 
   }
 
@@ -119,3 +123,5 @@
     width: 100%; /* Full width for mobile */
   }
 }
+
+

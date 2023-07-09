@@ -38,10 +38,12 @@ const StyledContainer = styledComponents.div`
 `;
 
 const StyledAccountText = styledComponents.p`
-  color: #fff; 
-  background-color: rgba(0, 0, 0, 0.6); 
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.6);
   padding: 0.5rem 1rem;
-  border-radius: 4px; 
+  border-radius: 4px;
+  font-family: monospace; /* Add this line */
+  overflow-wrap: anywhere; /* Add this line */
 `;
 
 const StyledGifContainerLeft = styledComponents.div`
@@ -65,7 +67,7 @@ const StyledGifContainerLeft = styledComponents.div`
   
 
   @media (max-width: 600px) {
-    top: 55%; 
+    top: 65%; 
     left: 20%;
     width: 200px; 
     height: 200px; 
@@ -93,7 +95,7 @@ const StyledGifContainerRight = styledComponents.div`
 
 
   @media (max-width: 600px) {
-    top: 55%; 
+    top: 65%; 
     right: 20%;
     width: 200px; 
     height: 200px; 

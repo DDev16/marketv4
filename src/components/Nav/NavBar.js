@@ -1,18 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FiHome, FiPlusCircle, FiFolder, FiMenu, FiX,  } from 'react-icons/fi';
+import { FiHome, FiPlusCircle, FiFolder, FiMenu, FiX } from 'react-icons/fi';
 import { FaDatabase, FaWallet } from 'react-icons/fa';
 import { Web3Context } from '../../utils/Web3Provider.js';
 import songbirdLogo from '../../assets/songbird-logo.png';
 import flareLogo from '../../assets/flarelogo.png';
-import '../../components/Nav/nav.css'
+import '../../components/Nav/nav.css';
 
 const NavBar = () => {
   const { web3 } = useContext(Web3Context);
   const [currentNetworkId, setCurrentNetworkId] = useState('');
   const [selectedNetwork, setSelectedNetwork] = useState(null);
   const [account, setAccount] = useState('');
-  const [isOpen, setIsOpen] = useState(false);
+  const [isNavOpen, setIsNavOpen] = useState(false); // Track whether the mobile menu is open or closed
 
   const handleNetworkChange = async (e) => {
     const networkId = parseInt(e.target.value, 10);
@@ -30,19 +30,15 @@ const NavBar = () => {
           setSelectedNetwork(null);
         } else if (networkId === 31337) {
           setSelectedNetwork(null);
-        }  
+        }
       } catch (error) {
         console.error(error);
       }
     }
   };
 
-  const handleToggle = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const closeNav = () => {
-    setIsOpen(false);
+  const toggleNav = () => {
+    setIsNavOpen((prevState) => !prevState);
   };
 
   useEffect(() => {
@@ -55,15 +51,11 @@ const NavBar = () => {
             setSelectedNetwork(songbirdLogo);
           } else if (networkId === 14) {
             setSelectedNetwork(flareLogo);
-            
-          } 
-          else if (networkId === 5) {
+          } else if (networkId === 5) {
             setSelectedNetwork(null);
-          } 
-          
-          else if (networkId === 31337) {
+          } else if (networkId === 31337) {
             setSelectedNetwork(null);
-          } 
+          }
 
           const accounts = await web3.eth.getAccounts();
           setAccount(accounts[0]);
@@ -74,16 +66,15 @@ const NavBar = () => {
     };
 
     getCurrentNetworkId();
-  }, [web3]);
-
+  }, [web3, isNavOpen]); // Add isNavOpen as a dependency
 
   function shortenAddress(address, frontChars = 6, backChars = 4) {
-    if (!address) return "";
+    if (!address) return '';
     const length = address.length;
     if (length < frontChars + backChars) return address;
     return address.substring(0, frontChars) + '...' + address.substring(length - backChars);
   }
-  
+
   return (
     <nav className="navbar">
       <div className="logo">
@@ -100,47 +91,49 @@ const NavBar = () => {
         {selectedNetwork && <img className="logo-image" src={selectedNetwork} alt="Network logo" />}
       </div>
       <span>{shortenAddress(account)}</span>
-      <button className="menu-button" onClick={handleToggle}>
-        {isOpen ? <FiX /> : <FiMenu />}
+      <button className={`menu-button${isNavOpen ? ' open' : ''}`} onClick={toggleNav}>
+        {isNavOpen ? <FiX /> : <FiMenu />}
       </button>
-      <ul className={isOpen ? "nav-links open desktop-nav" : "nav-links desktop-nav"}>
-        <li onClick={closeNav}>
-          <Link to="/">
-            <FiHome className="nav-icon" />
-            Home
-          </Link>
-        </li>
-        <li onClick={closeNav}>
-          <Link to="/mint">
-            <FiPlusCircle className="nav-icon" />
-            Mint
-          </Link>
-        </li>
-        <li onClick={closeNav}>
-          <Link to="/batch-mint">
-            <FiPlusCircle className="nav-icon" />
-            Batch Mint
-          </Link>
-        </li>
-        <li onClick={closeNav}>
-          <Link to="/marketplace">
-            <FaDatabase className="nav-icon" />
-            Marketplace
-          </Link>
-        </li>
-        <li onClick={closeNav}>
-          <Link to="/all-collections">
-            <FaDatabase className="nav-icon" />
-            All Collections
-          </Link>
-        </li>
-        <li onClick={closeNav}>
-          <Link to="/sign-in">
-            <FaWallet className="nav-icon" />
-            Sign-In 
-          </Link>
-        </li>
-      </ul>
+      {isNavOpen && (
+        <ul className="nav-links">
+          <li>
+            <Link to="/" onClick={toggleNav}>
+              <FiHome className="nav-icon" />
+              Home
+            </Link>
+          </li>
+          <li>
+            <Link to="/mint" onClick={toggleNav}>
+              <FiPlusCircle className="nav-icon" />
+              Mint
+            </Link>
+          </li>
+          <li>
+            <Link to="/batch-mint" onClick={toggleNav}>
+              <FiPlusCircle className="nav-icon" />
+              Batch Mint
+            </Link>
+          </li>
+          <li>
+            <Link to="/marketplace" onClick={toggleNav}>
+              <FaDatabase className="nav-icon" />
+              Marketplace
+            </Link>
+          </li>
+          <li>
+            <Link to="/all-collections" onClick={toggleNav}>
+              <FaDatabase className="nav-icon" />
+              All Collections
+            </Link>
+          </li>
+          <li>
+            <Link to="/sign-in" onClick={toggleNav}>
+              <FaWallet className="nav-icon" />
+              Sign-In
+            </Link>
+          </li>
+        </ul>
+      )}
     </nav>
   );
 };

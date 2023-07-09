@@ -44,24 +44,11 @@ contract NFTMarketplace is ReentrancyGuard, Ownable {
         address indexed recipient
     );
 
-    struct CollectionData {
-    string name;
-    string logoIPFS;
-    string bannerIPFS;
-    string description;
-    address contractAddress;
-    uint256 collectionId;
-}
-
-
     modifier onlyTokenOwner(address contractAddress, uint256 tokenId) {
         ERC721 tokenContract = ERC721(contractAddress);
         require(tokenContract.ownerOf(tokenId) == msg.sender, "Only token owner can perform this action");
         _;
     }
-
-
-    address[] public collectionOwners;
 
     ERC721 public nftToken;
     Token[] public activeListings;
@@ -72,7 +59,6 @@ contract NFTMarketplace is ReentrancyGuard, Ownable {
     uint256 private constant BATCH_PROCESS_LIMIT = 50;
     uint256 public listingFee = 0.01 ether;
     mapping(address => mapping(uint256 => bool)) private collectionTokens;
-    mapping(address => mapping(uint256 => uint256)) private collectionSoldTokenCount;
 
     event TokenListed(
         uint256 indexed tokenId,
@@ -99,59 +85,7 @@ contract NFTMarketplace is ReentrancyGuard, Ownable {
 
     constructor(address _tokenAddress) {
         nftToken = ERC721(_tokenAddress);
-
     }
-
-// Updated function to get all collections in a single array
-function getAllCollections(uint256 page, uint256 pageSize) public view returns (CollectionData[] memory) {
-    uint256 ownerCount = collectionOwners.length;
-    uint256 startIndex = (page - 1) * pageSize;
-    uint256 endIndex = startIndex + pageSize;
-
-    if (endIndex > ownerCount) {
-        endIndex = ownerCount;
-    }
-
-    // Calculate the maximum size for the allCollections array
-    uint256 maxCollectionCount = 0;
-    for (uint256 i = startIndex; i < endIndex; i++) {
-        address owner = collectionOwners[i];
-        maxCollectionCount += collections[owner].length;
-    }
-
-    CollectionData[] memory allCollections = new CollectionData[](maxCollectionCount);
-
-    uint256 currentCollection = 0;
-    for (uint256 i = startIndex; i < endIndex; i++) {
-        address owner = collectionOwners[i];
-        Collection[] storage ownerCollections = collections[owner];
-        uint256 collectionCount = ownerCollections.length;
-
-        for (uint256 j = 0; j < collectionCount; j++) {
-            if (ownerCollections[j].tokens.length > 0) {
-                allCollections[currentCollection] = CollectionData({
-                    name: ownerCollections[j].name,
-                    logoIPFS: ownerCollections[j].logoIPFS,
-                    bannerIPFS: ownerCollections[j].bannerIPFS,
-                    description: ownerCollections[j].description,
-                    collectionId: j,
-                    contractAddress: owner // Add the contractAddress field here
-                });
-                currentCollection++;
-            }
-        }
-    }
-
-    // Shorten the allCollections array to exclude empty items at the end
-    CollectionData[] memory validCollections = new CollectionData[](currentCollection);
-    for (uint256 i = 0; i < currentCollection; i++) {
-        validCollections[i] = allCollections[i];
-    }
-
-    return validCollections;
-}
-
-
 
     function createCollection(
         string memory name,
@@ -167,10 +101,6 @@ function getAllCollections(uint256 page, uint256 pageSize) public view returns (
         newCollection.description = description;
         newCollection.category = category;
         emit CollectionCreated(msg.sender, name);
-         // Add the owner to collectionOwners if they have not created a collection before
-        if (collections[msg.sender].length == 1) {
-            collectionOwners.push(msg.sender);
-        }
     }
 
     function updateCollection(
@@ -252,7 +182,6 @@ function getSpecificCollection(uint256 collectionId) public view returns (
     string memory name,
     string memory logoIPFS,
     string memory bannerIPFS,
-    string memory description,
     address[] memory contractAddresses,
     uint256[] memory tokenIds
 ) {
@@ -271,13 +200,10 @@ function getSpecificCollection(uint256 collectionId) public view returns (
         collection.name,
         collection.logoIPFS,
         collection.bannerIPFS,
-        collection.description,
         contractAddresses,
         tokenIds
     );
 }
-
-
 
 
 
@@ -344,119 +270,50 @@ function getSpecificCollection(uint256 collectionId) public view returns (
         emit TokenListed(tokenId, price, msg.sender);
     }
 
-   function buyToken(address contractAddress, uint256 tokenId) external payable nonReentrant {
-    Listing storage listing = listings[contractAddress][tokenId];
-    require(listing.isActive, "Token is not for sale");
-    require(msg.value >= listing.price, "Insufficient funds to buy token");
+    function buyToken(address contractAddress, uint256 tokenId) external payable nonReentrant {
+        Listing storage listing = listings[contractAddress][tokenId];
+        require(listing.isActive, "Token is not for sale");
+        require(msg.value >= listing.price, "Insufficient funds to buy token");
 
-    ERC721 tokenContract = ERC721(listing.contractAddress);
-    IERC2981 royaltyContract = IERC2981(listing.contractAddress);
+        ERC721 tokenContract = ERC721(listing.contractAddress);
+        IERC2981 royaltyContract = IERC2981(listing.contractAddress);
 
-    address royaltyRecipient;
-    uint256 royaltyAmount;
+        address royaltyRecipient;
+        uint256 royaltyAmount;
 
-    try royaltyContract.royaltyInfo(tokenId, listing.price) returns (address recipient, uint256 amount) {
-        royaltyRecipient = recipient;
-        royaltyAmount = amount;
-    } catch {
-        royaltyRecipient = address(0);
-        royaltyAmount = 0;
-    }
-
-    require(listing.price >= royaltyAmount, "The price is less than the royalty.");
-
-    payable(listing.seller).transfer(listing.price - royaltyAmount);
-
-    if (royaltyRecipient != address(0)) {
-        payable(royaltyRecipient).transfer(royaltyAmount);
-        emit TokenBought(tokenId, royaltyAmount, royaltyRecipient);
-    }
-
-    tokenContract.safeTransferFrom(listing.seller, msg.sender, listing.tokenId);
-
-    emit TokenSold(listing.tokenId, listing.seller, msg.sender);
-
-    // Increment the sold token count for the collection
-    collectionSoldTokenCount[contractAddress][tokenId]++;
-
-    delete listings[contractAddress][tokenId];
-
-    for (uint256 i = 0; i < activeListings.length; i++) {
-        if (activeListings[i].contractAddress == contractAddress && activeListings[i].tokenId == tokenId) {
-            if (i != activeListings.length - 1) {
-                activeListings[i] = activeListings[activeListings.length - 1];
-            }
-            activeListings.pop();
-            break;
+        try royaltyContract.royaltyInfo(tokenId, listing.price) returns (address recipient, uint256 amount) {
+            royaltyRecipient = recipient;
+            royaltyAmount = amount;
+        } catch {
+            royaltyRecipient = address(0);
+            royaltyAmount = 0;
         }
-    }
-}
 
+        require(listing.price >= royaltyAmount, "The price is less than the royalty.");
 
-function getHottestCollections(uint256 count) public view returns (CollectionData[] memory) {
-    require(count > 0, "Count must be greater than zero");
+        payable(listing.seller).transfer(listing.price - royaltyAmount);
 
-    uint256 collectionCount = collectionOwners.length;
-    CollectionData[] memory allCollections = new CollectionData[](collectionCount);
+        if (royaltyRecipient != address(0)) {
+            payable(royaltyRecipient).transfer(royaltyAmount);
+            emit TokenBought(tokenId, royaltyAmount, royaltyRecipient);
+        }
 
-    for (uint256 i = 0; i < collectionCount; i++) {
-        address owner = collectionOwners[i];
-        Collection[] storage ownerCollections = collections[owner];
-        uint256 collectionLength = ownerCollections.length;
+        tokenContract.safeTransferFrom(listing.seller, msg.sender, listing.tokenId);
 
-        for (uint256 j = 0; j < collectionLength; j++) {
-            Collection storage collection = ownerCollections[j];
-            uint256 soldTokenCount = collectionSoldTokenCount[collection.tokens[0].contractAddress][collection.tokens[0].tokenId];
+        emit TokenSold(listing.tokenId, listing.seller, msg.sender);
 
-            allCollections[i] = CollectionData({
-                name: collection.name,
-                logoIPFS: collection.logoIPFS,
-                bannerIPFS: collection.bannerIPFS,
-                description: collection.description,
-                collectionId: j,
-                contractAddress: owner 
-            });
+        delete listings[contractAddress][tokenId];
 
-            // Sort the collections based on sold token count (descending order)
-            for (uint256 k = i; k > 0 && soldTokenCount > collectionSoldTokenCount[allCollections[k - 1].contractAddress][allCollections[k - 1].collectionId]; k--) {
-                CollectionData memory temp = allCollections[k];
-                allCollections[k] = allCollections[k - 1];
-                allCollections[k - 1] = temp;
+        for (uint256 i = 0; i < activeListings.length; i++) {
+            if (activeListings[i].contractAddress == contractAddress && activeListings[i].tokenId == tokenId) {
+                if (i != activeListings.length - 1) {
+                    activeListings[i] = activeListings[activeListings.length - 1];
+                }
+                activeListings.pop();
+                break;
             }
         }
     }
-
-    // Trim the array to the desired count
-    if (count < allCollections.length) {
-        CollectionData[] memory trimmedCollections = new CollectionData[](count);
-        for (uint256 i = 0; i < count; i++) {
-            trimmedCollections[i] = allCollections[i];
-        }
-        return trimmedCollections;
-    }
-
-    return allCollections;
-}
-function bulkAddToCollection(uint256 collectionId, address[] memory contractAddresses, uint256[] memory tokenIds) public onlyOwner {
-    require(collectionId < collections[msg.sender].length, "Collection does not exist");
-    require(contractAddresses.length == tokenIds.length, "Mismatched input arrays");
-
-    Collection storage collection = collections[msg.sender][collectionId];
-
-    for (uint256 i = 0; i < contractAddresses.length; i++) {
-        address contractAddress = contractAddresses[i];
-        uint256 tokenId = tokenIds[i];
-
-        require(!collectionTokens[contractAddress][tokenId], "Token already exists in the collection");
-
-        collection.tokens.push(Token(contractAddress, tokenId));
-        collectionTokens[contractAddress][tokenId] = true;
-    }
-
-    emit CollectionUpdated(msg.sender, collectionId);
-}
-
-
 
     function cancelListing(address contractAddress, uint256 tokenId) external onlyTokenOwner(contractAddress, tokenId) {
         require(listings[contractAddress][tokenId].isActive, "Token is not listed for sale");
@@ -495,21 +352,6 @@ function bulkAddToCollection(uint256 collectionId, address[] memory contractAddr
             tokensToProcess -= tokensInBatch;
         }
     }
-
-    function getTokenDetails(address contractAddress, uint256 tokenId) public view returns (TokenDetails memory) {
-    Listing storage listing = listings[contractAddress][tokenId];
-    require(listing.isActive, "Token is not listed for sale");
-
-    TokenDetails memory tokenDetails = TokenDetails({
-        contractAddress: contractAddress,
-        tokenId: tokenId,
-        price: listing.price,
-        seller: listing.seller
-    });
-
-    return tokenDetails;
-}
-
 
     function processListings(address[] memory contractAddresses, uint256[] memory tokenIds, uint256[] memory prices) internal {
         for (uint256 i = 0; i < contractAddresses.length; i++) {
