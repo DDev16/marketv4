@@ -1,65 +1,141 @@
+/* Footer.css */
+
+/* Main footer container */
 .footer {
-    background-color: #212529;
-    color: #fff;
-    padding: 10px 0;
-    position: relative;
-    bottom: 0;
-    width: 100%;
+  background-color: #2a2a2a;
+  color: #ffffff;
+  padding: 40px 0;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  clear: both;
+}
+
+/* Individual footer column */
+.footer-col {
+  margin: 20px 0;
+}
+
+/* Footer logo */
+.footer .logo {
+  max-width: 150px;
+  max-height: 100px;
+}
+
+/* Footer header */
+.footer-col h4 {
+  color: #fff;
+  font-size: 16px;
+  margin-bottom: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* Footer links */
+.footer-col ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-col ul li {
+  margin-bottom: 10px;
+}
+
+.footer-col ul li a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.footer-col ul li a:hover {
+  color: #3498db;
+  transition: color 0.3s ease-in-out;
+}
+
+/* Social links */
+.list-inline {
+  padding-left: 0;
+  list-style: none;
+}
+
+.list-inline-item {
+  display: inline-block;
+}
+
+.list-inline-item:not(:last-child) {
+  margin-right: 0.5rem;
+}
+
+.list-inline-item a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.list-inline-item a:hover {
+  color: #3498db;
+  transition: color 0.3s ease-in-out;
+}
+
+/* Community text */
+.footer-col p {
+  color: #bfbfbf;
+  font-size: 14px;
+  line-height: 1.7;
+  margin: 0;
+}
+
+
+/* Footer.css */
+
+@media screen and (max-width: 576px) {
+
+  /* Main footer container */
+  .footer {
+    padding: 0px 0;
   }
-  
-  .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .footer-row {
-    width: 100%;
-  }
-  
+
+  /* Individual footer column */
   .footer-col {
-    flex: 1;
-    text-align: center;
+    margin: 25px 0;
+    text-align: center; /* center-align text on mobile */
   }
-  
-  .footer h4 {
-    margin-bottom: 10px;
-    font-size: 18px;
+
+  /* Footer logo */
+  .footer .logo {
+    max-width: 100%;
+    height: auto; /* make logo responsive */
   }
-  
-  .footer p {
+
+  /* Footer header */
+  .footer-col h4 {
     font-size: 14px;
+    margin-bottom: 20px;
   }
-  
-  .footer ul {
-    list-style-type: none;
-    padding: 0;
+
+  /* Footer links */
+  .footer-col ul {
+    padding-left: 0;
   }
-  
-  .footer ul li {
-    padding: 5px 0;
+
+  .footer-col ul li {
+    margin-bottom: 10px;
   }
-  
-  .footer a {
+
+  .footer-col ul li a {
     color: #fff;
     text-decoration: none;
-    transition: color .3s ease;
+    padding: 10px 0; /* increase padding for links for easier tapping */
+    display: inline-block; /* needed for padding to take effect */
   }
-  
-  .footer a:hover {
-    color: #007bff;
-  }
-  
-  .footer .list-inline-item {
-    display: inline-block;
-    padding-right: 5px;
-    font-size: 18px;
-  }
-  
 
-  .logo {
-    width: 200px;
-    height: auto;
-    margin: 10px 0;
+  /* Community text */
+  .footer-col p {
+    font-size: 14px;
+    line-height: 1.6;
   }
-  
+
+  /* Social links */
+  .list-inline-item:not(:last-child) {
+    margin-right: 0.5rem;
+  }
+}

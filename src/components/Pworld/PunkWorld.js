@@ -24,7 +24,7 @@ const StyledContainer = styledComponents.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start; 
-  height: 80vh;
+  height: 100vh;
   width: 100vw;
   padding: 1rem;
   text-align: center;
@@ -67,10 +67,20 @@ const StyledGifContainerLeft = styledComponents.div`
   
 
   @media (max-width: 600px) {
-    top: 65%; 
+    top: 75%; 
     left: 20%;
     width: 200px; 
     height: 200px; 
+  }
+
+  /* Add new media query */
+  @media (min-device-width: 360px) 
+    and (max-device-width: 740px) 
+    and (-webkit-device-pixel-ratio: 3) { 
+    top: 65%; 
+    left: 12%;
+    width: 250px; 
+    height: 250px; 
   }
 `;
 
@@ -95,10 +105,20 @@ const StyledGifContainerRight = styledComponents.div`
 
 
   @media (max-width: 600px) {
-    top: 65%; 
+    top: 75%; 
     right: 20%;
     width: 200px; 
     height: 200px; 
+  }
+
+  /* Add new media query */
+  @media (min-device-width: 360px) 
+    and (max-device-width: 740px) 
+    and (-webkit-device-pixel-ratio: 3) { 
+    top: 65%; 
+    right: 12%;
+    width: 250px; 
+    height: 250px; 
   }
 `;
 
@@ -145,7 +165,13 @@ const StyledThreeContainer = styledComponents.div`
   width: 100%;
   height: 100%;
   z-index: -1; 
+
+  @media (max-width: 768px) {
+    height: 100vh;
+    width: 100vw;
+  }
 `;
+
 
 const Heading = styled.h1`
   position: relative;
