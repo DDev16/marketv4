@@ -35,6 +35,12 @@ const StyledContainer = styledComponents.div`
   margin-bottom: 50px;
   overflow: hidden;
   perspective: 1000px;
+
+  @media (max-width: 480px) {
+    padding: 0.5rem;
+    height: auto;
+    min-height: 150vh;
+  }
 `;
 
 const StyledAccountText = styledComponents.p`
@@ -44,6 +50,11 @@ const StyledAccountText = styledComponents.p`
   border-radius: 4px;
   font-family: monospace; /* Add this line */
   overflow-wrap: anywhere; /* Add this line */
+
+  @media (max-width: 480px) {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+  }
 `;
 
 const StyledGifContainerLeft = styledComponents.div`
@@ -73,7 +84,6 @@ const StyledGifContainerLeft = styledComponents.div`
     height: 200px; 
   }
 
-  /* Add new media query */
   @media (min-device-width: 360px) 
     and (max-device-width: 740px) 
     and (-webkit-device-pixel-ratio: 3) { 
@@ -81,6 +91,20 @@ const StyledGifContainerLeft = styledComponents.div`
     left: 12%;
     width: 250px; 
     height: 250px; 
+  }
+
+  @media (max-height: 600px) {
+    top: 65%;
+    left: 10%;
+    width: 180px;
+    height: 180px;
+  }
+
+  @media (max-width: 392px) and (max-height: 436px) {
+    top: 65%; 
+    left: 20%;
+    width: 200px; 
+    height: 200px; 
   }
 `;
 
@@ -111,7 +135,6 @@ const StyledGifContainerRight = styledComponents.div`
     height: 200px; 
   }
 
-  /* Add new media query */
   @media (min-device-width: 360px) 
     and (max-device-width: 740px) 
     and (-webkit-device-pixel-ratio: 3) { 
@@ -120,6 +143,19 @@ const StyledGifContainerRight = styledComponents.div`
     width: 250px; 
     height: 250px; 
   }
+
+  @media (max-height: 600px) {
+    top: 65%;
+    right: 10%;
+    width: 180px;
+    height: 180px;
+  }
+  @media (max-width: 392px) and (max-height: 436px) {
+    top: 65%; 
+    right: 20%;
+    width: 200px; 
+    height: 200px; 
+  }
 `;
 
 const StyledButtonContainer = styledComponents.div`
@@ -127,6 +163,12 @@ const StyledButtonContainer = styledComponents.div`
   flex-direction: column;
   align-items: center;
   margin-top: 2rem;
+
+  @media (max-width: 480px) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
 `;
 
 const StyledButton = styledComponents(Button)`
@@ -156,6 +198,11 @@ const StyledWorldButton = styledComponents(Button)`
   &:hover {
     filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.8));
   }
+
+  @media (max-width: 480px) {
+    margin: 0.5rem;
+  }
+
 `;
 
 const StyledThreeContainer = styledComponents.div`
@@ -202,6 +249,10 @@ const Heading = styled.h1`
   @media (max-width: 600px) {
     font-size: 2rem;
   }
+
+  @media (max-width: 480px) {
+    font-size: 1.5rem;
+  }
 `;
 
 
@@ -211,6 +262,11 @@ const StyledInfoMessage = styledComponents.p`
   padding: 0.5rem 1rem;
   border-radius: 4px;
   margin-top: 2rem;
+
+  @media (max-width: 480px) {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+  }
 `;
 
 
