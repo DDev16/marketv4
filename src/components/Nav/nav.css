@@ -237,7 +237,6 @@
   }
 
   .nav-links {
-    display: none;
     flex-direction: column;
     width: 100%;
     position: absolute;
@@ -245,7 +244,7 @@
     left: 0;
     background-color: #212529;
     padding: 10px;
-    gap: 0;
+    gap: 5;
   }
 
   .nav-links.open {

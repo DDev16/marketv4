@@ -52,6 +52,7 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: var(--main-font-color);
     width: 70%;
+    margin-top:100px;
   }
   
   .BatchMint form {
@@ -159,6 +160,7 @@
 
     .BatchMint {
       width: 100%;
+      margin-top:0;
     }
   
     .BatchMint input,

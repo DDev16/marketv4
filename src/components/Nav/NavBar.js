@@ -5,8 +5,7 @@ import { FaDatabase, FaWallet } from 'react-icons/fa';
 import { Web3Context } from '../../utils/Web3Provider.js';
 import songbirdLogo from '../../assets/songbird-logo.png';
 import flareLogo from '../../assets/flarelogo.png';
-import './nav.css';
-
+import '../../components/Nav/nav.css';
 const NavBar = () => {
   const { web3 } = useContext(Web3Context);
   const [currentNetworkId, setCurrentNetworkId] = useState('');

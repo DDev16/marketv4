@@ -183,15 +183,10 @@ const CollectionPage = () => {
             <p>Name: {token.name}</p>
             <p>Description: {token.description}</p>
             <p>Contract Address: {token.contractAddress}</p>
-            {token.isForSale && (
-              <div>
-                <p>Price: {web3.utils.fromWei(token.tokenPrice, 'ether')} ETH</p>
+           
                 <button onClick={() => buyToken(token.contractAddress, token.tokenId)}>Buy</button>
 
-
-
-</div>
-            )}
+            
           </div>
         ))}
       </div>
