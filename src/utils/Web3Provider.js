@@ -29,22 +29,22 @@ const Web3Provider = ({ children }) => {
 
           if (networkId === 19) {
             // Songbird network
-            contractAddress = '0xcd61F8F6E215CE93F7724a6BB4F5641b108D0276';
-            marketplaceAddress = '0xA5Fc39c439746AED8db3bb57CdEA9FB446A54694';
+            contractAddress = '0xEe2d1f6D5C8d71e8c97CAA4A80fF9eD87dbB9C34';
+            marketplaceAddress = '0xc7095B03A1c6b50B4f8B2E6D8c87CBddD188640A';
           } else if (networkId === 14) {
             // Flare network
             contractAddress = '0x8d1A663F84c5a7cf0c0458848089783d0a0A3b6A';
             marketplaceAddress = '0x73710334E4E5CA4482F5526faBEa45bce503BD98';
           } else if (networkId === 5) {
             // Goerli Test network
-            contractAddress = '0xEd5bc9165bd0602daf166D1f7cf8B9D001a189be';
-            marketplaceAddress = '0xCAb7Cf9AA9aFD7E3d3B0c70F302454fc09D68dC6';
+            contractAddress = '0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0';
+            marketplaceAddress = '0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82';
           }
           
           else if (networkId === 31337) {
             // Hardhat network
-            contractAddress = '0xbdEd0D2bf404bdcBa897a74E6657f1f12e5C6fb6';
-            marketplaceAddress = '0x4A679253410272dd5232B3Ff7cF5dbB88f295319';
+            contractAddress = '0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0';
+            marketplaceAddress = '0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82';
           } 
           
 

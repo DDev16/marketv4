@@ -84,11 +84,11 @@ const CollectionPage = () => {
               const { name, description } = cardDetails;
               console.log('Card Details:', cardDetails);
               
-              const isForSale = await marketplaceContract.methods.isTokenForSale(contractAddress, tokenId).call({ from: ownerAddress });
-              let tokenPrice;
-              if (isForSale) {
-                tokenPrice = await marketplaceContract.methods.getTokenPrice(contractAddress, tokenId).call({ from: ownerAddress });
-              }
+              // const isForSale = await marketplaceContract.methods.isTokenForSale(contractAddress, tokenId).call({ from: ownerAddress });
+              // let tokenPrice;
+              // if (isForSale) {
+              //   tokenPrice = await marketplaceContract.methods.getTokenPrice(contractAddress, tokenId).call({ from: ownerAddress });
+              // }
 
               return {
                 tokenId,
@@ -96,8 +96,8 @@ const CollectionPage = () => {
                 tokenURI,
                 name,
                 description,
-                isForSale: isForSale || false,
-                tokenPrice: tokenPrice || '0',
+                // isForSale: isForSale || false,
+                // tokenPrice: tokenPrice || '0',
                 ...cardDetails,
               };
             })

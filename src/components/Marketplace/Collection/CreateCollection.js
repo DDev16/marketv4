@@ -92,7 +92,6 @@ const CreateCollection = () => {
 
   return (
     <div className="create-collection-form">
-      {loading && <Loading />} {/* Show Loading component when loading */}
       <form onSubmit={handleCreateCollection}>
         <h2>Create Collection</h2>
         <div>
@@ -135,6 +134,8 @@ const CreateCollection = () => {
         {success && (
           <p className="success-message">Collection created successfully!</p>
         )}
+              {loading && <Loading />} {/* Show Loading component when loading */}
+
       </form>
       <Preview
         name={name}
