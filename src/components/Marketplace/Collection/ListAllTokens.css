@@ -1,111 +1,78 @@
+/* Normalize default styles */
+.ListAllTokens {
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+}
 
-.my-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    background-color: #f7f7f7;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    margin-top:0px;
-  }
-  
-  .my-input {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 20px;
-    border: none;
-    border-radius: 4px;
-    background-color: #f2f2f2;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .my-paragraph {
-    margin-bottom: 15px;
-    font-size: 18px;
-    color: #333;
-  }
-  
-  .my-button {
-    padding: 12px 24px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    text-transform: uppercase;
-    transition: background-color 0.3s ease;
-  }
-  
-  .my-button:hover {
-    background-color: #45a049;
-  }
-  
+/* The main container */
+.ListAllTokens {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 15px;
+  box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
 
-  .my-form div {
-    margin-bottom: 25px;
-  }
-  
-  .my-form div .my-paragraph:first-child {
-    margin-bottom: 20px;
-    font-weight: bold;
-  }
-  
-  .my-form ul {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-  }
-  
-  .my-form ul li {
-    margin-bottom: 10px;
-    font-size: 16px;
-    color: #555;
-  }
-  
-  .my-form ul li:before {
-    content: "▸";
-    margin-right: 8px;
-    color: #999;
-  }
-  
-  .my-button[type="submit"] {
-    width: auto;
-    margin-top: 20px;
-  }
-  
-  
-  .my-input[name="contractAddress"],
-  .my-input[name="tokenId"],
-  .my-input[name="price"],
-  .my-input[name="royalty"] {
-    font-weight: bold;
-    font-size: 18px;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    box-shadow: none;
-    padding: 12px;
-  }
-  
-  .my-paragraph + .my-paragraph {
-    margin-top: 20px;
-  }
-  
-  .my-button[type="submit"] {
-    background-color: #2196f3;
-  }
-  
-  .my-button[type="submit"]:hover {
-    background-color: #0d8bf2;
-  }
-  
-  .my-button[type="submit"]:focus {
-    outline: none;
-  }
-  
-  .my-button[type="submit"]:active {
-    background-color: #0b78d7;
-  }
-  
+/* The title */
+.ListAllTokens h2 {
+  margin-bottom: 20px;
+  color: #212529;
+  text-align: center;
+}
+
+/* The form */
+.ListAllTokens form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 500px;
+}
+
+/* The input fields */
+.ListAllTokens input {
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #ffffff;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* The submit button */
+.ListAllTokens button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Button disabled state */
+.ListAllTokens button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+/* Button hover state */
+.ListAllTokens button:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+/* The error message */
+.ListAllTokens p {
+  margin-top: 20px;
+  text-align: center;
+}
+
+/* Different colors for different types of messages */
+.ListAllTokens p[color='red'] {
+  color: #dc3545;
+}
+
+.ListAllTokens p[color='green'] {
+  color: #28a745;
+}

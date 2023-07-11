@@ -38,6 +38,8 @@ const LoginContainer = styled.div`
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   transition: 0.3s;
   background: #ffffff;
+  margin-top: 150px;
+  margin-bottom: 100px;
 `;
 
 const MockImage = styled.img`
