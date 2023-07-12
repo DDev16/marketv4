@@ -177,3 +177,67 @@
 .qrCode button {
   margin-top: 10px;
 }
+
+
+.token-info {
+  font-family: Arial, sans-serif;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 30px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
+  overflow-wrap: anywhere; /* Added this line */
+}
+
+.token-label {
+  font-weight: 600;
+  color: #21759b; /* Feel free to change this color to match your website's color scheme */
+}
+
+.token-data {
+  font-weight: 400;
+  color: #444;
+  overflow-wrap: anywhere; /* Added this line */
+}
+
+.token-info p {
+  margin: 0 0 15px;
+  line-height: 1.6;
+}
+
+.token-info p:last-child {
+  margin-bottom: 0;
+}
+
+/* Responsive styles */
+@media (max-width: 480px) {
+  .token-info {
+      padding: 20px;
+  }
+
+  .token-label,
+  .token-data {
+      font-size: 14px;
+  }
+
+  .token-info p {
+      margin-bottom: 10px;
+  }
+}
+
+
+.for-sale {
+  background-color: #b8e994; /* Light green */
+  color: #004400; /* Dark green */
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.not-for-sale {
+  background-color: #f8d7da; /* Light red */
+  color: #721c24; /* Dark red */
+  padding: 10px;
+  border-radius: 5px;
+}

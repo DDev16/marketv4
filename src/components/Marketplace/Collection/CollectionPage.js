@@ -17,15 +17,25 @@ const ERC721_ABI = [
     stateMutability: 'view',
     type: 'function',
   },
+  {
+    constant: true,
+    inputs: [{ name: 'tokenId', type: 'uint256' }],
+    name: 'ownerOf',
+    outputs: [{ name: '', type: 'address' }],
+    payable: false,
+    stateMutability: 'view',
+    type: 'function',
+  },
   // Add more functions if needed
 ];
 
 const CollectionPage = () => {
   const { collectionId } = useParams();
-  const { web3, marketplaceContract, contrat } = useContext(Web3Context);
+  const { web3, marketplaceContract, contract } = useContext(Web3Context);
   const [collection, setCollection] = useState(null);
   const [tokens, setTokens] = useState([]);
   const [qrCodeUrl, setQRCodeUrl] = useState('');
+  const [tokenPrices, setTokenPrices] = useState({});
 
   const qrRef = useRef();
   const [showConfetti, setShowConfetti] = useState(false);
@@ -80,6 +90,8 @@ const CollectionPage = () => {
               const contract = new web3.eth.Contract(ERC721_ABI, contractAddress);
               
               const tokenURI = await contract.methods.tokenURI(tokenId).call({ from: ownerAddress });
+              const tokenOwner = await contract.methods.ownerOf(tokenId).call({ from: ownerAddress });  // Added this line
+
               const ipfsUrl = tokenURI.replace('ipfs://', '');
               console.log(`Fetching IPFS data from: https://ipfs.io/ipfs/${ipfsUrl}`);
               const cardDetailsResponse = await fetch(`https://ipfs.io/ipfs/${ipfsUrl}`);
@@ -88,13 +100,16 @@ const CollectionPage = () => {
 
               const { name, description } = cardDetails;
               console.log('Card Details:', cardDetails);
-              
-
-              const isForSale = await marketplaceContract.methods
-  .isTokenForSale(contractAddress, tokenId)
-  .call({ from: ownerAddress });
 
             
+              
+              const isForSale = await marketplaceContract.methods.isTokenForSale(contractAddress, tokenId).call({ from: ownerAddress });
+              
+              // Only fetch token price if it is for sale
+              let tokenPrice = null;
+              if (isForSale) {
+                tokenPrice = await marketplaceContract.methods.getTokenPrice(contractAddress, tokenId).call({ from: ownerAddress });
+              }
 
               return {
                 tokenId,
@@ -103,6 +118,10 @@ const CollectionPage = () => {
                 name,
                 description,
                 isForSale,
+                tokenPrice,
+                tokenOwner,  // Ensure tokenOwner is included here
+
+
 
                 ...cardDetails,
               };
@@ -164,22 +183,57 @@ const CollectionPage = () => {
       setTimeout(() => setShowConfetti(false), 5000); // Show confetti for 5 seconds
   
       Swal.fire({
-        title: 'Success!',
-        text: 'Token bought successfully!',
+        title: `Congratulations!`,
+        text: `You're now the proud owner of the "${token.name}" NFT!`,
+        imageUrl: `https://ipfs.io/ipfs/${token.image.replace(/ipfs:\/\//g, '')}`,
+        imageWidth: 200,
+        imageHeight: 200,
+        imageAlt: 'Custom image',
         icon: 'success',
-        confirmButtonText: 'Cool'
-      });
-  
-      setIsBuying(false); // Set buying state to false when the purchase completes
+        confirmButtonText: 'Awesome!',
+        customClass: {
+          container: 'my-swal',
+        },
+        showClass: {
+          popup: 'animate__animated animate__zoomIn'
+        },
+        hideClass: {
+          popup: 'animate__animated animate__zoomOut'
+        },
+        background: '#1e1e1e',
+        iconColor: '#a9ff4d',
+        timer: 7000,
+        timerProgressBar: true,
+        footer: '<a href>Why am I seeing this?</a>',
+      })
+      
+      setShowConfetti(true);
+      setIsBuying(false);
+
     } catch (error) {
       console.error('Error buying token:', error);
-  
+      setIsBuying(false); // If the purchase fails, reset the buying state
+
       Swal.fire({
         title: 'Error!',
-        text: 'An error occurred while buying the token.',
+        text: 'Something went wrong during your purchase. Please try again.',
         icon: 'error',
-        confirmButtonText: 'OK'
-      });
+        confirmButtonText: 'Okay',
+        customClass: {
+          container: 'my-swal',
+        },
+        showClass: {
+          popup: 'animate__animated animate__zoomIn'
+        },
+        hideClass: {
+          popup: 'animate__animated animate__zoomOut'
+        },
+        background: '#1e1e1e',
+        iconColor: '#ff4d4d',
+        timer: 7000,
+        timerProgressBar: true,
+        footer: '<a href>Contact Support</a>',
+      })
   
       setIsBuying(false); // Set buying state to false when an error occurs
     }
@@ -223,11 +277,18 @@ const CollectionPage = () => {
               <img src={`https://ipfs.io/ipfs/${token.image.replace(/ipfs:\/\//g, '')}`} alt={`NFT Card ${index + 1}`} />
             )}
   
-            <p>Token ID: {token.tokenId}</p>
-            <p>Name: {token.name}</p>
-            <p>Description: {token.description}</p>
-            <p>Contract Address: {token.contractAddress}</p>
-           
+  <div class="token-info">
+    <p><span class="token-label">Token ID:</span> {token.tokenId}</p>
+    <p><span class="token-label">Name:</span> {token.name}</p>
+    <p><span class="token-label">Description:</span> {token.description}</p>
+    <p><span class="token-label">Contract Address:</span> {token.contractAddress}</p>
+    <p><span class="token-label">Token Owner:</span> {token.tokenOwner}</p>
+    <p class={token.tokenPrice !== null ? "for-sale" : "not-for-sale"}>
+  Token Price: {token.tokenPrice !== null ? web3.utils.fromWei(token.tokenPrice, 'ether') : 'Not for sale'}
+</p>
+</div>
+
+
             {token.isForSale && (
   <button onClick={() => buyToken(token.contractAddress, token.tokenId)}>
     Buy
