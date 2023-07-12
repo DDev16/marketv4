@@ -4,4 +4,15 @@
 
 * HottestCollections
 
-*  
+*  List button in my tokens needs to be delist button after listing.
+
+
+* My Tokens.js Search bar
+//If listed needs to show Delist button
+
+* NFTS for sale after succesful purchase tokens need to be refreshed
+// possibly pagination as well *** most likely a better idea
+// Sweet Alert and confetti 
+* createCollection.js better description bar expandlable
+
+* Bulk add needs sweet alerts 2
