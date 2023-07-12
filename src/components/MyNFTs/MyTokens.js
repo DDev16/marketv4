@@ -1,9 +1,7 @@
 import React, { useContext, useState, useEffect, useCallback, useRef } from 'react';
 import { Web3Context } from '../../utils/Web3Provider';
 import '../../components/MyNFTs/MyToken.css';
-import brand from '../../assets/logo.png';
-
-
+import Loading from '../Loading/Loading';
 
 const MyTokens = () => {
   const { web3, contract, marketplaceContract } = useContext(Web3Context);
@@ -11,6 +9,37 @@ const MyTokens = () => {
   const [isLoading, setIsLoading] = useState(true);
   const videoRef = useRef();
   const [tokenPrices, setTokenPrices] = useState({});
+  const [tokenStatuses, setTokenStatuses] = useState({});
+  const [searchName, setSearchName] = useState('');
+  const [searchId, setSearchId] = useState('');
+  const [isListedFilter, setIsListedFilter] = useState('none');  // 'none' means no filter, 'true' means listed, 'false' means not listed
+  
+  const updateTokenStatus = async (contractAddress, tokenId) => {
+    try {
+      const forSale = await marketplaceContract.methods
+        .isTokenForSale(contractAddress, tokenId)
+        .call();
+
+      setTokenStatuses(prev => ({ ...prev, [tokenId]: forSale }));
+    } catch (error) {
+      console.error('An error occurred while checking if the token is for sale:', error);
+    }
+  };
+
+  const filteredTokens = () => {
+    return tokens.filter((token) => {
+      const matchesName = searchName === '' || token.name.toLowerCase().includes(searchName.toLowerCase());
+      const matchesId = searchId === '' || token.id.toString() === searchId;
+      const matchesListedFilter = 
+        isListedFilter === 'none' 
+          ? true 
+          : (isListedFilter === 'true' ? tokenStatuses[token.id] : !tokenStatuses[token.id]);
+  
+      return matchesName && matchesId && matchesListedFilter;
+    });
+  };
+  
+
 
   const approveAllTokens = async () => {
     try {
@@ -71,6 +100,25 @@ const MyTokens = () => {
     const extension = url.split('.').pop().toLowerCase();
     return extension !== 'mp4';
   };
+
+  const cancelListing = async (contractAddress, tokenId) => {
+    try {
+      const accounts = await web3.eth.getAccounts();
+      const account = accounts[0];
+
+      await marketplaceContract.methods
+        .cancelListing(contractAddress, tokenId)
+        .send({ from: account });
+
+      alert('Listing cancelled successfully');
+
+      // Update token status
+      updateTokenStatus(contractAddress, tokenId);
+    } catch (error) {
+      console.error('An error occurred while cancelling the token listing:', error);
+    }
+  };
+  
   
   const fetchTokens = useCallback(async () => {
     setIsLoading(true); // Set loading state to true
@@ -111,132 +159,161 @@ const MyTokens = () => {
     fetchTokens();
   }, [fetchTokens]);
 
+  useEffect(() => {
+    if (tokens.length > 0) {
+      tokens.forEach(token => updateTokenStatus(token.contractAddress, token.id));
+    }
+  }, [tokens]);
+
+
   return (
     <div className="my-tokens-container">
       <h2 className="tokens-heading">My Tokens</h2>
       <button
-  className={`refresh-button ${isLoading ? 'refresh-button-disabled' : ''}`}
-  onClick={fetchTokens}
-  onError={(e) => console.error(e)}
+        style={isLoading ? styles.buttonDisabled : styles.button}
+        onClick={fetchTokens}
+        onError={(e) => console.error(e)}
+        disabled={isLoading}
+      >
+        Refresh Tokens
+      </button>
+      <input
+  type="text"
+  placeholder="Search by name"
+  value={searchName}
+  onChange={(e) => setSearchName(e.target.value)}
+  className="search-bar__input"
+/>
+<input
+  type="text"
+  placeholder="Search by token ID"
+  value={searchId}
+  onChange={(e) => setSearchId(e.target.value)}
+  className="search-bar__input"
+/>
+<select
+  value={isListedFilter}
+  onChange={(e) => setIsListedFilter(e.target.value)}
+  className="search-bar__select"
 >
-  Refresh Tokens
-</button>
+  <option value="none">No filter</option>
+  <option value="true">Listed</option>
+  <option value="false">Not Listed</option>
+</select>
 
-      <div className="token-list">
-        {isLoading ? (
-          <div className="loading-container">
-            <img src={brand} alt="Logo" style={{ ...styles.logo, ...styles.spinAnimation }} />
-            <p className="loading-text">Loading...</p>
-          </div>
-        ) : (
-          tokens.map((token) => (
-            <div key={token.id} className="token-card">
-              <p className="token-id">ID: {token.id}</p>
-              {isImageFile(token.imageUrl) ? (
-                <img src={token.imageUrl} alt={token.name} className="token-image" />
-              ) : (
-                <video 
-                  ref={videoRef}
-                  src={token.imageUrl} 
-                  alt={token.name} 
-                  className="token-video" 
-                  onClick={handleVideoClick} 
-                  controls
-                />
-              )}
-              <div className="token-info">
-                <p className="token-name">{token.name}</p>
-                <p className="token-description">{token.description}</p>
-                <p className="contract-address"> Contract Address: {token.contractAddress}</p>
-                <input
-      type="number"
-      placeholder="Enter price in ETH"
-      value={tokenPrices[token.id] || ''}
-      onChange={(e) =>
-        setTokenPrices({ ...tokenPrices, [token.id]: e.target.value })
-      }
-    />
-    <button
-      onClick={() =>
-        handleListToken(
-          token.contractAddress,
-          token.id,
-          web3.utils.toWei(tokenPrices[token.id] || '0', 'ether')
-        )
-      }
-    >
-      List
-    </button>
+  
+      <div className="token-list" style={styles.loadingWrapper}>
+      {isLoading ? (
+  <Loading />
+) : (
+  filteredTokens().map((token) => {
+            const tokenForSale = tokenStatuses[token.id];
+            return (
+              <div key={token.id} className="token-card">
+                <p className="token-id">ID: {token.id}</p>
+                {isImageFile(token.imageUrl) ? (
+                  <img src={token.imageUrl} alt={token.name} className="token-image" />
+                ) : (
+                  <video 
+                    ref={videoRef}
+                    src={token.imageUrl} 
+                    alt={token.name} 
+                    className="token-video" 
+                    onClick={handleVideoClick} 
+                    controls
+                  />
+                )}
+                <div className="token-info">
+                  <p className="token-name">{token.name}</p>
+                  <p className="token-description">{token.description}</p>
+                  <p className="contract-address"> Contract Address: {token.contractAddress}</p>
+                  <input
+                    type="number"
+                    placeholder="Enter price in ETH"
+                    value={tokenPrices[token.id] || ''}
+                    onChange={(e) =>
+                      setTokenPrices({ ...tokenPrices, [token.id]: e.target.value })
+                    }
+                  />
+                  <button
+  style={styles.button}
+  onClick={() =>
+    handleListToken(
+      token.contractAddress,
+      token.id,
+      web3.utils.toWei(tokenPrices[token.id] || '0', 'ether')
+    )
+  }
+>
+  List
+</button>
+{tokenForSale && (
+  <button
+    style={styles.button}
+    onClick={() =>
+      cancelListing(token.contractAddress, token.id)
+    }
+  >
+    Cancel Listing
+  </button>
+)}
+                </div>
               </div>
-            </div>
-          ))
+            );
+          })
         )}
       </div>
     </div>
   );
-  
-};
+        };
 
-const spinAnimation = {
-  animation: 'spin 5s linear infinite',
-  transformStyle: 'preserve-3d'
-};
 
-const fireAnimation = {
-  animation: 'fire 2s linear infinite',
-};
 
 const styles = {
-  container: {
+  
+  loadingContainer: {
     display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
     justifyContent: 'center',
-    padding: '40px',
-    borderRadius: '8px',
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
-    color: '#ffffff',
-    fontFamily: 'Arial, sans-serif',
-    backgroundSize: 'cover',
-    backgroundRepeat: 'no-repeat',
-    backgroundColor: '#282c34',
+    alignItems: 'center',
+    flexDirection: 'column',
+    height: '80vh', // you can adjust this according to your needs
+  },
+  
+  spinAnimation: {
+    animation: 'spin 2s linear infinite',
   },
 
-  logo: {
-    width: '400px',
-    marginBottom: '16px',
+  loadingWrapper: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%', 
   },
-  heading: {
-    fontSize: '48px',
-    fontWeight: 'bold',
-    marginBottom: '16px',
-    textAlign: 'center',
-    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)',
-  },
-  description: {
-    fontSize: '24px',
-    marginBottom: '32px',
-    textAlign: 'center',
-    lineHeight: '1.5',
-  },
-  descriptionText: {
-    fontSize: '60px',
-    marginBottom: '32px',
-    textAlign: 'center',
-    lineHeight: '1.5',
-  },
-  popText: {
-    fontSize: '48px',
-    fontWeight: 'bold',
-    color: '#61dafb',
-    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)',
-    animation: 'popText 0.5s infinite alternate',
-  },
+  
+  
   button: {
-    padding: '0',
+    padding: '10px 20px',
+    fontSize: '16px',
+    fontWeight: '600',
+    color: '#ffffff',
+    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
     border: 'none',
-    backgroundColor: 'transparent',
+    borderRadius: '6px',
+    transition: 'all 0.3s cubic-bezier(.25,.8,.25,1)',
+    cursor: 'pointer',
+    outline: 'none',
+    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+    marginBottom:'30px'
   },
+  buttonHover: {
+    boxShadow: '0 7px 10px 2px rgba(255, 105, 135, .3)',
+    transform: 'scale(1.05)',
+  },
+  buttonDisabled: {
+    background: 'linear-gradient(45deg, #ccc 30%, #ccc 90%)',
+    cursor: 'not-allowed',
+  },
+
   buttonLink: {
     display: 'inline-block',
     padding: '12px 24px',
@@ -252,8 +329,7 @@ const styles = {
     transform: 'scale(1.1)',
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
   },
-  spinAnimation,
-  fireAnimation,
+
 
 };
 

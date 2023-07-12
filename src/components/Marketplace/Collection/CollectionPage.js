@@ -74,6 +74,7 @@ const CollectionPage = () => {
           const fetchedCards = await Promise.all(
             fetchedTokens.map(async ([contractAddress, tokenId]) => {
               const contract = new web3.eth.Contract(ERC721_ABI, contractAddress);
+              
               const tokenURI = await contract.methods.tokenURI(tokenId).call({ from: ownerAddress });
               const ipfsUrl = tokenURI.replace('ipfs://', '');
               console.log(`Fetching IPFS data from: https://ipfs.io/ipfs/${ipfsUrl}`);
@@ -84,11 +85,12 @@ const CollectionPage = () => {
               const { name, description } = cardDetails;
               console.log('Card Details:', cardDetails);
               
-              // const isForSale = await marketplaceContract.methods.isTokenForSale(contractAddress, tokenId).call({ from: ownerAddress });
-              // let tokenPrice;
-              // if (isForSale) {
-              //   tokenPrice = await marketplaceContract.methods.getTokenPrice(contractAddress, tokenId).call({ from: ownerAddress });
-              // }
+
+              const isForSale = await marketplaceContract.methods
+  .isTokenForSale(contractAddress, tokenId)
+  .call({ from: ownerAddress });
+
+            
 
               return {
                 tokenId,
@@ -96,8 +98,8 @@ const CollectionPage = () => {
                 tokenURI,
                 name,
                 description,
-                // isForSale: isForSale || false,
-                // tokenPrice: tokenPrice || '0',
+                isForSale,
+
                 ...cardDetails,
               };
             })
@@ -184,8 +186,11 @@ const CollectionPage = () => {
             <p>Description: {token.description}</p>
             <p>Contract Address: {token.contractAddress}</p>
            
-                <button onClick={() => buyToken(token.contractAddress, token.tokenId)}>Buy</button>
-
+            {token.isForSale && (
+  <button onClick={() => buyToken(token.contractAddress, token.tokenId)}>
+    Buy
+  </button>
+)}
             
           </div>
         ))}

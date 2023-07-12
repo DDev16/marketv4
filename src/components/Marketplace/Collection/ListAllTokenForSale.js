@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Web3Context } from '../../../utils/Web3Provider';
 import '../../../components/Marketplace/Collection/ListAllTokens.css';
+import Swal from 'sweetalert2';
 
 const ListAll = () => {
   const { web3, marketplaceContract } = useContext(Web3Context);
@@ -10,10 +11,7 @@ const ListAll = () => {
   });
   const [tokenOwner, setTokenOwner] = useState('');
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState(null);
 
-  // fetch the current owner and update state on component mount
   useEffect(() => {
     const fetchTokenOwner = async () => {
       const owner = await marketplaceContract.methods.owner().call();
@@ -22,38 +20,32 @@ const ListAll = () => {
     fetchTokenOwner();
   }, [marketplaceContract.methods]);
 
- // submit the form to list all tokens for sale
- const handleSubmit = async (event) => {
-  event.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-  try {
-    setLoading(true);
-    const accounts = await web3.eth.getAccounts();
+    try {
+      setLoading(true);
+      const accounts = await web3.eth.getAccounts();
 
-    // check if the user is the owner
-    if (accounts[0] !== tokenOwner) {
-      throw new Error('You are not the owner of these tokens.');
+      if (accounts[0] !== tokenOwner) {
+        throw new Error('You are not the owner of these tokens.');
+      }
+
+      const priceInWei = web3.utils.toWei(collectionDetails.price, 'ether');
+
+      await marketplaceContract.methods
+        .listCollectionForSale(collectionDetails.collectionId, priceInWei)
+        .send({ from: accounts[0] });
+
+      setCollectionDetails({ collectionId: '', price: '' });
+      Swal.fire('Success!', 'Tokens listed successfully!', 'success');
+    } catch (err) {
+      Swal.fire('Error!', err.message, 'error');
+    } finally {
+      setLoading(false);
     }
+  };
 
-    // Convert price from Ether to Wei
-    const priceInWei = web3.utils.toWei(collectionDetails.price, 'ether');
-
-    await marketplaceContract.methods
-      .listCollectionForSale(collectionDetails.collectionId, priceInWei)
-      .send({ from: accounts[0] });
-
-    // if successful, show success message and reset form
-    setCollectionDetails({ collectionId: '', price: '' });
-    setSuccess(true);
-  } catch (err) {
-    setError(err.message);
-  } finally {
-    setLoading(false);
-  }
-};
-
-
-  // update the state when inputs change
   const handleChange = (event) => {
     setCollectionDetails({
       ...collectionDetails,
@@ -63,7 +55,13 @@ const ListAll = () => {
 
   return (
     <div className="ListAllTokens">
-      <h2>Owner: {tokenOwner}</h2>
+      <h2>List All Tokens in a Collection</h2>
+
+      <p>
+        To list all tokens in a collection for sale, please enter the Collection ID and the Price (in ETH). 
+        You must be the owner of these tokens. The price will apply to all tokens in the collection.
+      </p>
+
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -85,9 +83,6 @@ const ListAll = () => {
           {loading ? 'Processing...' : 'List All Tokens for Sale'}
         </button>
       </form>
-
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {success && <p style={{ color: 'green' }}>Tokens listed successfully!</p>}
     </div>
   );
 };

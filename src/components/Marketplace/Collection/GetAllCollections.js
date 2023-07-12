@@ -23,7 +23,7 @@ const MyCollections = () => {
   const [maxPage, setMaxPage] = useState(1);
   const [searchName, setSearchName] = useState('');
   const [searchCollectionId, setSearchCollectionId] = useState('');
-  const collectionsPerPage = 5;
+  const collectionsPerPage = 50;
   const navigate = useNavigate();
 
   useEffect(() => {

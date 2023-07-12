@@ -134,6 +134,7 @@
   .card img,
   .card video {
     height: 300px;
+    width: auto;
   }
 }
 

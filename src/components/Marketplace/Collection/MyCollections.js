@@ -8,7 +8,7 @@ import { Alert, Spinner } from 'react-bootstrap';
 import BulkAddToCollection from './BulkAdd/BulkAddToCollection.js';
 import MyTokens from '../../../components/MyNFTs/MyTokens.js'
 import ListAllTokens from '../Collection/ListAllTokenForSale';
-import '../Listing.css';
+import '../../../components/Marketplace/Collection/MyCollections.module.css';
 
 const CollectionCard = React.memo(({ collection, navigateToCollectionPage }) => {
   const handleClick = useCallback(() => navigateToCollectionPage(collection.id), [navigateToCollectionPage, collection.id]);

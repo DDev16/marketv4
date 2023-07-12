@@ -108,6 +108,49 @@ contract NFTMarketplace is ReentrancyGuard, Ownable {
     totalCollections++; // Increment totalCollections here
 }
 
+function isTokenForSale(address contractAddress, uint256 tokenId) public view returns (bool) {
+    Listing memory listing = listings[contractAddress][tokenId];
+    return listing.isActive;
+}
+
+    function getCollectionTokens(uint256 collectionId) public view returns (Token[] memory) {
+        require(collections[collectionId].owner != address(0), "Collection does not exist");
+
+        Token[] memory tokens = collectionTokens[collectionId];
+
+        return tokens;
+    }
+
+
+function listCollectionForSale(uint256 collectionId, uint256 price) external onlyOwner {
+    // Validate if the collection exists
+    require(collections[collectionId].owner != address(0), "Collection does not exist");
+
+    Token[] memory tokens = collectionTokens[collectionId];
+
+    for (uint256 i = 0; i < tokens.length; i++) {
+        // Validate if the owner is calling
+        require(ERC721(tokens[i].contractAddress).ownerOf(tokens[i].tokenId) == msg.sender, "Caller is not owner");
+
+        // Get the token listing
+        Listing storage listing = listings[tokens[i].contractAddress][tokens[i].tokenId];
+
+        // Set the listing values
+        listing.contractAddress = tokens[i].contractAddress;
+        listing.tokenId = tokens[i].tokenId;
+        listing.price = price;
+        listing.seller = msg.sender;
+        listing.isActive = true;
+
+        // Add the token to the active listings
+        activeListings.push(tokens[i]);
+
+        emit TokenListed(tokens[i].tokenId, price, msg.sender);
+    }
+}
+
+
+
 function addTokenToCollection(uint256 collectionId, address contractAddress, uint256 tokenId) public onlyTokenOwner(contractAddress, tokenId) {
     // Check if the collection exists
     require(collections[collectionId].owner != address(0), "Collection does not exist");
@@ -128,6 +171,10 @@ function addTokenToCollection(uint256 collectionId, address contractAddress, uin
         return (collection, tokens);
     }
 
+function getCollectionOwner(uint256 collectionId) public view returns (address) {
+    require(collections[collectionId].owner != address(0), "Collection does not exist");
+    return collections[collectionId].owner;
+}
 
 
 
@@ -307,6 +354,17 @@ function cancelListing(address contractAddress, uint256 tokenId) external onlyTo
     require(listings[contractAddress][tokenId].isActive, "Token is not listed for sale");
 
     delete listings[contractAddress][tokenId];
+
+    // Update the activeListings array
+    for (uint256 i = 0; i < activeListings.length; i++) {
+        if (activeListings[i].contractAddress == contractAddress && activeListings[i].tokenId == tokenId) {
+            if (i != activeListings.length - 1) {
+                activeListings[i] = activeListings[activeListings.length - 1];
+            }
+            activeListings.pop();
+            break;
+        }
+    }
 
     emit SaleCancelled(tokenId, msg.sender);
 }

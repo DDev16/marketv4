@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Web3Context } from '../../../../utils/Web3Provider.js';
 import './BulkAddToCollection.css';
 import { Breadcrumb } from 'react-bootstrap';
+import Swal from 'sweetalert2';
 
 const BulkAddToCollection = () => {
     const { web3, marketplaceContract } = useContext(Web3Context);
@@ -38,12 +39,12 @@ const BulkAddToCollection = () => {
                 tokenIds
             ).send({ from: accounts[0] });
 
-            alert("Tokens successfully added to the collection!");
+            Swal.fire('Success!', 'Tokens successfully added to the collection!', 'success');
             setTokenData('');
             setCollectionId('');
         } catch (error) {
             console.error("An error occurred while adding the tokens to the collection:", error);
-            alert("There was an error while adding the tokens to the collection. Please check console for more details.");
+            Swal.fire('Error!', 'There was an error while adding the tokens to the collection. Please check console for more details.', 'error');
         } finally {
             setIsLoading(false);
         }

@@ -30,6 +30,27 @@
   font-weight: 700;
 }
 
+.custom-textarea {
+  resize: vertical;
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.custom-textarea::placeholder {
+  color: #999;
+}
+
+.custom-textarea:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+
+
 .create-collection-form label {
   display: block;
   font-weight: 600;

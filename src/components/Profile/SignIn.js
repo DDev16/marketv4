@@ -19,40 +19,41 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
   background: url(${bgImage}) no-repeat center center fixed; 
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
   background-size: cover;
   animation: ${fadeIn} 0.5s ease;
 `;
 
 
+
 const LoginContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 450px;
+  width: 100%; /* Adjust the width based on your design */
+  max-width: 450px; /* Add a maximum width to prevent it from stretching too much */
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   transition: 0.3s;
   background: #ffffff;
-  margin-top: 150px;
+  margin-top: 50px;
   margin-bottom: 100px;
 `;
+
 
 const MockImage = styled.img`
   width: 100%;
   height: 200px;
   object-fit: cover;
-  border-radius: 10px 10px 0 0;
+  border-radius: 10px 10px 10px 10px;
   margin-bottom: 20px;
+  margin-top:30px;
 `;
 
 const Title = styled.h1`
   color: #324d67;
-  font-size: 2.5em;
+  font-size: 1.8em; /* Adjust the font size based on your design */
   margin-bottom: 10px;
   font-weight: 600;
   text-align: center;
@@ -60,11 +61,13 @@ const Title = styled.h1`
 
 const Description = styled.p`
   color: #324d67;
-  font-size: 1em;
+  font-size: 0.9em; /* Adjust the font size based on your design */
   margin-bottom: 20px;
   text-align: center;
   font-weight: 400;
 `;
+
+
 
 const Form = styled.form`
   display: flex;
@@ -133,7 +136,7 @@ const ToggleButton = styled.button`
   border: none;
   color: #324d67;
   cursor: pointer;
-  font-size: 0.9em;
+  font-size: 0.8em; /* Adjust the font size based on your design */
   margin-top: 10px;
   transition: color 0.3s ease;
 
@@ -141,6 +144,7 @@ const ToggleButton = styled.button`
     color: #007bff;
   }
 `;
+
 
 const LoadingWrapper = styled.div`
   display: flex;
