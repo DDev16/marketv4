@@ -4,6 +4,8 @@ import { Web3Context } from '../../../utils/Web3Provider.js';
 import styles from '../../../components/Marketplace/Collection/CollectionPage.modules.css';
 import QRCode from 'qrcode.react';
 import 'canvas-toBlob';
+import Confetti from 'react-confetti';
+import Swal from 'sweetalert2';
 
 const ERC721_ABI = [
   {
@@ -20,12 +22,14 @@ const ERC721_ABI = [
 
 const CollectionPage = () => {
   const { collectionId } = useParams();
-  const { web3, marketplaceContract } = useContext(Web3Context);
+  const { web3, marketplaceContract, contrat } = useContext(Web3Context);
   const [collection, setCollection] = useState(null);
   const [tokens, setTokens] = useState([]);
   const [qrCodeUrl, setQRCodeUrl] = useState('');
 
   const qrRef = useRef();
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [isBuying, setIsBuying] = useState(false);
 
   const downloadQRCode = () => {
     const canvas = qrRef.current.querySelector('canvas');
@@ -141,13 +145,46 @@ const CollectionPage = () => {
       const accounts = await web3.eth.getAccounts();
       const buyerAddress = accounts[0];
       const token = tokens.find((t) => t.tokenId === tokenId && t.contractAddress === contractAddress);
-      const price = token.tokenPrice;
-      await marketplaceContract.methods.buyToken(contractAddress, tokenId).send({ from: buyerAddress, value: price });
+  
+      // Check if the token exists
+      if (!token) {
+        console.error('Token is undefined:', token);
+        return;
+      }
+  
+      const tokenPriceWei = await marketplaceContract.methods.getTokenPrice(contractAddress, tokenId).call({ from: buyerAddress });
+      const tokenPriceEther = web3.utils.fromWei(tokenPriceWei.toString(), 'ether');
+      console.log('Token Price in Ether:', tokenPriceEther); // Log the price in Ether
+      setIsBuying(true);
+  
+      await marketplaceContract.methods.buyToken(contractAddress, tokenId).send({ from: buyerAddress, value: tokenPriceWei });
       console.log('Token bought successfully!');
+      
+      setShowConfetti(true);
+      setTimeout(() => setShowConfetti(false), 5000); // Show confetti for 5 seconds
+  
+      Swal.fire({
+        title: 'Success!',
+        text: 'Token bought successfully!',
+        icon: 'success',
+        confirmButtonText: 'Cool'
+      });
+  
+      setIsBuying(false); // Set buying state to false when the purchase completes
     } catch (error) {
       console.error('Error buying token:', error);
+  
+      Swal.fire({
+        title: 'Error!',
+        text: 'An error occurred while buying the token.',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+  
+      setIsBuying(false); // Set buying state to false when an error occurs
     }
   };
+  
 
 
   if (!collection) {
@@ -156,6 +193,11 @@ const CollectionPage = () => {
 
   return (
     <div className="collectionPage">
+      {showConfetti && (
+      <div style={{position: 'fixed', top: 0, left: 0, width: '100%', height: '100%'}}>
+        <Confetti numberOfPieces={200} />
+      </div>
+    )}
       <h1>{collection.name}</h1>
       <p className="owner">Owned by: {collection.owner}</p>
 

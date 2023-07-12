@@ -14,11 +14,14 @@ const ListAll = () => {
 
   useEffect(() => {
     const fetchTokenOwner = async () => {
-      const owner = await marketplaceContract.methods.owner().call();
-      setTokenOwner(owner);
+      if(marketplaceContract) {  // Check if marketplaceContract is not null
+        const owner = await marketplaceContract.methods.owner().call();
+        setTokenOwner(owner);
+      }
     };
     fetchTokenOwner();
-  }, [marketplaceContract.methods]);
+  }, [marketplaceContract]); 
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -58,15 +61,29 @@ const ListAll = () => {
       <h2>List All Tokens in a Collection</h2>
 
       <p>
-        To list all tokens in a collection for sale, please enter the Collection ID and the Price (in ETH). 
-        You must be the owner of these tokens. The price will apply to all tokens in the collection.
+        This form allows you to list all tokens in a collection for sale. Please take note of the following:
       </p>
+
+      <ul>
+        <li>
+          You will need to enter the Collection ID and the Price (in ETH). Make sure you own all the tokens in the specified collection.
+        </li>
+        <li>
+          The specified price will apply uniformly to all tokens within the collection.
+        </li>
+        <li>
+          Ideally, this action should be performed once when you first create a collection and are still the sole owner of all the NFTs within.
+        </li>
+        <li>
+          Attempting to list all tokens for a second time after some have been sold will result in an error, since you will no longer be the owner of all tokens in the collection.
+        </li>
+      </ul>
 
       <form onSubmit={handleSubmit}>
         <input
           type="text"
           name="collectionId"
-          placeholder="Collection ID"
+          placeholder="Enter Collection ID here"
           onChange={handleChange}
           value={collectionDetails.collectionId}
           required
@@ -74,7 +91,7 @@ const ListAll = () => {
         <input
           type="text"
           name="price"
-          placeholder="Price"
+          placeholder="Enter Price in ETH here"
           onChange={handleChange}
           value={collectionDetails.price}
           required
@@ -83,8 +100,12 @@ const ListAll = () => {
           {loading ? 'Processing...' : 'List All Tokens for Sale'}
         </button>
       </form>
+      <p>
+        The 'List All Tokens for Sale' button will be disabled during the processing period. Once complete, the button will be re-enabled.
+      </p>
     </div>
   );
 };
 
 export default ListAll;
+

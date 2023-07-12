@@ -3,6 +3,9 @@ import { Web3Context } from '../../../utils/Web3Provider';
 import './MarketListings.css';
 import Loading from '../../Loading/Loading';
 import Modal from 'react-modal';
+import Swal from 'sweetalert2';
+import 'animate.css';
+import Confetti from 'react-confetti'
 
 const ERC721_ABI = [
   {
@@ -60,6 +63,8 @@ const MarketListings = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredTokens, setFilteredTokens] = useState([]);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [isBuying, setIsBuying] = useState(false);
 
   const openImageModal = (imageUrl) => {
     setSelectedImage(imageUrl);
@@ -71,14 +76,75 @@ const MarketListings = () => {
     setIsModalOpen(false);
   };
 
-  const buyToken = async (contractAddress, tokenId, price) => {
-    try {
-      await marketplaceContract.methods.buyToken(contractAddress, tokenId).send({ value: price, from: account });
+ const buyToken = async (contractAddress, tokenId, price) => {
+  setIsBuying(true); // Set buying state to true when the purchase begins
+  try {
+    await marketplaceContract.methods.buyToken(contractAddress, tokenId).send({ value: price, from: account });
+    const tokenData = tokens.find(token => token.tokenId === tokenId);
       setPurchaseSuccess(true);
+      
+
+      setTimeout(() => {
+        setShowConfetti(false);
+      }, 5000);
+      
+      Swal.fire({
+        title: `Congratulations!`,
+        text: `You're now the proud owner of the "${tokenData.metadata.name}" NFT!`,
+        imageUrl: tokenData.imageUrl,
+        imageWidth: 200,
+        imageHeight: 200,
+        imageAlt: 'Custom image',
+        icon: 'success',
+        confirmButtonText: 'Awesome!',
+        customClass: {
+          container: 'my-swal',
+        },
+        showClass: {
+          popup: 'animate__animated animate__zoomIn'
+        },
+        hideClass: {
+          popup: 'animate__animated animate__zoomOut'
+        },
+        background: '#1e1e1e',
+        iconColor: '#a9ff4d',
+        timer: 5000,
+        timerProgressBar: true,
+        footer: '<a href>Why am I seeing this?</a>',
+      })
+
+      setShowConfetti(true);
+      setIsBuying(false);
+
     } catch (error) {
       console.error('Error buying token:', error);
+      setIsBuying(false); // If the purchase fails, reset the buying state
+
+      Swal.fire({
+        title: 'Error!',
+        text: 'Something went wrong during your purchase. Please try again.',
+        icon: 'error',
+        confirmButtonText: 'Okay',
+        customClass: {
+          container: 'my-swal',
+        },
+        showClass: {
+          popup: 'animate__animated animate__zoomIn'
+        },
+        hideClass: {
+          popup: 'animate__animated animate__zoomOut'
+        },
+        background: '#1e1e1e',
+        iconColor: '#ff4d4d',
+        timer: 5000,
+        timerProgressBar: true,
+        footer: '<a href>Contact Support</a>',
+      })
     }
   };
+  
+  
+  
 
   useEffect(() => {
     const loadAccount = async () => {
@@ -218,6 +284,11 @@ const MarketListings = () => {
 
   return (
     <div className="marketListings">
+{showConfetti && (
+      <div style={{position: 'fixed', top: 0, left: 0, width: '100%', height: '100%'}}>
+        <Confetti numberOfPieces={200} />
+      </div>
+    )}
       <div className="marketTitle">
         <p>NFT's For Sale</p>
       </div>
@@ -266,11 +337,10 @@ const MarketListings = () => {
             {token.contractAddress.substring(token.contractAddress.length - 4)}
           </p>
           <button onClick={() => buyToken(token.contractAddress, token.tokenId, token.price)} className="buyButton">
-            Buy
-          </button>
+  {isBuying ? 'Buying...' : 'Buy'}
+</button>
         </div>
       ))}
-      {purchaseSuccess && <p className="successMessage">Purchase successful!</p>}
 
       <Modal
         isOpen={isModalOpen}
