@@ -78,7 +78,7 @@
 
 
 .token-image, .token-video {
-  width: 100%;
+  width: 450px;
   height: auto;
   object-fit: cover;
   cursor: pointer;
@@ -146,6 +146,21 @@ input[type="number"] {
   }
   input[type="number"] {
     width: 100%;
+  }
+
+  .token-image, .token-video {
+    width: 300px;
+    height: auto;
+    object-fit: cover;
+    cursor: pointer;
+    border-radius:5%;
+    border: solid 3px transparent;
+    transition: all 0.3s ease-in-out, border-color 0.3s ease-in-out;
+    box-shadow: 0 11px 20px 2px rgba(0,0,0,.8);
+    margin-top: 30px;
+    margin-bottom: 40px;
+  
+   
   }
 }
 

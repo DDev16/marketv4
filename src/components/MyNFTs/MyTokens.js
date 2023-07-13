@@ -11,7 +11,11 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
 
+const CenteredDiv = styled('div')({
+  textAlign: 'center',
+});
 
 const StyledImage = styled('img')`
   width: 15%;
@@ -23,6 +27,8 @@ const StyledImage = styled('img')`
     height: auto;
   }
 `;
+
+
 const MyTokens = () => {
   const { web3, contract, marketplaceContract } = useContext(Web3Context);
   const [tokens, setTokens] = useState([]);
@@ -33,7 +39,7 @@ const MyTokens = () => {
   const [searchName, setSearchName] = useState('');
   const [searchId, setSearchId] = useState('');
   const [isListedFilter, setIsListedFilter] = useState('none');  // 'none' means no filter, 'true' means listed, 'false' means not listed
-  
+
   const updateTokenStatus = async (contractAddress, tokenId) => {
     try {
       const forSale = await marketplaceContract.methods
@@ -199,14 +205,16 @@ const MyTokens = () => {
         </Typography>
       </header>
 
-      <Accordion defaultExpanded={true}>
+      <Accordion defaultExpanded={false} >
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"
         id="panel1a-header"
       >
-        <Typography variant="h5">My Tokens</Typography>
-      </AccordionSummary>
+ <Grid container justifyContent="center" style={styles.CenteredDiv}>
+      <Typography variant="h5">Click Here to view NFTs </Typography>
+    </Grid>
+         </AccordionSummary>
       <AccordionDetails>
         <Box className="my-tokens-container">
           <Typography variant="h2" className="tokens-heading">Here are your tokens:</Typography>

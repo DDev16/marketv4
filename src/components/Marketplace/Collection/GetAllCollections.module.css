@@ -3,32 +3,54 @@
 .myCollectionsContainer {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  padding-top: 0; 
-  background-color: #f5f5f5;
-  border-radius: 10px;
-  transition: all 0.3s ease-in-out; 
-  margin-top:40px;
-  width:1900px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  background-image: url("https://img.freepik.com/free-vector/realistic-white-golden-geometric-background_79603-2032.jpg?size=626&ext=jpg&ga=GA1.2.1715257389.1688125620&semt=ais"); /* replace 'your_image_url.jpg' with the actual URL of the image */
+  background-size: cover; /* this will make the image cover the whole area of the element */
+  background-position: center; /* this will center the image */
+  background-repeat: no-repeat; /* this will prevent the image from repeating */
+  box-shadow: 0px 10px 15px 3px rgba(0, 0, 0, 0.4), 0px 4px 6px -2px rgba(0, 0, 0, 0.05);
+  margin-bottom:45px;
+  margin-top:70px;
 }
-@keyframes gradientSlide {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 100% 50%; }
-}
+
 
 .topDivider {
   position: relative;
-  height: 125px;
-  width: 100%;  
+  height: 325px;
+  width: 1890px;  
   background: 
     radial-gradient(circle at 50% 0, transparent, #000 75%),
     linear-gradient(-60deg, #0062ff, #33CCFF, #0062ff, #33CCFF);
   animation: gradientSlide 3s linear infinite;
   filter: drop-shadow(0 0 10px #33CCFF);
-  margin-top:0px;
+  margin-top:70px;
   
 }
+
+.wave {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 320px;
+  bottom: 0;
+}
+
+.wave path {
+  animation: wave 15s cubic-bezier( 0.36, 0.45, 0.63, 0.53) infinite;
+  transform-origin: center bottom;
+}
+
+@keyframes wave {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(-100px, 0, 0);
+  }
+}
+
 
 
 .topDivider::before {
@@ -61,14 +83,14 @@
   margin-bottom: 0.5em;
   text-transform: uppercase;
   letter-spacing: 2px;
-  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   text-shadow: 3px 3px 0 rgba(0,0,0,0.2); 
+  margin-left:40px;
+  textAlign: 'center';
 
   background: linear-gradient(to right, #0072ff, #00c6ff); 
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent; 
  
-  transform: perspective(600px) rotateX(20deg);
 
   box-shadow: 10px 10px 30px rgba(0,0,0,0.2);
   padding: 15px;
@@ -79,7 +101,6 @@
 
 .myCollectionsTitle:hover {
   box-shadow: 15px 15px 40px #00FFFF; 
-  transform: perspective(600px) rotateX(25deg); 
 }
 
 
@@ -87,12 +108,10 @@
   0%, 100% {
     text-shadow: 3px 3px 0 rgba(0,0,0,0.2);
     box-shadow: 10px 10px 30px rgba(0,0,0,0.2);
-    transform: perspective(600px) rotateX(20deg);
   }
   50% {
     text-shadow: 3px 3px 15px #00FFFF; 
     box-shadow: 15px 15px 40px #00FFFF; 
-    transform: perspective(600px) rotateX(25deg); 
   }
 }
 
@@ -217,6 +236,7 @@
 @media only screen and (max-width: 480px) {
   .myCollectionsContainer {
     padding: 0.5em;
+
   }
 
   .myCollectionsTitle {

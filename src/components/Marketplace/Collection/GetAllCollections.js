@@ -3,6 +3,28 @@ import { Web3Context } from '../../../utils/Web3Provider.js';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../../components/Marketplace/Collection/GetAllCollections.module.css';
 
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { styled } from '@mui/system';
+import Grid from '@mui/material/Grid';
+
+const StyledAccordionSummary = styled(AccordionSummary)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'space-between', // to separate the icon and text
+  alignItems: 'center', 
+  padding: theme.spacing(1),// decrease padding to reduce size
+
+}));
+
+const StyledAccordion = styled(Accordion)(({ theme }) => ({
+  
+  padding: theme.spacing(1),// decrease padding to reduce size
+  borderRadius:'5px'
+}));
+
 const CollectionCard = ({ collection, navigateToCollectionPage }) => {
   return (
     <div className={styles.collectionCard} onClick={() => navigateToCollectionPage(collection.collectionId)}>
@@ -96,52 +118,67 @@ const MyCollections = () => {
   };
 
   return (
-    
-    <div className={styles.myCollectionsContainer}>
-<svg className={styles.topDivider} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
-  <path fillOpacity="1" d="M0,96L48,117.3C96,139,192,181,288,186.7C384,192,480,160,576,160C672,160,768,192,864,192C960,192,1056,160,1152,144C1248,128,1344,128,1392,128L1440,128L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path>
+    <>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="wave">
+  <path fill="lightblue" fillOpacity=".7" d="M0,96L80,122.7C160,149,320,203,480,192C640,181,800,107,960,80C1120,53,1280,75,1360,85.3L1440,96L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"></path>
 </svg>
+
       <h1 className={styles.myCollectionsTitle}>Collections</h1>
-      <div className={styles.paginationContainer}>
-        {Array.from({ length: maxPage }, (_, i) => i + 1).map((pageNumber) => (
-          <button
-            key={pageNumber}
-            onClick={() => setCurrentPage(pageNumber)}
-            disabled={pageNumber === currentPage}
-            className={`${styles.pageButton} ${
-              pageNumber === currentPage && styles.currentPageButton
-            }`}
-          >
-            {pageNumber}
-          </button>
-        ))}
-      </div>
-      <div className={styles.searchContainer}>
-        <input
-          type="text"
-          placeholder="Search by name"
-          value={searchName}
-          onChange={handleNameChange}
-          className={styles.searchInput}
-        />
-        <input
-          type="text"
-          placeholder="Search by collection ID"
-          value={searchCollectionId}
-          onChange={handleCollectionIdChange}
-          className={styles.searchInput}
-        />
-      </div>
-      <div className={styles.myCollectionsList}>
-        {collections.map((collection, index) => (
-          <CollectionCard
-            key={index}
-            collection={collection}
-            navigateToCollectionPage={navigateToCollectionPage}
-          />
-        ))}
-      </div>
-    </div>
+      <StyledAccordion>
+      <StyledAccordionSummary
+  expandIcon={<ExpandMoreIcon />}
+  aria-controls="panel1a-content"
+  id="panel1a-header"
+>
+<Grid container justifyContent="center" style={styles.CenteredDiv}>
+      <Typography variant="h5">Click Here to view Collections </Typography>
+    </Grid>
+</StyledAccordionSummary>
+        <AccordionDetails>
+          <div className={styles.myCollectionsContainer}>
+            <div className={styles.paginationContainer}>
+              {Array.from({ length: maxPage }, (_, i) => i + 1).map((pageNumber) => (
+                <button
+                  key={pageNumber}
+                  onClick={() => setCurrentPage(pageNumber)}
+                  disabled={pageNumber === currentPage}
+                  className={`${styles.pageButton} ${
+                    pageNumber === currentPage && styles.currentPageButton
+                  }`}
+                >
+                  {pageNumber}
+                </button>
+              ))}
+            </div>
+            <div className={styles.searchContainer}>
+              <input
+                type="text"
+                placeholder="Search by name"
+                value={searchName}
+                onChange={handleNameChange}
+                className={styles.searchInput}
+              />
+              <input
+                type="text"
+                placeholder="Search by collection ID"
+                value={searchCollectionId}
+                onChange={handleCollectionIdChange}
+                className={styles.searchInput}
+              />
+            </div>
+            <div className={styles.myCollectionsList}>
+              {collections.map((collection, index) => (
+                <CollectionCard
+                  key={index}
+                  collection={collection}
+                  navigateToCollectionPage={navigateToCollectionPage}
+                />
+              ))}
+            </div>
+          </div>
+        </AccordionDetails>
+      </StyledAccordion>
+    </>
   );
 };
 

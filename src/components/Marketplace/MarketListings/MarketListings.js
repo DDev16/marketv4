@@ -6,6 +6,11 @@ import Modal from 'react-modal';
 import Swal from 'sweetalert2';
 import 'animate.css';
 import Confetti from 'react-confetti'
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const ERC721_ABI = [
   {
@@ -284,23 +289,29 @@ const MarketListings = () => {
 
   return (
     <div className="marketListings">
-{showConfetti && (
-      <div style={{position: 'fixed', top: 0, left: 0, width: '100%', height: '100%'}}>
-        <Confetti numberOfPieces={200} />
-      </div>
-    )}
-      <div className="marketTitle">
-        <p>NFT's For Sale</p>
-      </div>
+        {showConfetti && (
+            <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%' }}>
+                <Confetti numberOfPieces={200} />
+            </div>
+        )}
+        <div className="marketTitle">
+            <p>NFT's For Sale</p>
+        </div>
+      
+        <Accordion style={{width: "70%", margin: "0 auto"}}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography>Listings</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+                <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search by name, contract address, token ID, or price"
+        />
 
-      <input
-        type="text"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        placeholder="Search by name, contract address, token ID, or price"
-      />
-
-      {(searchQuery ? filteredTokens : tokens).map((token, index) => (
+        <div className="marketListings">
+                    {(searchQuery ? filteredTokens : tokens).map((token, index) => (
         <div key={index} className="marketListings__token">
           {failedImages.includes(token.tokenId) ? (
             <p>Failed to load image for this token</p>
@@ -345,16 +356,19 @@ const MarketListings = () => {
         </div>
       ))}
 
-      <Modal
-        isOpen={isModalOpen}
-        onRequestClose={closeModal}
-        contentLabel="Token Image"
-        className="imageModal"
-      >
-        {selectedImage && <img className="modalImage" src={selectedImage} alt="Token" />}
-      </Modal>
+<Modal
+                        isOpen={isModalOpen}
+                        onRequestClose={closeModal}
+                        contentLabel="Token Image"
+                        className="imageModal"
+                    >
+                        {selectedImage && <img className="modalImage" src={selectedImage} alt="Token" />}
+                    </Modal>
+                </div>
+            </AccordionDetails>
+        </Accordion>
     </div>
-  );
+);
 };
 
 export default MarketListings;
