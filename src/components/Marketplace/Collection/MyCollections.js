@@ -22,6 +22,8 @@ const StyledImage = styled('img')`
   }
 `;
 
+
+
 const CollectionCard = React.memo(({ collection, navigateToCollectionPage }) => {
   const handleClick = useCallback(() => navigateToCollectionPage(collection.id), [navigateToCollectionPage, collection.id]);
 
