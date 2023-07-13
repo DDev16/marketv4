@@ -4,11 +4,23 @@ import { Web3Context } from '../../../utils/Web3Provider.js';
 import styles from '../../../components/Marketplace/Collection/MyCollections.module.css';
 import AddToCollection from '../../../components/Marketplace/Collection/AddToCollection.js';
 import { useNavigate } from 'react-router-dom';
-import { Alert, Spinner } from 'react-bootstrap'; 
+import { Alert, Spinner } from 'react-bootstrap';
 import BulkAddToCollection from './BulkAdd/BulkAddToCollection.js';
 import MyTokens from '../../../components/MyNFTs/MyTokens.js'
 import ListAllTokens from '../Collection/ListAllTokenForSale';
 import '../../../components/Marketplace/Collection/MyCollections.module.css';
+import { styled } from '@mui/system';
+
+const StyledImage = styled('img')`
+  width: 15%;
+  height: 150px;
+  margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: auto;
+  }
+`;
 
 const CollectionCard = React.memo(({ collection, navigateToCollectionPage }) => {
   const handleClick = useCallback(() => navigateToCollectionPage(collection.id), [navigateToCollectionPage, collection.id]);
@@ -54,10 +66,10 @@ const MyCollections = () => {
         console.error('Web3 or contract object is not initialized');
         return;
       }
-      
+
       try {
         setIsLoading(true);
-  
+
         const accounts = await web3.eth.getAccounts();
         const ownerAddress = accounts[0];
         const fetchedCollections = await marketplaceContract.methods.getCollectionsByOwner(ownerAddress).call();
@@ -65,8 +77,7 @@ const MyCollections = () => {
           ...collection,
           id: collection.collectionId, // change index to collection.collectionId
         }));
-        
-  
+
         setCollections(collectionsWithId);
       } catch (fetchError) {
         console.error('Error fetching collections:', fetchError);
@@ -75,7 +86,7 @@ const MyCollections = () => {
         setIsLoading(false);
       }
     };
-  
+
     if (isWeb3Ready) {
       fetchCollections();
     }
@@ -84,7 +95,7 @@ const MyCollections = () => {
     if (collections.length === 0) {
       return <p>No collections found.</p>;
     }
-  
+
     return collections.map((collection) => (
       <CollectionCard
         key={collection.id}
@@ -103,7 +114,13 @@ const MyCollections = () => {
   }
 
   return (
-    <>
+    
+    <div className={styles.background}>
+<div className={styles.collectionTools}>
+            <h1>Collection Tools</h1>
+            <StyledImage src="https://cdn-icons-png.flaticon.com/128/1416/1416681.png" alt="A psychedelic image" />
+
+            </div>
       <AddToCollection />
       <BulkAddToCollection />
       <ListAllTokens />
@@ -115,7 +132,8 @@ const MyCollections = () => {
         </div>
       </div>
       <MyTokens />
-    </>
+    </div>
+    
   );
 };
 

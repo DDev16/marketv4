@@ -31,11 +31,16 @@ const CustomButton = styled('button')({
 });
 
 
-const StyledImage = styled('img')({
-  width: '20%',
-  height: '10%',
-  marginBottom: '20px',
-});
+const StyledImage = styled('img')`
+  width: 25%;
+  height: 300px;
+  margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: auto;
+  }
+`;
 
 const ListAll = () => {
   const { web3, marketplaceContract } = useContext(Web3Context);
@@ -91,9 +96,12 @@ const ListAll = () => {
   };
 
   return (
+    <div className="bulk-add-to-collection">
+       <h2>List All Tokens For Sale In a Collection</h2>
     <Box sx={{ width: '100%', padding: '20px', backgroundColor: '#f5f5f5' }} className="ListAllTokens">
-      <h2>List All Tokens in a Collection</h2>
-      {/* <StyledImage src="https://source.unsplash.com/featured/?psychedelics" alt="A psychedelic image" /> */}
+      
+           
+      <StyledImage src="https://cdn-icons-png.flaticon.com/128/4843/4843057.png" alt="A psychedelic image" />
 
       <Accordion>
         <AccordionSummary
@@ -150,6 +158,7 @@ const ListAll = () => {
         </AccordionDetails>
       </Accordion>
     </Box>
+    </div>
   );
 };
 
