@@ -26,12 +26,27 @@ const ERC721_ABI = [
     stateMutability: 'view',
     type: 'function',
   },
-  // Add more functions if needed
+  {
+    constant: true,
+    inputs: [
+      { name: 'tokenId', type: 'uint256' },
+      { name: 'value', type: 'uint256' } // this input could be different based on your implementation
+    ],
+    name: 'royaltyInfo',
+    outputs: [
+      { name: '', type: 'address' },
+      { name: '', type: 'uint256' }
+    ],
+    payable: false,
+    stateMutability: 'view',
+    type: 'function',
+  }
+  
 ];
 
 const CollectionPage = () => {
   const { collectionId } = useParams();
-  const { web3, marketplaceContract, contract } = useContext(Web3Context);
+  const { web3, contract, marketplaceContract } = useContext(Web3Context);
   const [collection, setCollection] = useState(null);
   const [tokens, setTokens] = useState([]);
   const [qrCodeUrl, setQRCodeUrl] = useState('');
@@ -90,7 +105,7 @@ const CollectionPage = () => {
               const contract = new web3.eth.Contract(ERC721_ABI, contractAddress);
               
               const tokenURI = await contract.methods.tokenURI(tokenId).call({ from: ownerAddress });
-              const tokenOwner = await contract.methods.ownerOf(tokenId).call({ from: ownerAddress });  // Added this line
+              const tokenOwner = await contract.methods.ownerOf(tokenId).call({ from: ownerAddress });
 
               const ipfsUrl = tokenURI.replace('ipfs://', '');
               console.log(`Fetching IPFS data from: https://ipfs.io/ipfs/${ipfsUrl}`);
@@ -101,14 +116,21 @@ const CollectionPage = () => {
               const { name, description } = cardDetails;
               console.log('Card Details:', cardDetails);
 
-            
-              
               const isForSale = await marketplaceContract.methods.isTokenForSale(contractAddress, tokenId).call({ from: ownerAddress });
               
               // Only fetch token price if it is for sale
               let tokenPrice = null;
               if (isForSale) {
                 tokenPrice = await marketplaceContract.methods.getTokenPrice(contractAddress, tokenId).call({ from: ownerAddress });
+              }
+
+              // Fetch royalty information
+              let royaltyReceiver = null;
+              let royaltyAmount = null;
+              if (tokenPrice) {
+                const royaltyInfo = await contract.methods.royaltyInfo(tokenId, tokenPrice).call();
+                royaltyReceiver = royaltyInfo[0];
+                royaltyAmount = royaltyInfo[1];
               }
 
               return {
@@ -119,10 +141,9 @@ const CollectionPage = () => {
                 description,
                 isForSale,
                 tokenPrice,
-                tokenOwner,  // Ensure tokenOwner is included here
-
-
-
+                tokenOwner,
+                royaltyReceiver,
+                royaltyAmount,
                 ...cardDetails,
               };
             })
@@ -277,20 +298,22 @@ const CollectionPage = () => {
               <img src={`https://ipfs.io/ipfs/${token.image.replace(/ipfs:\/\//g, '')}`} alt={`NFT Card ${index + 1}`} />
             )}
   
-  <div class="token-info">
-    <p><span class="token-label">Token ID:</span> {token.tokenId}</p>
-    <p><span class="token-label">Name:</span> {token.name}</p>
-    <p><span class="token-label">Description:</span> {token.description}</p>
-    <p><span class="token-label">Contract Address:</span> {token.contractAddress}</p>
-    <p><span class="token-label">Token Owner:</span> {token.tokenOwner}</p>
-    <p class={token.tokenPrice !== null ? "for-sale" : "not-for-sale"}>
-  Token Price: {token.tokenPrice !== null ? web3.utils.fromWei(token.tokenPrice, 'ether') : 'Not for sale'}
+  <div className="token-info">
+    <p><span className="token-label">Token ID:</span> {token.tokenId}</p>
+    <p><span className="token-label">Name:</span> {token.name}</p>
+    <p><span className="token-label">Description:</span> {token.description}</p>
+    <p><span className="token-label">Contract Address:</span> {token.contractAddress}</p>
+    <p><span className="token-label">Token Owner:</span> {token.tokenOwner}</p>
+    <p className={token.tokenPrice !== null ? "for-sale" : "not-for-sale"}>
+    Token Price: {token.tokenPrice ? web3.utils.fromWei(token.tokenPrice.toString(), 'ether') : 'Not for sale'}
 </p>
+<p> <span className="token-label">Royalty:</span>  {token.royaltyAmount ? web3.utils.fromWei(token.royaltyAmount.toString(), 'ether') : '0'} ETH</p>
+<p> <span className="token-label">Royalty Receiver:</span>  {token.royaltyReceiver}</p>
 </div>
 
 
             {token.isForSale && (
-  <button onClick={() => buyToken(token.contractAddress, token.tokenId)}>
+  <button className="buy-button" onClick={() => buyToken(token.contractAddress, token.tokenId)}>
     Buy
   </button>
 )}

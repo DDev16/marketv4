@@ -35,6 +35,21 @@
   animation: tilt 5s infinite;
 }
 
+.marketListings__royalty_receiver {
+  word-wrap: break-word;
+}
+
+@media only screen and (max-width: 480px) {
+  .marketListings__royalty_receiver {
+    white-space: normal;
+
+  font-size:10px;
+  }
+}
+
+
+ 
+
 .marketTitle p {
   font-family: 'Arial', sans-serif;
   font-size: 72px;

@@ -324,18 +324,21 @@ const MarketListings = () => {
             <p className="marketListings__tokenInfo">Description: {token.metadata.description}</p>
           </div>
           <p className="marketListings__tokenInfo">
-            Contract Address: {token.contractAddress.substring(0, 6)}...
-            {token.contractAddress.substring(token.contractAddress.length - 4)}
-          </p>
-          <p className="marketListings__tokenInfo">Token ID: {token.tokenId}</p>
-          <p className="marketListings__tokenInfo">
-            Price: {parseFloat(web3.utils.fromWei(token.price, 'ether')).toFixed(2)} ETH
-          </p>
-          <p className="marketListings__tokenInfo">Royalty: {web3.utils.fromWei(token.royaltyAmount, 'ether')} ETH</p>
-          <p className="marketListings__tokenInfo">
-            Seller: {token.seller.substring(0, 6)}...
-            {token.contractAddress.substring(token.contractAddress.length - 4)}
-          </p>
+    Contract Address: {token.contractAddress}
+</p>
+<p className="marketListings__tokenInfo">Token ID: {token.tokenId}</p>
+<p className="marketListings__tokenInfo">
+    Price: {parseFloat(web3.utils.fromWei(token.price, 'ether')).toFixed(2)} ETH
+</p>
+
+<p className="marketListings__tokenInfo">Royalty: {web3.utils.fromWei(token.royaltyAmount, 'ether')} ETH</p>
+<p className="marketListings__royalty_reciever">Royalty Receiver: {token.royaltyReceiver}</p>
+
+<p className="marketListings__tokenInfo">
+    Seller: {token.seller}
+</p>
+
+          
           <button onClick={() => buyToken(token.contractAddress, token.tokenId, token.price)} className="buyButton">
   {isBuying ? 'Buying...' : 'Buy'}
 </button>

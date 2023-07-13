@@ -65,6 +65,9 @@ const ListAll = () => {
       </p>
 
       <ul>
+      <li>
+         Before using this function you must have created collection, minted NFTs,and added those nfts to the specifed collection.
+        </li>
         <li>
           You will need to enter the Collection ID and the Price (in ETH). Make sure you own all the tokens in the specified collection.
         </li>
