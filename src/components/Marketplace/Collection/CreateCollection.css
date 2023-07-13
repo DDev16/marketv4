@@ -12,15 +12,19 @@
 }
 
 .create-collection-form {
-  max-width:1915px;
-  margin: 5% auto;
-  padding: 50px;
-  background-color: #ffffff;
-  border: 1px solid #eaeaea;
-  border-radius: 20px;
-  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
-  margin-top:0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f8f9fa;
+  background-image: url("https://img.freepik.com/free-vector/geometric-background-with-polygonal-lines_1017-6448.jpg?size=626&ext=jpg&ga=GA1.2.1715257389.1688125620&semt=ais");
+  background-size: cover; /* adjust the value to 'contain' */
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -2px rgba(0, 0, 0, 0.05);
+  
 }
+
 
 .create-collection-form h2 {
   font-size: 2.5em;

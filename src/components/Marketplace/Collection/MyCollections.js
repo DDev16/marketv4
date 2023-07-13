@@ -124,6 +124,8 @@ const MyCollections = () => {
       <AddToCollection />
       <BulkAddToCollection />
       <ListAllTokens />
+      <MyTokens />
+
 
       <div className={styles.collectionsContainer}>
         <h1 className={styles.title}>My Collections</h1>
@@ -131,7 +133,6 @@ const MyCollections = () => {
           {renderCollections}
         </div>
       </div>
-      <MyTokens />
     </div>
     
   );

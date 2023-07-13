@@ -1,8 +1,28 @@
+
+import Loading from '../Loading/Loading';
 import React, { useContext, useState, useEffect, useCallback, useRef } from 'react';
 import { Web3Context } from '../../utils/Web3Provider';
 import '../../components/MyNFTs/MyToken.css';
-import Loading from '../Loading/Loading';
+import { styled } from '@mui/system';
 
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Box from '@mui/material/Box';
+
+
+const StyledImage = styled('img')`
+  width: 15%;
+  height: 250px;
+  margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: auto;
+  }
+`;
 const MyTokens = () => {
   const { web3, contract, marketplaceContract } = useContext(Web3Context);
   const [tokens, setTokens] = useState([]);
@@ -167,105 +187,132 @@ const MyTokens = () => {
 
 
   return (
-    <div className="my-tokens-container">
-      <h2 className="tokens-heading">My Tokens</h2>
-      <button
-        style={isLoading ? styles.buttonDisabled : styles.button}
-        onClick={fetchTokens}
-        onError={(e) => console.error(e)}
-        disabled={isLoading}
-      >
-        Refresh Tokens
-      </button>
-      <input
-  type="text"
-  placeholder="Search by name"
-  value={searchName}
-  onChange={(e) => setSearchName(e.target.value)}
-  className="search-bar__input"
-/>
-<input
-  type="text"
-  placeholder="Search by token ID"
-  value={searchId}
-  onChange={(e) => setSearchId(e.target.value)}
-  className="search-bar__input"
-/>
-<select
-  value={isListedFilter}
-  onChange={(e) => setIsListedFilter(e.target.value)}
-  className="search-bar__select"
->
-  <option value="none">No filter</option>
-  <option value="true">Listed</option>
-  <option value="false">Not Listed</option>
-</select>
+    <>
+     <div className="bulk-add-to-collection">
+            <h2><Typography fontSize="28px">Welcome to your NFT Dashboard</Typography></h2>
+            <StyledImage src="https://cdn-icons-png.flaticon.com/128/6564/6564757.png" alt="A psychedelic image" />
 
-  
-      <div className="token-list" style={styles.loadingWrapper}>
-      {isLoading ? (
-  <Loading />
-) : (
-  filteredTokens().map((token) => {
-            const tokenForSale = tokenStatuses[token.id];
-            return (
-              <div key={token.id} className="token-card">
-                <p className="token-id">ID: {token.id}</p>
-                {isImageFile(token.imageUrl) ? (
-                  <img src={token.imageUrl} alt={token.name} className="token-image" />
-                ) : (
-                  <video 
-                    ref={videoRef}
-                    src={token.imageUrl} 
-                    alt={token.name} 
-                    className="token-video" 
-                    onClick={handleVideoClick} 
-                    controls
-                  />
-                )}
-                <div className="token-info">
-                  <p className="token-name">{token.name}</p>
-                  <p className="token-description">{token.description}</p>
-                  <p className="contract-address"> Contract Address: {token.contractAddress}</p>
-                  <input
-                    type="number"
-                    placeholder="Enter price in ETH"
-                    value={tokenPrices[token.id] || ''}
-                    onChange={(e) =>
-                      setTokenPrices({ ...tokenPrices, [token.id]: e.target.value })
-                    }
-                  />
-                  <button
-  style={styles.button}
-  onClick={() =>
-    handleListToken(
-      token.contractAddress,
-      token.id,
-      web3.utils.toWei(tokenPrices[token.id] || '0', 'ether')
-    )
-  }
->
-  List
-</button>
-{tokenForSale && (
-  <button
-    style={styles.button}
-    onClick={() =>
-      cancelListing(token.contractAddress, token.id)
-    }
-  >
-    Cancel Listing
-  </button>
-)}
-                </div>
-              </div>
-            );
-          })
-        )}
-      </div>
+      <header className="header">
+       
+        <Typography variant="body1" color="white">
+          Here is where your minted NFTs are stored, you can manage, list, and interact with your NFTs. Use the accordion below to see more information.
+        </Typography>
+      </header>
+
+      <Accordion defaultExpanded={true}>
+      <AccordionSummary
+        expandIcon={<ExpandMoreIcon />}
+        aria-controls="panel1a-content"
+        id="panel1a-header"
+      >
+        <Typography variant="h5">My Tokens</Typography>
+      </AccordionSummary>
+      <AccordionDetails>
+        <Box className="my-tokens-container">
+          <Typography variant="h2" className="tokens-heading">Here are your tokens:</Typography>
+          <Typography variant="body1" className="tokens-intro">
+            You can refresh your tokens, search them by name or token ID, list them for sale, or cancel their listing.
+          </Typography>
+          <button
+            style={isLoading ? styles.buttonDisabled : styles.button}
+            onClick={fetchTokens}
+            onError={(e) => console.error(e)}
+            disabled={isLoading}
+          >
+            {isLoading ? 'Loading...' : 'Refresh Tokens'}
+          </button>
+          <input
+            type="text"
+            placeholder="Search by name"
+            value={searchName}
+            onChange={(e) => setSearchName(e.target.value)}
+            className="search-bar__input"
+          />
+          <input
+            type="text"
+            placeholder="Search by token ID"
+            value={searchId}
+            onChange={(e) => setSearchId(e.target.value)}
+            className="search-bar__input"
+          />
+          <select
+            value={isListedFilter}
+            onChange={(e) => setIsListedFilter(e.target.value)}
+            className="search-bar__select"
+          >
+            <option value="none">Show all</option>
+            <option value="true">Show only listed tokens</option>
+            <option value="false">Show only unlisted tokens</option>
+          </select>
+          <div className="token-list" style={styles.loadingWrapper}>
+            {isLoading ? (
+              <Loading />
+            ) : (
+              filteredTokens().map((token) => {
+                const tokenForSale = tokenStatuses[token.id];
+                return (
+                  <div key={token.id} className="token-card">
+                    <p className="token-id">ID: {token.id}</p>
+                    {isImageFile(token.imageUrl) ? (
+                      <img src={token.imageUrl} alt={token.name} className="token-image" />
+                    ) : (
+                      <video 
+                        ref={videoRef}
+                        src={token.imageUrl} 
+                        alt={token.name} 
+                        className="token-video" 
+                        onClick={handleVideoClick} 
+                        controls
+                      />
+                    )}
+                    <div className="token-info">
+                      <p className="token-name">{token.name}</p>
+                      <p className="token-description">{token.description}</p>
+                      <p className="contract-address"> Contract Address: {token.contractAddress}</p>
+                      <input
+                        type="number"
+                        placeholder="Enter price in ETH"
+                        value={tokenPrices[token.id] || ''}
+                        onChange={(e) =>
+                          setTokenPrices({ ...tokenPrices, [token.id]: e.target.value })
+                        }
+                      />
+                      <button
+                        style={styles.button}
+                        onClick={() =>
+                          handleListToken(
+                            token.contractAddress,
+                            token.id,
+                            web3.utils.toWei(tokenPrices[token.id] || '0', 'ether')
+                          )
+                        }
+                      >
+                        List
+                      </button>
+                      {tokenForSale && (
+                        <button
+                          style={styles.button}
+                          onClick={() =>
+                            cancelListing(token.contractAddress, token.id)
+                          }
+                        >
+                          Cancel Listing
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                );
+              })
+            )}
+          </div>
+        </Box>
+      </AccordionDetails>
+    </Accordion>
     </div>
+    </>
   );
-        };
+            };
+
 
 
 
