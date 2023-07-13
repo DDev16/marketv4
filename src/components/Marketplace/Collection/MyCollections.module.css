@@ -5,11 +5,21 @@
   font-family: Arial, sans-serif;
   margin-top: 15px;
   background-color: #f0f0f0;
-  
+  background-image: url("https://img.freepik.com/free-vector/digital-background-vector-blue-color-with-cube-patterns_53876-126702.jpg?size=626&ext=jpg&ga=GA1.1.1715257389.1688125620&semt=ais"); /* replace 'your_image_url.jpg' with the actual URL of the image */
+  background-size: cover; /* this will make the image cover the whole area of the element */
+  background-position: center; /* this will center the image */
+  background-repeat: no-repeat; /* this will prevent the image from repeating */
+  box-shadow: 0px 10px 15px 8px rgba(0, 0, 0, 0.8), 0px 4px 6px -2px rgba(0, 0, 0, 0.05);
+
 }
 
 .collectionTools {
-  background-color: #f0f0f0;
+  background-color: #f8f9fa;
+  background-image: url("https://img.freepik.com/free-vector/realistic-white-golden-geometric-background_79603-2032.jpg?size=626&ext=jpg&ga=GA1.2.1715257389.1688125620&semt=ais"); 
+  background-size: cover; /* this will make the image cover the whole area of the element */
+  background-position: center; /* this will center the image */
+  background-repeat: no-repeat; /* this will prevent the image from repeating */
+  box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -2px rgba(0, 0, 0, 0.05);
   text-align: center;
   padding: 20px;
   margin: 10px;
@@ -29,6 +39,7 @@
 .background {
   background-color: #f2f2f2;
   padding: 20px;
+  
 }
 
 .title {
@@ -37,12 +48,7 @@
   color: #fff;
   font-size: 4em;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  transform: perspective(500px) rotateX(30deg);
-  background: linear-gradient(45deg, #00FFFF, #00BFFF);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  transition: transform 0.3s ease-in-out;
+ 
 }
 
 .title:hover {
@@ -69,10 +75,12 @@ body {
   box-shadow: 0px 5px 15px rgba(0,0,0,0.8);
   transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
   background: linear-gradient(135deg, #f3f1f5 0%, #ffffff 100%);
+  justify-items: flex;
+
 
 }
 
-.collectionCard:hover {
+.collection:hover {
   transform: scale(1.02);
   cursor: pointer;
   background: linear-gradient(135deg, #f6f0fa 0%, #e1e1e6 100%);
@@ -81,17 +89,19 @@ body {
 .collectionName {
   text-align: center;
   margin-bottom: 10px;
-  font-size: 3.5em;
+  font-size: 2.5em;
   font-weight: bold;
   color: #444;
 }
 
 .collectionLogo {
   width: 100%;
-  height: auto;
+  height: 500px;
   display: block;
   margin: 10px auto;
-  border-radius: 5px;
+  border-radius: 25px;
+    box-shadow: 0px 5px 15px rgba(0,0,0,0.8);
+
 } 
 
 .collectionBanner {
@@ -107,7 +117,10 @@ body {
   color: #666;
   line-height: 1.5em;
   font-size: 0.9em;
+  max-height: 200px;
+  overflow-y: auto;
 }
+
 
 .collectionButton {
   display: block;
