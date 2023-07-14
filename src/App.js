@@ -20,6 +20,9 @@ import MyCollections from './components/Marketplace/Collection/MyCollections.js'
 import AddToCollection from './components/Marketplace/Collection/AddToCollection';
 import CollectionPage from './components/Marketplace/Collection/CollectionPage';
 import AllCollections from './components/Marketplace/Collection/GetAllCollections';
+import Auction from './components/Marketplace/Auction/Auction';
+import SwapMeet from './components/Marketplace/Auction/SwapMeet';
+import CourseCard from './components/courses/CourseCard';
 function App() {
   const [user, setUser] = React.useState(null);
 
@@ -42,13 +45,16 @@ function App() {
                   <Route path="/create-collection" element={<CreateCollection />} />
                   <Route path="/my-collections" element={<MyCollections />} />
                   <Route path="/all-collections" element={<AllCollections />} />
-
+                  <Route path="/swap-meet" element={<SwapMeet/>} />
                   <Route path="/add-to-collection" element={<AddToCollection />} />
                   <Route path="/collections/:collectionId" element={<CollectionPage />} />
+                  <Route path="/auction" element={<Auction />} />
+                  <Route path="/learning" element={<CourseCard />} />
 
                   <Route path="/profile-settings" element={<ProfileSettings />} />
                   <Route path="/sign-in" element={<SignIn setUser={setUser} />} />
                 </Routes>
+                
               </div>
             </div>
           </div>

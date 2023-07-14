@@ -264,6 +264,24 @@ const NavBar = () => {
             </Link>
           </li>
           <li>
+            <Link to="/auction" onClick={toggleNav}>
+              <FaDatabase className="nav-icon" />
+             Auction
+            </Link>
+          </li>
+          <li>
+            <Link to="/swap-meet" onClick={toggleNav}>
+              <FaDatabase className="nav-icon" />
+              Swap Meet
+            </Link>
+          </li>
+          <li>
+            <Link to="/learning" onClick={toggleNav}>
+              <FaDatabase className="nav-icon" />
+              Learning 
+            </Link>
+          </li>
+          <li>
             <Link to="/all-collections" onClick={toggleNav}>
               <FaDatabase className="nav-icon" />
               All Collections

@@ -6,6 +6,8 @@ import Hero from '../Hero/Hero';
 import AllCollections from '../../components/Marketplace/Collection/GetAllCollections.js'
 import HottestCollections from '../../components/Marketplace/Collection/Hot/HottestCollections.js'
 import PunkWorld from '../Pworld/PunkWorld';
+import CourseCard from '../../components/courses/CourseCard';
+
 const Home = () => {
   return (
     
@@ -34,6 +36,7 @@ const Home = () => {
       <HottestCollections />
       <AllCollections />
   <MarketListings />
+  <CourseCard />
     </div>
   );
 };

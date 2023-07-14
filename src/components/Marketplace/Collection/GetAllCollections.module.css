@@ -1,97 +1,271 @@
+/* General */
+body {
+  font-family: 'Roboto', sans-serif;
+  color: #333;
+  background-color: linear-gradient(to right, #0072ff, #00c6ff); 
+}
 
+/* Accordion */
+.myAccordion {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  margin-bottom: 20px;
+  overflow: hidden; /* For ripple effect */
+ 
+}
 
-.myCollectionsContainer {
+.myAccordion:hover {
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.myAccordionDetails {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 20px;
+  transition: all 0.3s ease-in-out; /* Transition */
+  
+}
+
+/* Grid for Collections */
+.myCollectionsList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); /* account for increased width of cards and gaps between them */
+  grid-gap: 30px; /* Increased to match the card's margin */
+  justify-items: center;
+  align-items: start; /* added to line up items to the start */
+  padding: 40px;
+  background-image: url("https://img.freepik.com/free-vector/geometric-background-with-polygonal-lines_1017-6448.jpg?size=626&ext=jpg&ga=GA1.2.1715257389.1688125620&semt=ais");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow: 0px 10px 15px 3px rgba(0, 0, 0, 0.4), 0px 4px 6px -2px rgba(0, 0, 0, 0.05);
   width:1800px;
-  background-image: url("https://img.freepik.com/free-vector/realistic-white-golden-geometric-background_79603-2032.jpg?size=626&ext=jpg&ga=GA1.2.1715257389.1688125620&semt=ais"); /* replace 'your_image_url.jpg' with the actual URL of the image */
-  background-size: cover; /* this will make the image cover the whole area of the element */
-  background-position: center; /* this will center the image */
-  background-repeat: no-repeat; /* this will prevent the image from repeating */
-  box-shadow: 0px 10px 15px 3px rgba(0, 0, 0, 0.4), 0px 4px 6px -2px rgba(0, 0, 0, 0.05);
-  margin-bottom:45px;
-  margin-top:70px;
 }
-.myCollectionsContainer {
+
+
+.collectionCard {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
-  
-  background-image: url("https://img.freepik.com/free-vector/realistic-white-golden-geometric-background_79603-2032.jpg?size=626&ext=jpg&ga=GA1.2.1715257389.1688125620&semt=ais"); /* replace 'your_image_url.jpg' with the actual URL of the image */
-  background-size: cover; /* this will make the image cover the whole area of the element */
-  background-position: center; /* this will center the image */
-  background-repeat: no-repeat; /* this will prevent the image from repeating */
-  box-shadow: 0px 10px 15px 3px rgba(0, 0, 0, 0.4), 0px 4px 6px -2px rgba(0, 0, 0, 0.05);
-  margin-bottom:45px;
-  margin-top:70px;
-}
-
-
-.topDivider {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  padding: 45px; /* Increased padding to make the card larger */
+  margin: 15px; /* Increased margin to ensure cards have ample space between them */
+  transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+  overflow: hidden;
   position: relative;
-  height: 325px;
-  width: 1890px;  
-  background: 
-    radial-gradient(circle at 50% 0, transparent, #000 75%),
-    linear-gradient(-60deg, #0062ff, #33CCFF, #0062ff, #33CCFF);
-  animation: gradientSlide 3s linear infinite;
-  filter: drop-shadow(0 0 10px #33CCFF);
-  margin-top:70px;
-  
+  z-index: 10;
+  width: 350px; /* This will control the max width of the card */
 }
 
-.wave {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 320px;
-  bottom: 0;
-}
-
-.wave path {
-  animation: wave 15s cubic-bezier( 0.36, 0.45, 0.63, 0.53) infinite;
-  transform-origin: center bottom;
-}
-
-@keyframes wave {
-  0%, 100% {
-    transform: translate3d(0, 0, 0);
-  }
-  50% {
-    transform: translate3d(-100px, 0, 0);
-  }
-}
-
-
-
-.topDivider::before {
+.collectionCard:before {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+  background: linear-gradient(120deg, #f093fb 0%, #f5576c 100%);
   z-index: 1;
+  transition: all .5s ease-in-out;
+  opacity: 0;
+  transform: scale(0.6) skew(-30deg);
 }
 
-.topDivider::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
-  z-index: 2;
+.collectionCard:hover:before {
+  opacity: 1;
+  transform: scale(2) skew(-30deg);
 }
+
+.collectionCard img, .collectionCard button {
+  position: relative;
+  z-index: 10;
+}
+
+.collectionCard:hover {
+  transform: scale(1.03) translateY(-5px); /* Slightly increased scale effect */
+}
+
+.collectionCard img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+  transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+  margin-bottom:30px;
+}
+
+.collectionCard img:hover {
+  transform: scale(1.08); /* Increased scale effect */
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+
+
+
+
+.collectionButton {
+  color: #fff;
+  background: linear-gradient(to right, #0062E6, #33AEFF);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+.collectionButton:hover {
+  background: linear-gradient(to right, #33AEFF, #0062E6);
+  transform: translateY(-3px);
+  box-shadow: 0 15px 25px rgba(0,0,0,0.15);
+}
+
+.collectionButton:active {
+  transform: translateY(0);
+  box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+}
+
+
+
+/* Pagination and Search */
+
+/* Pagination and Search */
+.paginationContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+  flex-wrap: wrap; 
+  gap: 10px;
+}
+
+.pageButton, .firstPageButton, .lastPageButton, .nextPageButton, .previousPageButton {
+  margin: 5px 10px;
+  padding: 10px 20px;
+  border-radius: 15px;
+  border: none; 
+  box-shadow: 0 3px 15px rgba(0,0,0,0.15);
+  transition: all 0.3s ease-in-out;
+  font-family: 'Helvetica', sans-serif;
+  background-color: #fff;
+  cursor: pointer;
+  font-size: 1em;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.pageButton:hover,
+.firstPageButton:hover,
+.lastPageButton:hover,
+.nextPageButton:hover,
+.previousPageButton:hover {
+  background-color: #007bff;
+  color: #fff; 
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+}
+
+.pageButton:active,
+.firstPageButton:active,
+.lastPageButton:active,
+.nextPageButton:active,
+.previousPageButton:active {
+  transform: translateY(1px);
+}
+
+.currentPageButton {
+  background-color: #007bff;
+  color: #fff;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.2);
+}
+
+.currentPageButton:hover {
+  transform: scale(1.02);
+  box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+}
+
+.searchContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+  gap: 10px;
+}
+
+.searchInput {
+  margin: 0 10px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 1px solid #007bff;
+  transition: all 0.3s ease-in-out;
+  width: 200px;
+  font-size: 1em;
+}
+
+.searchInput:focus {
+  box-shadow: 0 0 0 3px rgba(0,123,255,0.5);
+  outline: none;
+}
+
+/* Responsive styles for smaller screens */
+
+@media screen and (max-width: 600px) {
+  .pageButton, .firstPageButton, .lastPageButton, .nextPageButton, .previousPageButton {
+    padding: 8px 16px;
+    font-size: 0.9em;
+  }
+
+  .searchInput {
+    width: 100%; /* Take the full width of the container on smaller screens */
+    margin: 0; /* Remove margin to avoid overflow */
+    padding: 15px 16px; /* Reduced padding for smaller screens */
+  }
+}
+
+
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+  .myCollectionsContainer {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .myCollectionsTitle {
+    font-size: 3.5em;
+    margin-right:25px;
+  }
+
+  .myCollectionsList {
+    grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); /* Adjust grid for smaller screens */
+    grid-gap: 20px; /* Reduced to match smaller screen sizes */
+    width:325px;
+  }
+
+.searchInput {
+    width: 80%; /* Take the full width of the container on smaller screens */
+    margin: 0; /* Remove margin to avoid overflow */
+    padding: 25px 16px;
+    margin-left:10px; /* Reduced padding for smaller screens */
+  }
+
+
+  .collectionCard {
+    width: 100%;
+    padding: 20px; /* Reduced padding for small screens */
+
+  }
+
+  .searchInput {
+    width: 100%; /* Full width on small screens */
+  }
+}
+
 
 
 .myCollectionsTitle {
-  font-size: 8em;
+  font-size: 8vw; /* adjust as needed */
   font-weight: bold;
   color: #333;
   margin-bottom: 0.5em;
@@ -99,18 +273,23 @@
   letter-spacing: 2px;
   text-shadow: 3px 3px 0 rgba(0,0,0,0.2); 
   margin-left:40px;
-  textAlign: 'center';
+  text-align: 'center'; /* Corrected 'textAlign' to 'text-align'*/
 
   background: linear-gradient(to right, #0072ff, #00c6ff); 
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent; 
- 
 
   box-shadow: 10px 10px 30px rgba(0,0,0,0.2);
   padding: 15px;
   border-radius: 10px;
 
   animation: titleAnimation 3s ease-in-out infinite;
+}
+
+@media screen and (max-width: 768px) {
+  .myCollectionsTitle {
+    font-size: 12vw;
+  }
 }
 
 .myCollectionsTitle:hover {
@@ -130,320 +309,70 @@
 }
 
 
-
-
-.myCollectionsList {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2em;
-  width: 100%;
-  margin-left:30px;
-  transition: all 0.3s ease-in-out;
-}
-
-
-
-
-.collectionCard {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 2em;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0px 10px 20px rgba(0,0,0,0.8);
-  cursor: pointer;
-  margin-bottom:30px;
-  transition: transform 0.3s, box-shadow 0.3s; 
-}
-
-.collectionCard:hover {
-  transform: scale(1.03);
-  box-shadow: 0px 10px 30px rgba(0,0,0,0.2);
-}
-
-
-.collectionDescription {
-  color: #666;
-  font-size: 0.9em;
-  max-height: 100px; 
-  overflow-y: auto; 
-  transition: color 0.3s ease-in-out;
-  margin-top:30px;
-}
-
+/* Collection ID */
 .collectionID {
-  font-size: 1.3em;
-  color: blue;
-  margin: 1em 0;
-  letter-spacing: 2px;
-  font-weight: bold; 
-  transition: color 0.3s ease-in-out; 
-
-  display: inline-block;
-  padding: 0.5em;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  background-color: #f5f5f5;
-}
-
-
-
-.collectionName {
-  font-size: 1.3em;
-  color: #333;
-  margin: 1em 0;
+  font-size: 0.9em;
+  color: #666;
+  margin-bottom: 5px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  transition: color 0.3s ease-in-out; 
-  
-  display: inline-block;
-  padding: 0.5em;
-  border: 2px solid #333;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  background-color: #fff;
-  }
-
-.collectionLogo {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  border-radius: 10px;
-  transition: all 0.3s ease-in-out; 
-  margin-bottom:10px;
-  display: flex;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.9);
-
+  opacity: 0.7;
+  z-index: 10;
 
 }
 
-.collectionBanner {
-  display: flex;
-
-  height: 100px; 
-  width: 100%;
-  object-fit: cover;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.9);
-
-  border-radius: 10px;
-  transition: all 0.3s ease-in-out; 
-}
-
-.collectionButton {
-  margin-top: 1em;
-  padding: 1em;
-  font-size: 1em;
-  color: white;
-  background-color: #007BFF;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease-in-out; 
-}
-
-.collectionButton:hover {
-  background-color: #0056b3;
-}
-
-
-@media only screen and (max-width: 480px) {
-  .myCollectionsContainer {
-    padding: 0.5em;
-
-  }
-
-  .myCollectionsTitle {
-    font-size: 1.5em;
-  }
-
-  .collectionCard {
-    padding: 0.5em;
-  }
-
-  .collectionDescription {
-    font-size: 0.8em;
-    max-height: 60px;
-  }
-
-  .collectionID,
-  .collectionName {
-    font-size: 0.8em;
-  }
-
-  .collectionLogo {
-    margin-bottom: 3px;
-  }
-
-  .collectionBanner {
-    height: 60px;
-  }
-
-  .collectionButton {
-    margin-top: 0.5em;
-    padding: 0.5em;
-    font-size: 0.8em;
-  }
-}
-
-
-.paginationContainer {
-  margin-top: 1em;
-  display: flex;
-  justify-content: center;
-}
-
-.pageButton {
-  font-size: 1em;
+/* Collection Name */
+.collectionName {
+  font-size: 1.5em;
   color: #333;
-  background-color: #fff;
-  border: none;
-  padding: 0.5em 1em;
-  margin-right: 0.5em;
-  cursor: pointer;
-  transition: background-color 0.3s ease-in-out;
+  margin-bottom: 15px;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+
 }
 
-.pageButton:hover {
-  background-color: grey;
+/* Collection Logo */
+.collectionLogo {
+  width: 300px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 15px;
+  transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-.currentPageButton {
-  background-color: blue;
-  color: #fff;
+.collectionLogo:hover {
+  transform: scale(1.1);
 }
 
-
-.searchContainer {
-  margin-top: 1em;
-  display: flex;
-  justify-content: center;
+/* Collection Banner */
+.collectionBanner {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.1);
 }
 
-.searchInput {
-  font-size: 1em;
-  padding: 0.5em;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  margin-right: 0.5em;
-  
-}
-
-.searchInput::placeholder {
-  color: #999;
-}
-
-
-
-.searchContainer {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-
-.searchInput {
-  width: 200px;
-  height: 36px;
-  padding: 8px;
-  margin: 0 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 14px;
-}
-
-
-.searchInput:hover,
-.searchInput:focus {
-  outline: none;
-  border-color: #999;
+/* Collection Description */
+.collectionDescription {
+  font-size: 0.95em;
+  color: #666;
+  margin-bottom: 15px;
+  text-align: center;
+  line-height: 1.5;
+  font-style: italic;
+  z-index: 10;
+  height: 200px; /* Or the height you prefer */
+  overflow-y: auto; /* Makes it scrollable if content exceeds the set height */
+  padding-right: 5px; /* Adds some space for the scrollbar */
 }
 
 
 
-@media only screen and (max-width: 768px) {
-  .myCollectionsContainer {
-    width: 400px;
-    margin-top:30px;
-    
-  }
 
 
- .topDivider {
-  width: 400px;
-  margin-top: 0px;
-
- }
-  .myCollectionsTitle {
-    font-size: 3.5em;
-    margin-right:25px;
-  }
-
-  .collectionCard {
-    padding: 1em;
-    margin-right:30px;
-    width:250px;
-  }
-
-  .collectionDescription {
-    font-size: 0.9em;
-    max-height: none;
-  }
-
-  .collectionID,
-  .collectionName {
-    font-size: 1em;
-  }
-
-  .collectionLogo {
-    margin-bottom: 5px;
-  }
-
-  .collectionBanner {
-    height: 80px;
-  }
-
-  .collectionButton {
-    margin-top: 0.5em;
-    padding: 0.8em;
-    font-size: 0.9em;
-  }
-}
-
-@media only screen and (max-width: 480px) {
-  .myCollectionsContainer {
-    padding: 3em;
-  }
-
-  .myCollectionsTitle {
-    font-size: 2.5em;
-  }
-
-  .collectionCard {
-    padding: 0.5em;
-  }
-
-  .collectionDescription {
-    font-size: 0.8em;
-    max-height: 60px;
-  }
-
-  .collectionID,
-  .collectionName {
-    font-size: 0.8em;
-  }
-
-  .collectionLogo {
-    margin-bottom: 3px;
-  }
-
-  .collectionBanner {
-    height: 60px;
-  }
-
-  .collectionButton {
-    margin-top: 0.5em;
-    padding: 0.5em;
-    font-size: 0.8em;
-  }
-}

@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { Web3Context } from '../../utils/Web3Provider';
 import { NFTStorage, File } from 'nft.storage';
 import '../Mint/Mint.css';
+import Swal from 'sweetalert2';
 
 const client = new NFTStorage({
   token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDdGOTA4QjNBRDJGMDFGNjE2MjU1MTA0ODIwNjFmNTY5Mzc2QTg3MjYiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY3OTI5MDE5ODQyMCwibmFtZSI6Ik5FV0VTVCJ9.FGtIrIhKhgSx-10iVlI4sM_78o7jSghZsG5BpqZ4xfA', // Replace with your NFT Storage token
@@ -95,13 +96,26 @@ const Mint = () => {
   
       setIsMinting(false);
       setFormError('');
-      alert('Token minted successfully!');
+      
+      // Add the sweet alert here
+      Swal.fire(
+        'Success!',
+        'Your token was minted successfully.',
+        'success'
+      );
     } catch (error) {
       console.error(error);
       setIsMinting(false);
       setFormError(`An error occurred while minting the token: ${error.message}`);
+      // Add a sweet alert for errors
+      Swal.fire(
+        'Error!',
+        `An error occurred while minting the token: ${error.message}`,
+        'error'
+      );
     }
   };
+  
   
 
   return (

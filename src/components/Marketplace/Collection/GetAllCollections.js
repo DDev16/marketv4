@@ -22,7 +22,7 @@ const StyledAccordionSummary = styled(AccordionSummary)(({ theme }) => ({
 const StyledAccordion = styled(Accordion)(({ theme }) => ({
   
   padding: theme.spacing(1),// decrease padding to reduce size
-  borderRadius:'5px'
+  borderRadius:'5px',
 }));
 
 const CollectionCard = ({ collection, navigateToCollectionPage }) => {
@@ -30,8 +30,8 @@ const CollectionCard = ({ collection, navigateToCollectionPage }) => {
     <div className={styles.collectionCard} onClick={() => navigateToCollectionPage(collection.collectionId)}>
       <p className={styles.collectionID}>Collection ID: {collection.collectionId}</p>
       <h2 className={styles.collectionName}>{collection.name}</h2>
-      <img src={`https://ipfs.io/ipfs/${collection.logoIPFS}`} alt="Logo" className={styles.collectionLogo} />
-      <img src={`https://ipfs.io/ipfs/${collection.bannerIPFS}`} alt="Banner" className={styles.collectionBanner} />
+      <img src={`https://ipfs.io/ipfs/${collection.logoIPFS}`} alt="Logo" className="logo" />
+      {/* <img src={`https://ipfs.io/ipfs/${collection.bannerIPFS}`} alt="Banner" className="banner" /> */}
       <p className={styles.collectionDescription}>{collection.description}</p>
       <button className={styles.collectionButton} onClick={() => navigateToCollectionPage(collection.collectionId)}>View Collection</button>
     </div>
@@ -47,6 +47,10 @@ const MyCollections = () => {
   const [searchCollectionId, setSearchCollectionId] = useState('');
   const collectionsPerPage = 50;
   const navigate = useNavigate();
+  const paginationSpread = 2; // Determines how many page buttons to display before and after the current page
+// Pagination logic
+const firstPage = Math.max(1, currentPage - paginationSpread);
+const lastPage = Math.min(maxPage, currentPage + paginationSpread);
 
   useEffect(() => {
     if (!web3 || !marketplaceContract) return;
@@ -136,20 +140,46 @@ const MyCollections = () => {
 </StyledAccordionSummary>
         <AccordionDetails>
           <div className={styles.myCollectionsContainer}>
-            <div className={styles.paginationContainer}>
-              {Array.from({ length: maxPage }, (_, i) => i + 1).map((pageNumber) => (
-                <button
-                  key={pageNumber}
-                  onClick={() => setCurrentPage(pageNumber)}
-                  disabled={pageNumber === currentPage}
-                  className={`${styles.pageButton} ${
-                    pageNumber === currentPage && styles.currentPageButton
-                  }`}
-                >
-                  {pageNumber}
-                </button>
-              ))}
-            </div>
+          <div className={styles.paginationContainer}>
+  <button
+    onClick={() => setCurrentPage(1)}
+    disabled={currentPage === 1}
+    className={`${styles.pageButton} ${styles.firstPageButton}`}
+  >
+    First
+  </button>
+  <button
+    onClick={() => setCurrentPage(currentPage - 1)}
+    disabled={currentPage === 1}
+    className={`${styles.pageButton} ${styles.previousPageButton}`}
+  >
+    Previous
+  </button>
+  {Array.from({ length: lastPage - firstPage + 1 }, (_, i) => i + firstPage).map((pageNumber) => (
+    <button
+      key={pageNumber}
+      onClick={() => setCurrentPage(pageNumber)}
+      disabled={pageNumber === currentPage}
+      className={`${styles.pageButton} ${pageNumber === currentPage && styles.currentPageButton}`}
+    >
+      {pageNumber}
+    </button>
+  ))}
+  <button
+    onClick={() => setCurrentPage(currentPage + 1)}
+    disabled={currentPage === maxPage}
+    className={`${styles.pageButton} ${styles.nextPageButton}`}
+  >
+    Next
+  </button>
+  <button
+    onClick={() => setCurrentPage(maxPage)}
+    disabled={currentPage === maxPage}
+    className={`${styles.pageButton} ${styles.lastPageButton}`}
+  >
+    Last
+  </button>
+</div>
             <div className={styles.searchContainer}>
               <input
                 type="text"
