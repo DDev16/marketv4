@@ -282,6 +282,12 @@ const NavBar = () => {
             </Link>
           </li>
           <li>
+            <Link to="/gaming" onClick={toggleNav}>
+              <FaDatabase className="nav-icon" />
+              Gaming Hub
+            </Link>
+          </li>
+          <li>
             <Link to="/all-collections" onClick={toggleNav}>
               <FaDatabase className="nav-icon" />
               All Collections

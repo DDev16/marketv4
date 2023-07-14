@@ -23,6 +23,7 @@ import AllCollections from './components/Marketplace/Collection/GetAllCollection
 import Auction from './components/Marketplace/Auction/Auction';
 import SwapMeet from './components/Marketplace/Auction/SwapMeet';
 import CourseCard from './components/courses/CourseCard';
+import Gaming from './components/Gaming/Gaming';
 function App() {
   const [user, setUser] = React.useState(null);
 
@@ -50,7 +51,7 @@ function App() {
                   <Route path="/collections/:collectionId" element={<CollectionPage />} />
                   <Route path="/auction" element={<Auction />} />
                   <Route path="/learning" element={<CourseCard />} />
-
+                  <Route path="/gaming" element={<Gaming />} />
                   <Route path="/profile-settings" element={<ProfileSettings />} />
                   <Route path="/sign-in" element={<SignIn setUser={setUser} />} />
                 </Routes>
