@@ -7,6 +7,7 @@
     "@babel/preset-react": "^7.22.3",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@metamask/detect-provider": "^2.0.0",
     "@mui/icons-material": "^5.14.0",
     "@mui/material": "^5.13.7",
     "@openzeppelin/contracts": "^4.9.0",
