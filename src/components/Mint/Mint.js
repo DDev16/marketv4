@@ -70,10 +70,11 @@ const Mint = () => {
       setIsUploading(false); // Upload complete
     } catch (error) {
       console.error(error);
-      setFormError('An error occurred while uploading the file. Please try again.');
-      setIsUploading(false); // Reset upload status on error
+      setFormError(`An error occurred while uploading the file: ${error.message}`);
+      setIsUploading(false);
     }
   };
+  
 
   const mintToken = async (e) => {
     e.preventDefault();
@@ -98,7 +99,7 @@ const Mint = () => {
     } catch (error) {
       console.error(error);
       setIsMinting(false);
-      setFormError('An error occurred while minting the token. Please try again.');
+      setFormError(`An error occurred while minting the token: ${error.message}`);
     }
   };
   
