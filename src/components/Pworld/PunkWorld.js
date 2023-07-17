@@ -3,7 +3,6 @@ import Web3 from 'web3';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import LinearProgress from '@mui/material/LinearProgress';
-import Tooltip from '@mui/material/Tooltip';
 import contractABI from '../../abi/ERC721.js';
 import Swal from 'sweetalert2';
 import { keyframes } from 'styled-components';
@@ -39,7 +38,7 @@ const StyledContainer = styledComponents.div`
   @media (max-width: 480px) {
     padding: 0.5rem;
     height: auto;
-    min-height: 150vh;
+    min-height: 100vh;
   }
 `;
 
@@ -78,7 +77,7 @@ const StyledGifContainerLeft = styledComponents.div`
   
 
   @media (max-width: 600px) {
-    top: 75%; 
+    top: 55%; 
     left: 20%;
     width: 200px; 
     height: 200px; 
@@ -129,7 +128,7 @@ const StyledGifContainerRight = styledComponents.div`
 
 
   @media (max-width: 600px) {
-    top: 75%; 
+    top: 55%; 
     right: 20%;
     width: 200px; 
     height: 200px; 
@@ -138,7 +137,7 @@ const StyledGifContainerRight = styledComponents.div`
   @media (min-device-width: 360px) 
     and (max-device-width: 740px) 
     and (-webkit-device-pixel-ratio: 3) { 
-    top: 65%; 
+    top: 35%; 
     right: 12%;
     width: 250px; 
     height: 250px; 
@@ -276,7 +275,6 @@ const PunkWorld = () => {
   const [contract, setContract] = useState(null);
   const [web3, setWeb3] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [tooltipText, setTooltipText] = useState('Click to mint an NFT');
 
   // Your smart contract address
   const contractAddress = "0xcd61F8F6E215CE93F7724a6BB4F5641b108D0276";
@@ -369,7 +367,7 @@ const mintToken = async () => {
     // Code to handle entering the Punk MetaWorld
     // Replace with your own logic
     console.log('Entering Punk MetaWorld...');
-    window.open("https://vr-world-jade.vercel.app/", "_blank");
+   
 
   };
 
@@ -394,14 +392,12 @@ const mintToken = async () => {
         </div>
       ) : (
         <StyledButtonContainer>
-          <Tooltip title={tooltipText} arrow>
             <StyledButton variant="contained" color="primary" onClick={() => mintToken(1)}>
               Mint NFT
             </StyledButton>
             <StyledInfoMessage>
       Mint an NFT to gain access to PunksWorld!
     </StyledInfoMessage>
-          </Tooltip>
           <StyledWorldButton 
     sx={{ marginTop: '2rem' }} // Add margin-top directly here
     variant="contained" 

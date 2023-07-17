@@ -6,7 +6,6 @@ import Hero from '../Hero/Hero';
 import AllCollections from '../../components/Marketplace/Collection/GetAllCollections.js'
 import HottestCollections from '../../components/Marketplace/Collection/Hot/HottestCollections.js'
 import PunkWorld from '../Pworld/PunkWorld';
-import CourseCard from '../../components/courses/CourseCard';
 
 const Home = () => {
   return (
@@ -36,7 +35,6 @@ const Home = () => {
       <HottestCollections />
       <AllCollections />
   <MarketListings />
-  <CourseCard />
     </div>
   );
 };
@@ -56,7 +54,7 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: '40px',
+    padding: '20px', // Reduce padding for smaller screens
     borderRadius: '8px',
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
     color: '#ffffff',
@@ -65,33 +63,32 @@ const styles = {
     backgroundRepeat: 'no-repeat',
     backgroundColor: '#282c34',
   },
-
   logo: {
-    width: '400px',
+    width: '300px', // Reduce the width for smaller screens
     marginBottom: '16px',
   },
   heading: {
-    fontSize: '48px',
+    fontSize: '36px', // Reduce font size for smaller screens
     fontWeight: 'bold',
     marginBottom: '0px',
     textAlign: 'center',
     textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)',
   },
   description: {
-    fontSize: '24px',
+    fontSize: '20px', // Reduce font size for smaller screens
     marginBottom: '32px',
     textAlign: 'center',
     lineHeight: '1.5',
     color: 'white',
   },
   descriptionText: {
-    fontSize: '30px',
+    fontSize: '24px', // Increase font size for smaller screens
     marginBottom: '32px',
     textAlign: 'center',
     lineHeight: '1.5',
   },
   popText: {
-    fontSize: '48px',
+    fontSize: '36px', // Reduce font size for smaller screens
     fontWeight: 'bold',
     color: '#61dafb',
     textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)',
@@ -109,7 +106,7 @@ const styles = {
     padding: '12px 24px',
     backgroundColor: '#61dafb',
     color: '#282c34',
-    fontSize: '18px',
+    fontSize: '18px', // Reduce font size for smaller screens
     fontWeight: 'bold',
     textDecoration: 'none',
     borderRadius: '8px',
@@ -121,7 +118,33 @@ const styles = {
   },
   spinAnimation,
   fireAnimation,
-
 };
+
+// Media Query for smaller screens (up to 600px width)
+const mediaQuery = `@media (max-width: 600px) {
+  .container {
+    padding: 10px;
+  }
+  .logo {
+    width: 200px;
+  }
+  .heading {
+    font-size: 24px;
+  }
+  .description {
+    font-size: 16px;
+  }
+  .descriptionText {
+    font-size: 20px;
+  }
+  .popText {
+    font-size: 24px;
+  }
+  .buttonLink {
+    font-size: 16px;
+  }
+}`;
+
+
 
 export default Home;

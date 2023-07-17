@@ -9,6 +9,11 @@
   background: #fafafa;
 }
 
+
+.pageBackground {
+  background-color: #f5f5f5; /* Replace with your desired background color */
+}
+
 .tokens-heading {
   font-size: 2rem;
   font-weight: 700;
@@ -118,6 +123,8 @@
   color: #757575;
   text-align: center;
   margin-bottom: 1rem;
+  height:350px;
+  overflow: auto;
 }
 
 .contract-address {

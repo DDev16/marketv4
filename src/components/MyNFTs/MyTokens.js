@@ -13,9 +13,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 
-const CenteredDiv = styled('div')({
-  textAlign: 'center',
-});
+
 
 const StyledImage = styled('img')`
   width: 15%;
@@ -193,7 +191,7 @@ const MyTokens = () => {
 
 
   return (
-    <>
+<div className="pageBackground">
      <div className="bulk-add-to-collection">
             <h2><Typography fontSize="28px">Welcome to your NFT Dashboard</Typography></h2>
             <StyledImage src="https://cdn-icons-png.flaticon.com/128/6564/6564757.png" alt="A psychedelic image" />
@@ -317,7 +315,7 @@ const MyTokens = () => {
       </AccordionDetails>
     </Accordion>
     </div>
-    </>
+    </div>
   );
             };
 
@@ -325,6 +323,8 @@ const MyTokens = () => {
 
 
 const styles = {
+
+  
   
   loadingContainer: {
     display: 'flex',

@@ -16,6 +16,7 @@ const StyledAccordionSummary = styled(AccordionSummary)(({ theme }) => ({
   justifyContent: 'space-between', // to separate the icon and text
   alignItems: 'center', 
   padding: theme.spacing(1),// decrease padding to reduce size
+  
 
 }));
 
@@ -123,19 +124,21 @@ const lastPage = Math.min(maxPage, currentPage + paginationSpread);
 
   return (
     <>
+        <div className="market">
+
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="wave">
   <path fill="lightblue" fillOpacity=".7" d="M0,96L80,122.7C160,149,320,203,480,192C640,181,800,107,960,80C1120,53,1280,75,1360,85.3L1440,96L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"></path>
 </svg>
 
       <h1 className={styles.myCollectionsTitle}>Collections</h1>
-      <StyledAccordion>
+      <StyledAccordion defaultExpanded={true}>
       <StyledAccordionSummary
   expandIcon={<ExpandMoreIcon />}
   aria-controls="panel1a-content"
   id="panel1a-header"
 >
 <Grid container justifyContent="center" style={styles.CenteredDiv}>
-      <Typography variant="h5">Click Here to view Collections </Typography>
+      <Typography variant="h5">Community Collections Tab </Typography>
     </Grid>
 </StyledAccordionSummary>
         <AccordionDetails>
@@ -208,6 +211,8 @@ const lastPage = Math.min(maxPage, currentPage + paginationSpread);
           </div>
         </AccordionDetails>
       </StyledAccordion>
+                </div>
+
     </>
   );
 };

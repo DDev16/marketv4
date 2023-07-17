@@ -2,7 +2,7 @@
 body {
   font-family: 'Roboto', sans-serif;
   color: #333;
-  background-color: linear-gradient(to right, #0072ff, #00c6ff); 
+  
 }
 
 /* Accordion */
@@ -12,8 +12,11 @@ body {
   box-shadow: 0 2px 5px rgba(0,0,0,0.15);
   margin-bottom: 20px;
   overflow: hidden; /* For ripple effect */
+  borderRadius:'5px',
+
  
 }
+
 
 .myAccordion:hover {
   box-shadow: 0 5px 15px rgba(0,0,0,0.2);
@@ -34,12 +37,8 @@ body {
   justify-items: center;
   align-items: start; /* added to line up items to the start */
   padding: 40px;
-  background-image: url("https://img.freepik.com/free-vector/geometric-background-with-polygonal-lines_1017-6448.jpg?size=626&ext=jpg&ga=GA1.2.1715257389.1688125620&semt=ais");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  box-shadow: 0px 10px 15px 3px rgba(0, 0, 0, 0.4), 0px 4px 6px -2px rgba(0, 0, 0, 0.05);
-  width:1800px;
+  
+  width: 100%;
 }
 
 
@@ -98,6 +97,7 @@ body {
 .collectionCard img:hover {
   transform: scale(1.08); /* Increased scale effect */
   box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+  
 }
 
 
@@ -230,6 +230,7 @@ body {
   .myCollectionsContainer {
     flex-direction: column;
     padding: 20px;
+    width:100%
   }
 
   .myCollectionsTitle {
@@ -238,9 +239,9 @@ body {
   }
 
   .myCollectionsList {
-    grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); /* Adjust grid for smaller screens */
-    grid-gap: 20px; /* Reduced to match smaller screen sizes */
-    width:325px;
+    grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); 
+    grid-gap: 20px;  
+    width:100%;
   }
 
 .searchInput {
@@ -252,7 +253,7 @@ body {
 
 
   .collectionCard {
-    width: 100%;
+    width: 350px;
     padding: 20px; /* Reduced padding for small screens */
 
   }
@@ -265,7 +266,7 @@ body {
 
 
 .myCollectionsTitle {
-  font-size: 8vw; /* adjust as needed */
+  font-size: 7.5vw; /* adjust as needed */
   font-weight: bold;
   color: #333;
   margin-bottom: 0.5em;
@@ -288,8 +289,10 @@ body {
 
 @media screen and (max-width: 768px) {
   .myCollectionsTitle {
-    font-size: 12vw;
+    font-size: 7.5vw;
   }
+
+  
 }
 
 .myCollectionsTitle:hover {
@@ -357,8 +360,6 @@ body {
   margin-bottom: 15px;
   box-shadow: 0 5px 10px rgba(0,0,0,0.1);
 }
-
-/* Collection Description */
 .collectionDescription {
   font-size: 0.95em;
   color: #666;
@@ -368,8 +369,17 @@ body {
   font-style: italic;
   z-index: 10;
   height: 200px; /* Or the height you prefer */
-  overflow-y: auto; /* Makes it scrollable if content exceeds the set height */
+  overflow: auto;
   padding-right: 5px; /* Adds some space for the scrollbar */
+  overflow: break-word; /* Breaks long words onto the next line */
+}
+
+/* Responsive styles */
+@media screen and (max-width: 480px) {
+  .collectionDescription {
+    font-size: 0.85em; /* Adjust font-size for mobile */
+    padding: 10px; /* Adjust padding for mobile */
+  }
 }
 
 

@@ -11,6 +11,25 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { styled } from '@mui/system';
+import Pagination from '@mui/material/Pagination';
+
+
+
+const StyledAccordionSummary = styled(AccordionSummary)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'space-between', // to separate the icon and text
+  alignItems: 'center', 
+  padding: theme.spacing(1),// decrease padding to reduce size
+
+}));
+
+const StyledAccordion = styled(Accordion)(({ theme }) => ({
+  
+  padding: theme.spacing(1),// decrease padding to reduce size
+  borderRadius:'5px',
+}));
+
 
 const ERC721_ABI = [
   {
@@ -33,12 +52,7 @@ const ERC721_ABI = [
   },
 ];
 
-const IPFS_GATEWAYS = [
-  'https://ipfs.io/ipfs/',
-  'https://gateway.pinata.cloud/ipfs/',
-  'https://cloudflare-ipfs.com/ipfs/',
-  // add more gateways if you want
-];
+
 
 async function fetchImageFromIpfs(url) {
   // Replace the Pinata gateway URL with the ipfs.io gateway
@@ -70,6 +84,10 @@ const MarketListings = () => {
   const [filteredTokens, setFilteredTokens] = useState([]);
   const [showConfetti, setShowConfetti] = useState(false);
   const [isBuying, setIsBuying] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 50;
+
+  
 
   const openImageModal = (imageUrl) => {
     setSelectedImage(imageUrl);
@@ -282,36 +300,54 @@ const MarketListings = () => {
     setFilteredTokens(filtered);
   }, [tokens, searchQuery]);
   
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
+
+  const pageCount = Math.ceil(filteredTokens.length / itemsPerPage);
+  const paginatedTokens = filteredTokens.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   if (isLoading) {
     return <Loading />;
   }
 
   return (
-    <div className="marketListings">
+    <div className="market">
+      <div className="marketListings">
         {showConfetti && (
-            <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%' }}>
-                <Confetti numberOfPieces={200} />
-            </div>
+          <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%' }}>
+            <Confetti numberOfPieces={300} />
+          </div>
         )}
         <div className="marketTitle">
-            <p>NFT's For Sale</p>
+          <p>NFT's For Sale</p>
         </div>
       
-        <Accordion style={{width: "70%", margin: "0 auto"}}>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography>Listings</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-                <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search by name, contract address, token ID, or price"
-        />
-
-        <div className="marketListings">
-                    {(searchQuery ? filteredTokens : tokens).map((token, index) => (
+        <StyledAccordion style={{width: "100%", margin: "0 auto"}} defaultExpanded={true}>
+          <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography>Listings</Typography>
+          </StyledAccordionSummary>
+          <AccordionDetails>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search by name, contract address, token ID, or price"
+            />
+            <div className="pagination">
+            <Pagination count={pageCount} 
+    page={currentPage} 
+    onChange={handlePageChange}
+    boundaryCount={1}
+    siblingCount={1} 
+    showFirstButton 
+    showLastButton
+    variant="outlined"
+    shape="rounded"
+    color="primary" />       
+         </div>
+            <div className="marketListings">
+            {paginatedTokens.map((token, index) => (
         <div key={index} className="marketListings__token">
           {failedImages.includes(token.tokenId) ? (
             <p>Failed to load image for this token</p>
@@ -343,7 +379,7 @@ const MarketListings = () => {
 </p>
 
 <p className="marketListings__tokenInfo">Royalty: {web3.utils.fromWei(token.royaltyAmount, 'ether')} ETH</p>
-<p className="marketListings__royalty_reciever">Royalty Receiver: {token.royaltyReceiver}</p>
+<p className="marketListings__tokenInfo">Royalty Receiver: {token.royaltyReceiver}</p>
 
 <p className="marketListings__tokenInfo">
     Seller: {token.seller}
@@ -357,18 +393,27 @@ const MarketListings = () => {
       ))}
 
 <Modal
-                        isOpen={isModalOpen}
-                        onRequestClose={closeModal}
-                        contentLabel="Token Image"
-                        className="imageModal"
-                    >
-                        {selectedImage && <img className="modalImage" src={selectedImage} alt="Token" />}
-                    </Modal>
+                isOpen={isModalOpen}
+                onRequestClose={closeModal}
+                contentLabel="Token Image"
+                className="imageModal"
+                shouldCloseOnOverlayClick={true}
+                shouldCloseOnEsc={true}
+                ariaHideApp={false}
+              >
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                  {selectedImage && <img className="modalImage" src={selectedImage} alt="Token" />}
+                  <button onClick={closeModal} style={{ marginTop: '10px' }}>Back</button>
                 </div>
-            </AccordionDetails>
-        </Accordion>
+              </Modal>
+          
+            
+            </div>
+          </AccordionDetails>
+        </StyledAccordion>
+      </div>
     </div>
-);
+  );
 };
 
 export default MarketListings;

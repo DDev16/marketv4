@@ -5,7 +5,6 @@ import '../../../components/Marketplace/Collection/CreateCollection.css';
 import Preview from './Preview';
 import Loading from '../../../components/Loading/Loading';
 import Swal from 'sweetalert2';
-import { styled } from '@mui/system';
 
 
 // Instantiate the NFTStorage client

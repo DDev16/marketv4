@@ -143,7 +143,7 @@
 
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FiHome, FiPlusCircle, FiFolder, FiMenu, FiX } from 'react-icons/fi';
+import { FiHome, FiPlusCircle, FiMenu, FiX } from 'react-icons/fi';
 import { FaDatabase, FaWallet } from 'react-icons/fa';
 import { Web3Context } from '../../utils/Web3Provider.js';
 import songbirdLogo from '../../assets/songbird-logo.png';

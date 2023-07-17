@@ -50,7 +50,6 @@ const CollectionPage = () => {
   const [collection, setCollection] = useState(null);
   const [tokens, setTokens] = useState([]);
   const [qrCodeUrl, setQRCodeUrl] = useState('');
-  const [tokenPrices, setTokenPrices] = useState({});
 
   const qrRef = useRef();
   const [showConfetti, setShowConfetti] = useState(false);
