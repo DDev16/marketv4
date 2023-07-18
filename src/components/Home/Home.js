@@ -6,6 +6,7 @@ import Hero from '../Hero/Hero';
 import AllCollections from '../../components/Marketplace/Collection/GetAllCollections.js'
 import HottestCollections from '../../components/Marketplace/Collection/Hot/HottestCollections.js'
 import PunkWorld from '../Pworld/PunkWorld';
+import Auction from '../Marketplace/Auction/Auction';
 
 const Home = () => {
   return (
@@ -29,7 +30,7 @@ const Home = () => {
       <button style={{ ...styles.button, ...styles.popButton }}>
         <a href="/mint" style={styles.buttonLink}>Begin your creative expedition here</a>
       </button>
-
+    <Auction />
       <PunkWorld />
       {/* Add more information or features of the dapp */}
       <HottestCollections />
