@@ -1,156 +1,267 @@
-import React, { useState, useEffect } from 'react';
-import { Typography, Box, Button, Card } from '@mui/material';
-import { styled } from '@mui/system';
-import { useNavigate } from 'react-router-dom';
-import { useSpring, animated } from 'react-spring';
+import React, { Component } from 'react';
+import Web3 from 'web3';
+import { IERC721_ABI } from '../../../abi/Auction.js'; // Assuming the ABI is correctly imported from the path
+import './Auction.css';
 
-// Enhanced Box style
-const StyledBox = styled(Box)({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  minHeight: '100vh',
-  textAlign: 'center',
-  gap: '2rem',
-  backgroundImage:
-    'url(https://img.freepik.com/free-vector/geometric-background-with-polygonal-lines_1017-6448.jpg?size=626&ext=jpg&ga=GA1.2.1715257389.1688125620&semt=ais)',
-  backgroundRepeat: 'no-repeat',
-  backgroundSize: 'cover',
-  padding: '1rem',
-});
+const CONTRACT_ADDRESS = '0x0165878A594ca255338adfa4d48449f69242Eb8F';
 
-// Enhanced Countdown Card style
-const CountdownCard = styled(animated(Card))({
-  padding: '2rem',
-  margin: '1rem',
-  backgroundColor: '#fff',
-  borderRadius: '10px',
-  boxShadow: '0px 5px 15px rgba(0, 0, 0, 0.1)',
-  '&:hover': {
-    boxShadow: '0px 10px 20px rgba(0, 0, 0, 0.2)',
-  },
-});
-
-const Countdown = ({ launchDate }) => {
-  const calculateTimeLeft = () => {
-    const difference = +new Date(`${launchDate}`) - +new Date();
-    let timeLeft = {};
-
-    if (difference > 0) {
-      timeLeft = {
-        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((difference / 1000 / 60) % 60),
-        seconds: Math.floor((difference / 1000) % 60),
-      };
+class Auction extends Component {
+  async componentDidMount() {
+    // Load web3
+    if (window.ethereum) {
+      window.web3 = new Web3(window.ethereum);
+      await window.ethereum.enable();
+    } else if (window.web3) {
+      window.web3 = new Web3(window.web3.currentProvider);
+    } else {
+      window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!');
     }
 
-    return timeLeft;
+    // Load blockchain data
+    const web3 = window.web3;
+    const accounts = await web3.eth.getAccounts();
+    this.setState({ account: accounts[0] });
+
+    // Create JavaScript version of the contract
+    const auction = new web3.eth.Contract(IERC721_ABI, CONTRACT_ADDRESS);
+    this.setState({ auction });
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      account: '',
+      auction: null,
+      nftAddress: '',
+      nftId: '',
+      startPrice: '',
+      reservePrice: '',
+      buyNowPrice: '',
+      bidIncrement: '',
+      auctionDuration: '',
+      auctionIndex: '',
+      bidAmount: '',
+      auctionIndexEnd: '',
+      royaltyFee: '', // New field for royalty fee
+      royaltyRecipient: '', // New field for royalty recipient
+    };
+  }
+
+  getERC721Contract = async (nftAddress) => {
+    const web3 = window.web3;
+    const erc721Contract = new web3.eth.Contract(IERC721_ABI, nftAddress);
+    return erc721Contract;
   };
 
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+  approveTransfer = async (nftContract, nftId) => {
+    const { account } = this.state;
+    await nftContract.methods.setApprovalForAll(CONTRACT_ADDRESS, nftId).send({ from: account });
+  };
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setTimeLeft(calculateTimeLeft());
-    }, 1000);
+  createAuction = async (event) => {
+    event.preventDefault();
+    const {
+      account,
+      auction,
+      nftAddress,
+      nftId,
+      startPrice,
+      reservePrice,
+      buyNowPrice,
+      bidIncrement,
+      auctionDuration,
+      royaltyFee,
+      royaltyRecipient,
+    } = this.state;
 
-    return () => clearTimeout(timer);
-  });
+    const nftContract = await this.getERC721Contract(nftAddress);
 
-  const countdown = Object.entries(timeLeft).map(([unit, value]) => (
-    <CountdownCard key={unit}>
-      <Typography variant="h5">{value}</Typography>
-      <Typography variant="subtitle1">{unit}</Typography>
-    </CountdownCard>
-  ));
+    // Approve the transfer
+    await this.approveTransfer(nftContract, nftId);
 
-  return <Box sx={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>{countdown}</Box>;
-};
+    // Create the auction
+    await auction.methods
+      .createAuction(
+        nftContract.address,
+        [nftId],
+        startPrice,
+        reservePrice,
+        buyNowPrice,
+        bidIncrement,
+        auctionDuration,
+        royaltyFee,
+        royaltyRecipient
+      )
+      .send({ from: account });
+  };
 
-const RotatingEmoji = styled(Typography)(({ theme }) => ({
-  fontSize: '3rem',
-  animation: 'spin 2s linear infinite',
-  '@keyframes spin': {
-    '0%': { transform: 'rotateY(0deg)' },
-    '100%': { transform: 'rotateY(360deg)' },
-  },
-}));
+  bid = async (event) => {
+    event.preventDefault();
+    const { account, auction, auctionIndex, bidAmount } = this.state;
+    await auction.methods.bid(auctionIndex).send({ from: account, value: bidAmount });
+  };
 
-const EnhancedTitle = styled(Typography)(({ theme }) => ({
-  fontSize: '3.5rem',
-  fontWeight: 'bold',
-  marginRight: '20px',
-  textShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-  transform: 'perspective(1000px) rotateX(-20deg)',
-  '-webkit-text-stroke': '1px rgba(255, 255, 255, 0.5)',
-  '-webkit-text-fill-color': 'rgba(255, 255, 255, 1)',
-  position: 'relative',
-  animation: 'glow 2s ease-in-out infinite',
-  '@keyframes glow': {
-    '0%': { filter: 'brightness(100%)', transform: 'scale(1)' },
-    '50%': { filter: 'brightness(150%)', transform: 'scale(1.1)' },
-    '100%': { filter: 'brightness(100%)', transform: 'scale(1)' },
-  },
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    zIndex: -1,
-    background: 'linear-gradient(45deg, #ff6a00, #ee0979, #ff6a00)',
-    borderRadius: '10px',
-    opacity: 0.7,
-    animation: 'pulse 3s ease-in-out infinite',
-    transform: 'scale(1.1)',
-    animationDelay: '0.5s',
-  },
-  '&::after': {
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    zIndex: -2,
-    background: 'linear-gradient(45deg, #ff6a00, #ee0979, #ff6a00)',
-    borderRadius: '10px',
-    opacity: 0.5,
-    animation: 'pulse 3s ease-in-out infinite',
-    transform: 'scale(1.2)',
-    animationDelay: '1s',
-  },
-  '@keyframes pulse': {
-    '0%': { opacity: 0.7, transform: 'scale(1)' },
-    '50%': { opacity: 0.4, transform: 'scale(1.05)' },
-    '100%': { opacity: 0.7, transform: 'scale(1)' },
-  },
-}));
+  endAuction = async (event) => {
+    event.preventDefault();
+    const { account, auction, auctionIndexEnd } = this.state;
+    await auction.methods.endAuction(auctionIndexEnd).send({ from: account });
+  };
 
-const Auction = () => {
-  const launchDate = '2023-8-14'; // set your launch date here
-  const navigate = useNavigate();
-  const springProps = useSpring({ opacity: 1, from: { opacity: 0 } });
-
-  return (
-    <animated.div style={springProps}>
-      <StyledBox>
-        <RotatingEmoji variant="h1">🚧</RotatingEmoji>
-        <EnhancedTitle variant="h2">Auction Page</EnhancedTitle>
-        <Typography variant="h4">Under Construction</Typography>
-        <Typography variant="body1" sx={{ maxWidth: '600px', margin: '0 auto' }}>
-          We're working hard to give you the best auction experience. Stay tuned!
-        </Typography>
-        <Countdown launchDate={launchDate} />
-        <Button variant="contained" color="primary" onClick={() => navigate(-1)}>
-          Go Back
-        </Button>
-      </StyledBox>
-    </animated.div>
-  );
-};
+  handleChange = (event) => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
+  
+  render() {
+    return (
+      <div className="auction-container">
+        <h1 className="title">OpenAuction</h1>
+        <div className="section">
+          <h2 className="section-title">Create Auction</h2>
+          <form className="form" onSubmit={this.createAuction}>
+            <label className="label">
+              NFT Address:
+              <input
+                className="input"
+                type="text"
+                name="nftAddress"
+                value={this.state.nftAddress}
+                onChange={this.handleChange}
+              />
+            </label>
+            <label className="label">
+              NFT ID:
+              <input
+                className="input"
+                type="text"
+                name="nftId"
+                value={this.state.nftId}
+                onChange={this.handleChange}
+              />
+            </label>
+            <label className="label">
+              Start Price:
+              <input
+                className="input"
+                type="text"
+                name="startPrice"
+                value={this.state.startPrice}
+                onChange={this.handleChange}
+              />
+            </label>
+            <label className="label">
+              Reserve Price:
+              <input
+                className="input"
+                type="text"
+                name="reservePrice"
+                value={this.state.reservePrice}
+                onChange={this.handleChange}
+              />
+            </label>
+            <label className="label">
+              Buy Now Price:
+              <input
+                className="input"
+                type="text"
+                name="buyNowPrice"
+                value={this.state.buyNowPrice}
+                onChange={this.handleChange}
+              />
+            </label>
+            <label className="label">
+              Bid Increment:
+              <input
+                className="input"
+                type="text"
+                name="bidIncrement"
+                value={this.state.bidIncrement}
+                onChange={this.handleChange}
+              />
+            </label>
+            <label className="label">
+              Auction Duration:
+              <input
+                className="input"
+                type="text"
+                name="auctionDuration"
+                value={this.state.auctionDuration}
+                onChange={this.handleChange}
+              />
+            </label>
+            <label className="label">
+              Royalty Fee:
+              <input
+                className="input"
+                type="text"
+                name="royaltyFee"
+                value={this.state.royaltyFee}
+                onChange={this.handleChange}
+              />
+            </label>
+            <label className="label">
+              Royalty Recipient:
+              <input
+                className="input"
+                type="text"
+                name="royaltyRecipient"
+                value={this.state.royaltyRecipient}
+                onChange={this.handleChange}
+              />
+            </label>
+            <button className="button" type="submit">
+              Create Auction
+            </button>
+          </form>
+        </div>
+        <div className="section">
+          <h2 className="section-title">Place Bid</h2>
+          <form className="form" onSubmit={this.bid}>
+            <label className="label">
+              Auction Index:
+              <input
+                className="input"
+                type="text"
+                name="auctionIndex"
+                value={this.state.auctionIndex}
+                onChange={this.handleChange}
+              />
+            </label>
+            <label className="label">
+              Bid Amount:
+              <input
+                className="input"
+                type="text"
+                name="bidAmount"
+                value={this.state.bidAmount}
+                onChange={this.handleChange}
+              />
+            </label>
+            <button className="button" type="submit">
+              Bid
+            </button>
+          </form>
+        </div>
+        <div className="section">
+          <h2 className="section-title">End Auction</h2>
+          <form className="form" onSubmit={this.endAuction}>
+            <label className="label">
+              Auction Index:
+              <input
+                className="input"
+                type="text"
+                name="auctionIndexEnd"
+                value={this.state.auctionIndexEnd}
+                onChange={this.handleChange}
+              />
+            </label>
+            <button className="button" type="submit">
+              End Auction
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
+}
 
 export default Auction;

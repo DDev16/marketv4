@@ -6,7 +6,7 @@ import Hero from '../Hero/Hero';
 import AllCollections from '../../components/Marketplace/Collection/GetAllCollections.js'
 import HottestCollections from '../../components/Marketplace/Collection/Hot/HottestCollections.js'
 import PunkWorld from '../Pworld/PunkWorld';
-import Auction from '../Marketplace/Auction/Auction';
+import Auction from '../Marketplace/Auction/Auction.js';
 
 const Home = () => {
   return (
