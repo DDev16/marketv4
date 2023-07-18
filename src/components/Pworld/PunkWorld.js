@@ -137,7 +137,7 @@ const StyledGifContainerRight = styledComponents.div`
   @media (min-device-width: 360px) 
     and (max-device-width: 740px) 
     and (-webkit-device-pixel-ratio: 3) { 
-    top: 35%; 
+    top: 65%; 
     right: 12%;
     width: 250px; 
     height: 250px; 
