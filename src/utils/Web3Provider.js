@@ -1,20 +1,20 @@
+
+
 import React, { useState, useEffect, createContext } from 'react';
 import Web3 from 'web3';
 import MyNFT from '../abi/MyNFT.js'; 
 import Marketplace from '../abi/Marketplace.js';
-import AuctionContract from '../abi/Auction.js';
 import detectEthereumProvider from '@metamask/detect-provider';
-
+import Auction from '../abi/Auction.js'
 export const Web3Context = createContext();
 
 const Web3Provider = ({ children }) => {
   const [web3, setWeb3] = useState(null);
   const [contract, setContract] = useState(null);
+  const [auction, setAuctionContract] = useState(null);
   const [marketplaceContract, setMarketplaceContract] = useState(null);
-  const [auctionContract, setAuctionContract] = useState(null);
   const [initialized, setInitialized] = useState(false);
   const [connected, setConnected] = useState(false);
-  const [loading, setLoading] = useState(true); // Add loading state
 
   useEffect(() => {
     const initializeWeb3 = async () => {
@@ -36,7 +36,6 @@ const Web3Provider = ({ children }) => {
           if (networkId === 19) {
             contractAddress = '0xEe2d1f6D5C8d71e8c97CAA4A80fF9eD87dbB9C34';
             marketplaceAddress = '0xc7095B03A1c6b50B4f8B2E6D8c87CBddD188640A';
-            auctionAddress = '0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82';
           } else if (networkId === 14) {
             contractAddress = '0x8d1A663F84c5a7cf0c0458848089783d0a0A3b6A';
             marketplaceAddress = '0x73710334E4E5CA4482F5526faBEa45bce503BD98';
@@ -44,9 +43,9 @@ const Web3Provider = ({ children }) => {
             contractAddress = '0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0';
             marketplaceAddress = '0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82';
           } else if (networkId === 31337) {
-            contractAddress = '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9';
-            marketplaceAddress = '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512';
-            auctionAddress = '0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82';
+            contractAddress = '0xc6e7DF5E7b4f2A278906862b61205850344D4e7d';
+             marketplaceAddress = '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512';
+             auctionAddress = '0xa513E6E4b8f2a923D98304ec87F64353C4D5C853';
           } 
 
           const contractInstance = new web3Instance.eth.Contract(
@@ -58,7 +57,7 @@ const Web3Provider = ({ children }) => {
             marketplaceAddress
           );
           const auctionInstance = new web3Instance.eth.Contract(
-            AuctionContract.abi,
+            Auction,
             auctionAddress
           );
           setContract(contractInstance);
@@ -66,26 +65,21 @@ const Web3Provider = ({ children }) => {
           setAuctionContract(auctionInstance);
           setInitialized(true);
         } catch (error) {
-          console.error('Failed to connect to MetaMask:', error);
+          window.alert('Failed to connect to MetaMask');
         }
 
         const handleNetworkChange = () => {
-          setInitialized(false);
+          setInitialized(false);  // Will cause the useEffect hook to re-run and re-initialize everything
           initializeWeb3();
         };
 
         provider.on('chainChanged', handleNetworkChange);
       } else {
-        console.error('Please install MetaMask!');
+        window.alert('Please install MetaMask!');
       }
     };
 
-    initializeWeb3()
-      .then(() => setLoading(false))
-      .catch((error) => {
-        console.error('Failed to initialize Web3:', error);
-        setLoading(false);
-      });
+    initializeWeb3();
   }, [initialized]);
 
   const handleConnectDisconnect = async () => {
@@ -95,6 +89,7 @@ const Web3Provider = ({ children }) => {
       if (connected) {
         provider.removeAllListeners('chainChanged');
         setContract(null);
+        
         setMarketplaceContract(null);
         setAuctionContract(null);
         setConnected(false);
@@ -106,22 +101,123 @@ const Web3Provider = ({ children }) => {
   };
 
   return (
-    <Web3Context.Provider
-      value={{
-        web3,
-        contract,
-        marketplaceContract,
-        auctionContract,
-        disconnect: handleConnectDisconnect
-      }}
-    >
-      {loading ? (
-        <div>Loading...</div>
-      ) : (
-        children
-      )}
+    <Web3Context.Provider value={{ web3, contract, marketplaceContract, auction, disconnect: handleConnectDisconnect }}>
+      {children}
     </Web3Context.Provider>
   );
 };
 
 export default Web3Provider;
+
+
+
+
+
+
+
+////windows.etheruem wasnt working in mobile i think, i switched to metamask detect provider
+
+
+// import React, { useState, useEffect, createContext } from 'react';
+// import Web3 from 'web3';
+// import MyNFT from '../abi/MyNFT.js'; 
+// import Marketplace from '../abi/Marketplace.js';
+
+// export const Web3Context = createContext();
+
+// const Web3Provider = ({ children }) => {
+//   const [web3, setWeb3] = useState(null);
+//   const [contract, setContract] = useState(null);
+//   const [marketplaceContract, setMarketplaceContract] = useState(null);
+//   const [initialized, setInitialized] = useState(false);
+//   const [connected, setConnected] = useState(false);
+
+//   useEffect(() => {
+//     const initializeWeb3 = async () => {
+//       if (window.ethereum) {
+//         try {
+//           // Request account access
+//           await window.ethereum.request({ method: 'eth_requestAccounts' });
+//           setConnected(true);
+
+//           const web3Instance = new Web3(window.ethereum);
+//           setWeb3(web3Instance);
+          
+//           const networkId = await web3Instance.eth.net.getId();
+//           let contractAddress = '';
+//           let marketplaceAddress = '';
+
+//           if (networkId === 19) {
+//             // Songbird network
+//             contractAddress = '0xEe2d1f6D5C8d71e8c97CAA4A80fF9eD87dbB9C34';
+//             marketplaceAddress = '0xc7095B03A1c6b50B4f8B2E6D8c87CBddD188640A';
+//           } else if (networkId === 14) {
+//             // Flare network
+//             contractAddress = '0x8d1A663F84c5a7cf0c0458848089783d0a0A3b6A';
+//             marketplaceAddress = '0x73710334E4E5CA4482F5526faBEa45bce503BD98';
+//           } else if (networkId === 5) {
+//             // Goerli Test network
+//             contractAddress = '0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0';
+//             marketplaceAddress = '0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82';
+//           }
+          
+//           else if (networkId === 31337) {
+//             // Hardhat network
+//             contractAddress = '0xbdEd0D2bf404bdcBa897a74E6657f1f12e5C6fb6';
+//             marketplaceAddress = '0x51A1c8956c038699423ab7A0726d7311c81f6F8f';
+//           } 
+          
+
+//           const contractInstance = new web3Instance.eth.Contract(
+//             MyNFT.abi,
+//             contractAddress
+//           );
+//           const marketplaceInstance = new web3Instance.eth.Contract(
+//             Marketplace.abi,
+//             marketplaceAddress
+//           );
+//           setContract(contractInstance);
+//           setMarketplaceContract(marketplaceInstance);
+//           setInitialized(true);
+//         } catch (error) {
+//           window.alert('Failed to connect to MetaMask');
+//         }
+
+//         const handleNetworkChange = () => {
+//           setInitialized(false);  // Will cause the useEffect hook to re-run and re-initialize everything
+//           initializeWeb3();
+//         };
+        
+
+//         window.ethereum.on('chainChanged', handleNetworkChange);
+//       } else {
+//         window.alert('You need to install MetaMask!');
+//       }
+//     };
+
+//     initializeWeb3();
+//   }, [initialized]);
+
+//   const handleConnectDisconnect = async () => {
+//     if (window.ethereum) {
+//       if (connected) {
+//         window.ethereum.removeAllListeners('chainChanged');
+//         setContract(null);
+//         setMarketplaceContract(null);
+//         setConnected(false);
+//       } else {
+//         await window.ethereum.request({ method: 'eth_requestAccounts' });
+//         setConnected(true);
+//       }
+//     }
+//   };
+
+//   return (
+//     <Web3Context.Provider value={{ web3, contract, marketplaceContract, disconnect: handleConnectDisconnect }}>
+//       {children}
+//     </Web3Context.Provider>
+//   );
+// };
+
+// export default Web3Provider;
+

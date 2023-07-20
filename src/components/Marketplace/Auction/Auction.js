@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import Web3 from 'web3';
 import AuctionContractABI from '../../../abi/Auction.js';
 import ERC721ContractABI from '../../../abi/ERC721.js';
+import Bid from './Bid.js';
 
 // Contract address.
-const AUCTION_CONTRACT_ADDRESS = '0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82';
+const AUCTION_CONTRACT_ADDRESS = '0x3Aa5ebB10DC797CAC828524e59A333d0A371443c';
 
 const AuctionComponent = () => {
     const [account, setAccount] = useState(null);
@@ -58,7 +59,9 @@ const AuctionComponent = () => {
     }
 
     return (
+        
         <div>
+            <Bid />
             <h2>Create Auction</h2>
             <form onSubmit={createAuction}>
                 <input type="text" onChange={event => setNftContractAddress(event.target.value)} placeholder="NFT Contract Address" />
