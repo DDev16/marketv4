@@ -398,14 +398,14 @@ const mintToken = async () => {
             <StyledInfoMessage>
       Mint an NFT to gain access to PunksWorld!
     </StyledInfoMessage>
-          <StyledWorldButton 
+          {/* <StyledWorldButton 
     sx={{ marginTop: '2rem' }} // Add margin-top directly here
     variant="contained" 
     color="secondary" 
     href="https://vr-world-jade.vercel.app/"
     onClick={enterPunkMetaWorld}>
   Enter Punk MetaWorld
-</StyledWorldButton>
+</StyledWorldButton> */}
         </StyledButtonContainer>
       )}
     </StyledContainer>
