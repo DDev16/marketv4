@@ -29,6 +29,11 @@ function ipfsToHttp(uri) {
     const cleanUri = uri.replace(/^ipfs:/, '').replace(/^\/+/, '');
     return `https://ipfs.io/ipfs/${cleanUri}`;
   }
+
+  function WeiToEther(wei) {
+    const web3 = new Web3();
+    return web3.utils.fromWei(wei, 'ether');
+  }
   
 
 function GetAllAuctions() {
@@ -102,12 +107,12 @@ function GetAllAuctions() {
     </div>
     ))}
     <p className="tag">Seller: {auction.seller}</p>
-    <p className="tag">Start Price: {auction.startPrice}</p>
-    <p className="tag">Reserve Price: {auction.reservePrice}</p>
-    <p className="tag">Buy Now Price: {auction.buyNowPrice}</p>
-    <p className="tag">Highest Bidder: {auction.highestBidder}</p>
-    <p className="tag">Highest Bid: {auction.highestBid}</p>
-    <p className="tag">Bid Increment: {auction.bidIncrement}</p>
+          <p className="tag">Start Price: {WeiToEther(auction.startPrice)} Ether</p>
+          <p className="tag">Reserve Price: {WeiToEther(auction.reservePrice)} Ether</p>
+          <p className="tag">Buy Now Price: {WeiToEther(auction.buyNowPrice)} Ether</p>
+          <p className="tag">Highest Bidder: {auction.highestBidder}</p>
+          <p className="tag">Highest Bid: {WeiToEther(auction.highestBid)} Ether</p>
+          <p className="tag">Bid Increment: {WeiToEther(auction.bidIncrement)} Ether</p>
     <p className="tag">End Time: {new Date(auction.endTimestamp * 1000).toLocaleString()}</p>
     <p className="tag">Time Remaining: {days} days, {hours} hours, {minutes} minutes, and {seconds} seconds</p>
     <p className="tag">Auction Ended: {auction.ended ? "Yes" : "No"}</p>
