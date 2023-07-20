@@ -3,9 +3,10 @@ import Web3 from 'web3';
 import AuctionContractABI from '../../../abi/Auction.js';
 import ERC721ContractABI from '../../../abi/ERC721.js';
 import Bid from './Bid.js';
+import GetAllAuctions from './GetAllAuctions.js';
 
 // Contract address.
-const AUCTION_CONTRACT_ADDRESS = '0x3Aa5ebB10DC797CAC828524e59A333d0A371443c';
+const AUCTION_CONTRACT_ADDRESS = '0x162A433068F51e18b7d13932F27e66a3f99E6890';
 
 const AuctionComponent = () => {
     const [account, setAccount] = useState(null);
@@ -62,6 +63,7 @@ const AuctionComponent = () => {
         
         <div>
             <Bid />
+            <GetAllAuctions />
             <h2>Create Auction</h2>
             <form onSubmit={createAuction}>
                 <input type="text" onChange={event => setNftContractAddress(event.target.value)} placeholder="NFT Contract Address" />
@@ -70,7 +72,7 @@ const AuctionComponent = () => {
                 <input type="text" onChange={event => setReservePrice(event.target.value)} placeholder="Reserve Price (in Ether)" />
                 <input type="text" onChange={event => setBuyNowPrice(event.target.value)} placeholder="Buy Now Price (in Ether)" />
                 <input type="text" onChange={event => setBidIncrement(event.target.value)} placeholder="Bid Increment (in Ether)" />
-                <input type="text" onChange={event => setAuctionDuration(event.target.value)} placeholder="Auction Duration (in blocks)" />
+                <input type="text" onChange={event => setAuctionDuration(event.target.value)} placeholder="Auction Duration (in days)" />
                 <button type="submit">Create Auction</button>
             </form>
         </div>
