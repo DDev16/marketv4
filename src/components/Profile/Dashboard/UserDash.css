@@ -4,7 +4,7 @@
   top: 0;
   width: 100%;
   z-index: 3;
-  margin-top:15px; 
+  margin-top:0px; 
 
 }
 
@@ -75,7 +75,7 @@
 .sidebar {
   display: none;
   position: absolute;
-  width: 170px; /* Increase width to fit the longer text */
+  width: 175px; /* Increase width to fit the longer text */
   max-height: auto; /* Auto height */
   z-index: 1;
   background: #252525;
