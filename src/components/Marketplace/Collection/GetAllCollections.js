@@ -126,9 +126,44 @@ const lastPage = Math.min(maxPage, currentPage + paginationSpread);
     <>
         <div className="market">
 
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="wave">
-  <path fill="lightblue" fillOpacity=".7" d="M0,96L80,122.7C160,149,320,203,480,192C640,181,800,107,960,80C1120,53,1280,75,1360,85.3L1440,96L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"></path>
+        <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    viewBox="0 0 1440 320" 
+    class="wave"
+    role="img" 
+    aria-label="Wave graphic"
+    preserveAspectRatio="xMidYMid meet">
+  
+
+  <defs>
+    <linearGradient id="waveGradient" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="5%"  stop-color="#2b5876" /> 
+      <stop offset="50%" stop-color="#4e4376" /> 
+      <stop offset="70%" stop-color="#ef5350" /> 
+      <stop offset="95%" stop-color="#202020" /> 
+    </linearGradient>
+  </defs>
+
+  <path 
+  fillOpacity='.5'
+    fill="url(#waveGradient)"  
+    d="M0,96L80,122.7C160,149,320,203,480,192C640,181,800,107,960,80C1120,53,1280,75,1360,85.3L1440,96L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z">
+    
+  
+    <animate
+        repeatCount="indefinite"
+        fill="freeze"
+        attributeName="d"
+        dur="10s"
+        values="
+          M0,96L80,122.7C160,149,320,203,480,192C640,181,800,107,960,80C1120,53,1280,75,1360,85.3L1440,96L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z;
+          M0,96L80,107C160,117,320,139,480,149C640,159,800,169,960,179C1120,189,1280,199,1360,209L1440,219L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z;
+          M0,96L80,122.7C160,149,320,203,480,192C640,181,800,107,960,80C1120,53,1280,75,1360,85.3L1440,96L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z;"
+      />
+  </path>
 </svg>
+
+
 
       <h1 className={styles.myCollectionsTitle}>Collections</h1>
       <StyledAccordion defaultExpanded={true}>

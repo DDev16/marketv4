@@ -83,7 +83,7 @@
 
 
 .token-image, .token-video {
-  width: 450px;
+  width: 100%;
   height: auto;
   object-fit: cover;
   cursor: pointer;
@@ -233,3 +233,25 @@ input[type="number"] {
   background-color: #e6e6e6;
 }
 
+
+
+.token-card {
+  flex: 0 0 24%; /* roughly calculates to 4 items per row */
+  max-width: 24%; /* this matches the flex basis */
+  box-sizing: border-box; /* to include padding and borders in the element's total width */
+  margin-bottom: 20px; /* adjust this as needed */
+}
+
+@media (max-width: 900px) {
+  .token-card {
+    flex: 0 0 50%; /* for tablet view show 2 items per row */
+    max-width: 50%;
+  }
+}
+
+@media (max-width: 600px) {
+  .token-card {
+    flex: 0 0 100%; /* for mobile view show 1 item per row */
+    max-width: 100%;
+  }
+}

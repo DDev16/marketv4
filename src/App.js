@@ -21,6 +21,7 @@ import AddToCollection from './components/Marketplace/Collection/AddToCollection
 import CollectionPage from './components/Marketplace/Collection/CollectionPage';
 import AllCollections from './components/Marketplace/Collection/GetAllCollections';
 import Auction from './components/Marketplace/Auction/Auction';
+import CreateAuction from './components/Marketplace/Auction/Auction';
 import SwapMeet from './components/Marketplace/Auction/SwapMeet';
 import CourseCard from './components/courses/CourseCard';
 import Gaming from './components/Gaming/Gaming';
@@ -50,6 +51,7 @@ function App() {
                   <Route path="/add-to-collection" element={<AddToCollection />} />
                   <Route path="/collections/:collectionId" element={<CollectionPage />} />
                   <Route path="/auction" element={<Auction />} />
+                  <Route path="/create-auction" element={<CreateAuction />} />
                   <Route path="/learning" element={<CourseCard />} />
                   <Route path="/gaming" element={<Gaming />} />
                   <Route path="/profile-settings" element={<ProfileSettings />} />

@@ -124,6 +124,12 @@ const NavBar = () => {
             </Link>
           </li>
           <li>
+            <Link to="/create-auction" onClick={toggleNav}>
+              <FaDatabase className="nav-icon" />
+             Create Auction
+            </Link>
+          </li>
+          <li>
             <Link to="/auction" onClick={toggleNav}>
               <FaDatabase className="nav-icon" />
              Auction

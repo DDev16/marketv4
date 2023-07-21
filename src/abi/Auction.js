@@ -407,6 +407,11 @@ const Auction=  [
 		"name": "getAllAuctions",
 		"outputs": [
 			{
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
+			},
+			{
 				"components": [
 					{
 						"internalType": "contract IERC721",

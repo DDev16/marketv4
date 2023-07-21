@@ -1,9 +1,4 @@
-/* General */
-body {
-  font-family: 'Roboto', sans-serif;
-  color: #333;
-  
-}
+
 
 /* Accordion */
 .myAccordion {
@@ -274,9 +269,9 @@ body {
   letter-spacing: 2px;
   text-shadow: 3px 3px 0 rgba(0,0,0,0.2); 
   margin-left:40px;
-  text-align: 'center'; /* Corrected 'textAlign' to 'text-align'*/
+  text-align: center; /* Corrected 'textAlign' to 'text-align'*/
 
-  background: linear-gradient(to right, #0072ff, #00c6ff); 
+  background: linear-gradient(to right, #2b5876, #4e4376, #ef5350, #202020); 
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent; 
 

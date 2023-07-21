@@ -75,10 +75,10 @@
 .sidebar {
   display: none;
   position: absolute;
-  width: 150px; /* Increase width to fit the longer text */
+  width: 170px; /* Increase width to fit the longer text */
   max-height: auto; /* Auto height */
   z-index: 1;
-  background: black;
+  background: #252525;
   border-radius: 4px;
   padding: 10px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);

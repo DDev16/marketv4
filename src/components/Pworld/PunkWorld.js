@@ -58,7 +58,7 @@ const StyledAccountText = styledComponents.p`
 
 const StyledGifContainerLeft = styledComponents.div`
   position: absolute;
-  top: 20%;
+  top: 30%;
   left: 8%;
   width: 30%;
   height: 60%;
@@ -77,7 +77,7 @@ const StyledGifContainerLeft = styledComponents.div`
   
 
   @media (max-width: 600px) {
-    top: 55%; 
+    top: 65%; 
     left: 20%;
     width: 200px; 
     height: 200px; 
@@ -109,7 +109,7 @@ const StyledGifContainerLeft = styledComponents.div`
 
 const StyledGifContainerRight = styledComponents.div`
   position: absolute;
-  top: 20%;
+  top: 30%;
   right: 8%;
   width: 30%;
   height: 60%;
@@ -128,7 +128,7 @@ const StyledGifContainerRight = styledComponents.div`
 
 
   @media (max-width: 600px) {
-    top: 55%; 
+    top: 65%; 
     right: 20%;
     width: 200px; 
     height: 200px; 
@@ -396,16 +396,20 @@ const mintToken = async () => {
               Mint NFT
             </StyledButton>
             <StyledInfoMessage>
-      Mint an NFT to gain access to PunksWorld!
+      Minting an NFT will give you access to PunksWorld! Future Airdrops, and exclusive membership perks!
     </StyledInfoMessage>
-          {/* <StyledWorldButton 
+    <StyledInfoMessage>
+      Nft holders will recieve 10% of marketplace fees
+    </StyledInfoMessage>
+
+          <StyledWorldButton 
     sx={{ marginTop: '2rem' }} // Add margin-top directly here
     variant="contained" 
     color="secondary" 
-    href="https://vr-world-jade.vercel.app/"
+    href="https://punkworld.vercel.app/"
     onClick={enterPunkMetaWorld}>
   Enter Punk MetaWorld
-</StyledWorldButton> */}
+</StyledWorldButton>
         </StyledButtonContainer>
       )}
     </StyledContainer>

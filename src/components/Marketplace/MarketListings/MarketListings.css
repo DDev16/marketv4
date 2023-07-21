@@ -13,7 +13,7 @@
 
 .market {
   width:100%;
-  background-image: url("https://img.freepik.com/free-vector/geometric-background-with-polygonal-lines_1017-6448.jpg?size=626&ext=jpg&ga=GA1.2.1715257389.1688125620&semt=ais"); /* replace 'your_image_url.jpg' with the actual URL of the image */
+  background-image: url("https://img.freepik.com/free-vector/gradient-black-background-with-cubes_23-2149161840.jpg?size=626&ext=jpg&ga=GA1.1.1715257389.1688125620&semt=ais"); /* replace 'your_image_url.jpg' with the actual URL of the image */
   background-size: cover; /* this will make the image cover the whole area of the element */
   background-position: center; /* this will center the image */
   background-repeat: no-repeat; /* this will prevent the image from repeating */
