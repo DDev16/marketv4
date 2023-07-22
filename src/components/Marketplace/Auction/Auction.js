@@ -51,6 +51,7 @@ const Label = styled.label`
 const Description = styled.p`
     font-size: 1em;
     color: #777;
+    
 `;
 
 const SubmitButton = styled.button`

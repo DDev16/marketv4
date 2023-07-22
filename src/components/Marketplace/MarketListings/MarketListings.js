@@ -86,7 +86,48 @@ const MarketListings = () => {
   const [isBuying, setIsBuying] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 50;
+  const [sortType, setSortType] = useState('lowToHigh'); // initial value
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
 
+  useEffect(() => {
+    // First, apply the search filter
+    let filtered = tokens.filter((token) => {
+      const { metadata, contractAddress, tokenId, price } = token;
+      const lowercaseQuery = searchQuery.toLowerCase();
+  
+      // Convert price to Ether for comparison
+const priceNum = parseFloat(web3.utils.fromWei(price, 'ether'));
+
+// Apply additional filters for min and max price
+const withinMinPrice = minPrice === '' || priceNum >= parseFloat(minPrice);
+const withinMaxPrice = maxPrice === '' || priceNum <= parseFloat(maxPrice);
+
+      return (
+        withinMinPrice &&
+        withinMaxPrice &&
+        (
+          metadata.name.toLowerCase().includes(lowercaseQuery) ||
+          contractAddress.toLowerCase().includes(lowercaseQuery) ||
+          tokenId.toString().includes(searchQuery) ||
+          price.toString().toLowerCase().includes(lowercaseQuery)
+        )
+      );
+    });
+  
+    // Then sort the filtered tokens
+    if (sortType === 'lowToHigh') {
+      filtered = [...filtered].sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+    } else if (sortType === 'highToLow') {
+      filtered = [...filtered].sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+    }
+    
+  
+    console.log("SortType: ", sortType);
+    console.log("Filtered Tokens after sort: ", filtered);
+    setFilteredTokens(filtered);
+}, [tokens, searchQuery, minPrice, maxPrice, sortType]);  
+  
   
 
   const openImageModal = (imageUrl) => {
@@ -283,22 +324,6 @@ const MarketListings = () => {
     fetchTokensForSale();
   }, [web3, contract, marketplaceContract]);
 
-  useEffect(() => {
-    // Filter the tokens based on the search query
-    const filtered = tokens.filter((token) => {
-      const { metadata, contractAddress, tokenId, price } = token;
-      const lowercaseQuery = searchQuery.toLowerCase();
-  
-      return (
-        metadata.name.toLowerCase().includes(lowercaseQuery) ||
-        contractAddress.toLowerCase().includes(lowercaseQuery) ||
-        tokenId.toString().includes(searchQuery) || // Update this line to check for exact token ID match
-        price.toString().toLowerCase().includes(lowercaseQuery)
-      );
-    });
-  
-    setFilteredTokens(filtered);
-  }, [tokens, searchQuery]);
   
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
@@ -312,43 +337,89 @@ const MarketListings = () => {
   }
 
   return (
-    
-    <div className="market">
-      <div className="marketListings">
-        {showConfetti && (
-          <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%' }}>
-            <Confetti numberOfPieces={300} />
-          </div>
-        )}
-        <div className="marketTitle">
-          <p>NFT's For Sale</p>
+  <div className="market">
+    <div className="marketListings">
+      {showConfetti && (
+        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%'  }}>
+          <Confetti numberOfPieces={300} />
+          <p>Confetti effect indicates a successful purchase.</p>
         </div>
-      
-        <StyledAccordion style={{width: "100%", margin: "0 auto"}} defaultExpanded={true}>
-          <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography>Listings</Typography>
-          </StyledAccordionSummary>
-          <AccordionDetails>
+      )}
+      <div className="marketTitle">
+        <p>NFT's For Sale</p>
+      </div>
+
+      <StyledAccordion style={{width: "100%", margin: "0 auto"}} defaultExpanded={true}>
+        <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography>Listings</Typography>
+        </StyledAccordionSummary>
+        <p>Please ensure both minimum and maximum values are set for effective price range filtering.</p>
+        <AccordionDetails>
+          <div>
+            <label htmlFor="minPrice">Min price:</label>
             <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search by name, contract address, token ID, or price"
+              id="minPrice"
+              type="number"
+              min="0"
+              value={minPrice}
+              onChange={(e) => setMinPrice(e.target.value)}
+              placeholder="Min price"
             />
-            <div className="pagination">
-            <Pagination count={pageCount} 
-    page={currentPage} 
-    onChange={handlePageChange}
-    boundaryCount={1}
-    siblingCount={1} 
-    showFirstButton 
-    showLastButton
-    variant="outlined"
-    shape="rounded"
-    color="primary" />       
-         </div>
-            <div className="marketListings">
-            {paginatedTokens.map((token, index) => (
+            <p>Use this to set the minimum price for the NFTs you want to see.</p>
+          </div>
+          <div>
+            <label htmlFor="maxPrice">Max price:</label>
+            <input
+              id="maxPrice"
+              type="number"
+              min="0"
+              value={maxPrice}
+              onChange={(e) => setMaxPrice(e.target.value)}
+              placeholder="Max price"
+            />
+            <p>Use this to set the maximum price for the NFTs you want to see.</p>
+          </div>
+          <div>
+            <label htmlFor="sortType">Sort by price:</label>
+            <select
+              id="sortType"
+              value={sortType}
+              onChange={(e) => {
+                console.log('New sortType:', e.target.value);
+                setSortType(e.target.value);
+              }}
+            >
+              <option value="lowToHigh">Low to High</option>
+              <option value="highToLow">High to Low</option>
+            </select>
+            <p>Use this to sort the displayed NFTs by price.</p>
+          </div>
+          
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search by name, contract address, token ID, or price"
+          />
+          <p>Use this to search for NFTs by their name, contract address, token ID, or price.</p>
+          <div className="pagination">
+            <Pagination 
+              count={pageCount} 
+              page={currentPage} 
+              onChange={handlePageChange}
+              boundaryCount={1}
+              siblingCount={1} 
+              showFirstButton 
+              showLastButton
+              variant="outlined"
+              shape="rounded"
+              color="primary" 
+            />
+          </div>
+          <p>Click on the image to see it in full size. Click 'Back' to return to the listings.</p>
+
+          <div className="marketListings">
+          {paginatedTokens.map((token, index) => (
         <div key={index} className="marketListings__token">
           {failedImages.includes(token.tokenId) ? (
             <p>Failed to load image for this token</p>
@@ -393,28 +464,26 @@ const MarketListings = () => {
         </div>
       ))}
 
-<Modal
-                isOpen={isModalOpen}
-                onRequestClose={closeModal}
-                contentLabel="Token Image"
-                className="imageModal"
-                shouldCloseOnOverlayClick={true}
-                shouldCloseOnEsc={true}
-                ariaHideApp={false}
-              >
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                  {selectedImage && <img className="modalImage" src={selectedImage} alt="Token" />}
-                  <button onClick={closeModal} style={{ marginTop: '10px' }}>Back</button>
-                </div>
-              </Modal>
-          
-            
-            </div>
-          </AccordionDetails>
-        </StyledAccordion>
-      </div>
+            <Modal
+              isOpen={isModalOpen}
+              onRequestClose={closeModal}
+              contentLabel="Token Image"
+              className="imageModal"
+              shouldCloseOnOverlayClick={true}
+              shouldCloseOnEsc={true}
+              ariaHideApp={false}
+            >
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                {selectedImage && <img className="modalImage" src={selectedImage} alt="Token" />}
+                <button onClick={closeModal} style={{ marginTop: '10px' }}>Back</button>
+              </div>
+            </Modal>
+          </div>
+        </AccordionDetails>
+      </StyledAccordion>
     </div>
-  );
-};
+  </div>
+);
+          };
 
 export default MarketListings;
