@@ -6,7 +6,6 @@ const BatchListing = () => {
   const { web3, marketplaceContract } = useContext(Web3Context);
   const [tokenData, setTokenData] = useState('');
   const [currentAccount, setCurrentAccount] = useState('');
-  const [approvalGiven, setApprovalGiven] = useState(false);
 
   useEffect(() => {
     const loadAccount = async () => {
@@ -17,23 +16,6 @@ const BatchListing = () => {
     };
     loadAccount();
   }, [web3]);
-
-  useEffect(() => {
-    const loadApprovalStatus = () => {
-      const approvalStatus = localStorage.getItem('approvalGiven');
-      setApprovalGiven(approvalStatus === 'true');
-    };
-
-    loadApprovalStatus();
-  }, []);
-
-  useEffect(() => {
-    const saveApprovalStatus = () => {
-      localStorage.setItem('approvalGiven', approvalGiven);
-    };
-
-    saveApprovalStatus();
-  }, [approvalGiven]);
 
   const parseTokenData = () => {
     return tokenData.split('\n').map(line => {
@@ -60,7 +42,7 @@ const BatchListing = () => {
     return await tokenContract.methods.ownerOf(tokenId).call();
   };
 
-  const approveMarketplace = async (contractAddress) => {
+  const approveMarketplaceForAll = async (contractAddress) => {
     const tokenContract = new web3.eth.Contract(
       [
         {
@@ -78,51 +60,46 @@ const BatchListing = () => {
       ],
       contractAddress
     );
-    try {
-      await tokenContract.methods.setApprovalForAll(marketplaceContract.options.address, true).send({ from: currentAccount });
-      console.log(`Marketplace approved for token.`);
-    } catch (err) {
-      console.error(err);
-      alert('An error occurred while approving the marketplace.');
-    }
+
+    await tokenContract.methods.setApprovalForAll(marketplaceContract.options.address, true).send({ from: currentAccount });
   };
 
   const handleBatchListTokens = async () => {
     const tokenDetails = parseTokenData();
+    const uniqueContracts = new Set(tokenDetails.map(token => token.contractAddress));
 
-    const listingFeePerToken = web3.utils.toWei('0.21', 'ether'); // Assuming a fixed listing fee per token
+    const listingFeePerToken = web3.utils.toWei('0.21', 'ether');
     const totalListingFee = web3.utils.toBN(listingFeePerToken).muln(tokenDetails.length);
 
     try {
+      for (const contractAddress of uniqueContracts) {
+        await approveMarketplaceForAll(contractAddress);
+      }
+
       await Promise.all(
         tokenDetails.map(async (token) => {
           const { contractAddress, tokenId, price } = token;
 
           if (!contractAddress || !tokenId || !price) {
-            console.log(`Incomplete details for token ${tokenId}`);
             return;
           }
 
           const owner = await ownerOf(contractAddress, tokenId);
 
           if (currentAccount !== owner) {
-            console.log(`You are not the owner of token ${tokenId}`);
             return;
           }
-
-          await approveMarketplace(contractAddress);
 
           return marketplaceContract.methods.listToken(
             contractAddress,
             tokenId,
             web3.utils.toWei(price, 'ether')
-          ).send({ from: currentAccount, value: totalListingFee.toString() }); // Use the total listing fee here
+          ).send({ from: currentAccount, value: totalListingFee.toString() });
         })
       );
 
       alert('Tokens listed successfully!');
     } catch (err) {
-      console.error(err);
       alert('An error occurred while listing the tokens.');
     }
   };

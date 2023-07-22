@@ -5,6 +5,7 @@ import '../../../components/Marketplace/Collection/CreateCollection.css';
 import Preview from './Preview';
 import Loading from '../../../components/Loading/Loading';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 
 // Instantiate the NFTStorage client
@@ -22,6 +23,7 @@ const CreateCollection = () => {
   const [account, setAccount] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getAccount = async () => {
@@ -60,7 +62,12 @@ const CreateCollection = () => {
         .createCollection(name, logoIPFS, bannerIPFS, description, category)
         .send({ from: account });
 
-      Swal.fire('Success', 'Collection created successfully', 'success');
+      Swal.fire('Success', 'Collection created successfully', 'success').then((result) => {
+        if (result.isConfirmed) {
+          navigate("/my-collections");
+        }
+      });
+
       setSuccess(true);
     } catch (error) {
       Swal.fire('Error', 'Failed to create collection: ' + error.message, 'error');

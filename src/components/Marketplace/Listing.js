@@ -125,7 +125,7 @@ const MarketList = () => {
       <div className="ListingNFT">
     <h2>Listing NFT Tools</h2>
     <p>Here, you can list any ERC721 token for sale, irrespective of the smart contract it originated from.</p>
-    <p>Once your token is listed, it will appear in the <Link to="/marketlistings">Marketplace Listings</Link>.</p>
+    <p>Once your token is listed, it will appear in the <Link to="/marketListings">Marketplace Listings</Link>.</p>
 <Accordion style={{ display: 'block' }}>
     
 

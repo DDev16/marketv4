@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Confetti from 'react-confetti';
-import FlipMove from 'react-flip-move';
 import Web3 from 'web3';
 import '../../../components/Marketplace/Auction/swap.css';
 
@@ -99,16 +98,11 @@ const SwapMeet = () => {
     localStorage.setItem('leaderBoard', JSON.stringify(leaderboardWithRanks));
   };
 
-  const clearLeaderBoard = () => {
-    localStorage.removeItem('leaderBoard');
-    leaderBoard.forEach(({ user }) => localStorage.removeItem(user));
-    setLeaderBoard([]);
-    setAccount(null);
-  };
+ 
 
   return (
     <div className="swap-meet">
-      <h1>Our NFT Swap Meet is Under Construction!</h1>
+      <p className="ptitle">Our NFT Swap Meet is Under Construction!</p>
       <h3>Launching on 14th August, {year}</h3>
       <div>
         Countdown: {timeLeft.days} days {timeLeft.hours} hours {timeLeft.minutes} minutes{' '}

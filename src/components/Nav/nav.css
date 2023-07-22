@@ -94,7 +94,7 @@
 
 .menu-button:hover {
   transform: scale(1.2);
-  background-color: #ef5350;
+  background-color: #252525;
 }
 
 .menu-button.open {

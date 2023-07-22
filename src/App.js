@@ -11,6 +11,8 @@ import Home from './components/Home/Home';
 import Footer from './components/Footer/Footer.js';
 import TokenList from './components/Wallet/TokenList.js';
 import MarketList from './components/Marketplace/Listing.js';
+import MarketListings from './components/Marketplace/MarketListings/MarketListings.js';
+
 import ProfileSettings from './components/Profile/Settings/ProfileSettings.js';
 import SignIn from './components/Profile/SignIn';
 import UserDashboard from './components/Profile/Dashboard/UserDashboard';
@@ -47,6 +49,8 @@ function App() {
                   <Route path="/my-tokens" element={<MyTokens />} />
                   <Route path="/token-list" element={<TokenList />} />
                   <Route path="/marketplace" element={<MarketList />} />
+                  <Route path="/marketListings" element={<MarketListings />} />
+
                   <Route path="/create-collection" element={<CreateCollection />} />
                   <Route path="/my-collections" element={<MyCollections />} />
                   <Route path="/my-auctions" element={<MyAuctions />} />
