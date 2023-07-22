@@ -2,6 +2,8 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Web3Context } from '../../../utils/Web3Provider.js';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../../components/Marketplace/Collection/GetAllCollections.module.css';
+import Box from '@mui/material/Box';
+import Pagination from '@mui/material/Pagination';
 
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -9,7 +11,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { styled } from '@mui/system';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/Grid'
 
 const StyledAccordionSummary = styled(AccordionSummary)(({ theme }) => ({
   display: 'flex',
@@ -32,12 +34,13 @@ const CollectionCard = ({ collection, navigateToCollectionPage }) => {
       <p className={styles.collectionID}>Collection ID: {collection.collectionId}</p>
       <h2 className={styles.collectionName}>{collection.name}</h2>
       <img src={`https://ipfs.io/ipfs/${collection.logoIPFS}`} alt="Logo" className="logo" />
-      {/* <img src={`https://ipfs.io/ipfs/${collection.bannerIPFS}`} alt="Banner" className="banner" /> */}
       <p className={styles.collectionDescription}>{collection.description}</p>
+      <p className={styles.collectionCategory}>Category: {collection.category}</p>
       <button className={styles.collectionButton} onClick={() => navigateToCollectionPage(collection.collectionId)}>View Collection</button>
     </div>
   );
 };
+
 
 const MyCollections = () => {
   const { web3, marketplaceContract } = useContext(Web3Context);
@@ -52,6 +55,7 @@ const MyCollections = () => {
 // Pagination logic
 const firstPage = Math.max(1, currentPage - paginationSpread);
 const lastPage = Math.min(maxPage, currentPage + paginationSpread);
+const [searchCategory, setSearchCategory] = useState(''); // new state for category
 
   useEffect(() => {
     if (!web3 || !marketplaceContract) return;
@@ -76,14 +80,17 @@ const lastPage = Math.min(maxPage, currentPage + paginationSpread);
             logoIPFS: collection.logoIPFS,
             bannerIPFS: collection.bannerIPFS,
             description: collection.description,
-            collectionId: collection.collectionId
+            collectionId: collection.collectionId,
+            category: collection.category // ensure your contract returns this field
           };
         });
+        
 
         const filteredCollections = flattenedCollections.filter(collection => {
           const nameMatch = collection.name.toLowerCase().includes(searchName.toLowerCase());
           const idMatch = collection.collectionId.includes(searchCollectionId);
-          return nameMatch && idMatch;
+          const categoryMatch = searchCategory === '' || collection.category === searchCategory; // added check for category
+          return nameMatch && idMatch && categoryMatch;
         });
 
         setCollections(filteredCollections);
@@ -96,7 +103,12 @@ const lastPage = Math.min(maxPage, currentPage + paginationSpread);
     };
 
     fetchCollections();
-  }, [web3, marketplaceContract, currentPage, searchName, searchCollectionId]);
+  }, [web3, marketplaceContract, currentPage, searchName, searchCollectionId, searchCategory]); // Added searchCategory
+
+  const handleCategoryChange = (event) => {
+    setSearchCategory(event.target.value); // new handler for category change
+  };
+
 
   const navigateToCollectionPage = (id) => {
     navigate(`/collections/${id}`);
@@ -120,6 +132,10 @@ const lastPage = Math.min(maxPage, currentPage + paginationSpread);
 
   const handleCollectionIdChange = (event) => {
     setSearchCollectionId(event.target.value);
+  };
+
+  const handlePageChange = (event, value) => { // New handler for page change
+    setCurrentPage(value);
   };
 
   return (
@@ -178,47 +194,40 @@ const lastPage = Math.min(maxPage, currentPage + paginationSpread);
 </StyledAccordionSummary>
         <AccordionDetails>
           <div className={styles.myCollectionsContainer}>
-          <div className={styles.paginationContainer}>
-  <button
-    onClick={() => setCurrentPage(1)}
-    disabled={currentPage === 1}
-    className={`${styles.pageButton} ${styles.firstPageButton}`}
-  >
-    First
-  </button>
-  <button
-    onClick={() => setCurrentPage(currentPage - 1)}
-    disabled={currentPage === 1}
-    className={`${styles.pageButton} ${styles.previousPageButton}`}
-  >
-    Previous
-  </button>
-  {Array.from({ length: lastPage - firstPage + 1 }, (_, i) => i + firstPage).map((pageNumber) => (
-    <button
-      key={pageNumber}
-      onClick={() => setCurrentPage(pageNumber)}
-      disabled={pageNumber === currentPage}
-      className={`${styles.pageButton} ${pageNumber === currentPage && styles.currentPageButton}`}
-    >
-      {pageNumber}
-    </button>
-  ))}
-  <button
-    onClick={() => setCurrentPage(currentPage + 1)}
-    disabled={currentPage === maxPage}
-    className={`${styles.pageButton} ${styles.nextPageButton}`}
-  >
-    Next
-  </button>
-  <button
-    onClick={() => setCurrentPage(maxPage)}
-    disabled={currentPage === maxPage}
-    className={`${styles.pageButton} ${styles.lastPageButton}`}
-  >
-    Last
-  </button>
-</div>
+          <Box sx={{ display: 'flex', justifyContent: 'center', padding: 3 }}>
+  <Pagination 
+    count={maxPage} 
+    page={currentPage} 
+    onChange={handlePageChange} 
+    variant="outlined" 
+    shape="rounded" 
+    color="primary"
+    boundaryCount={2} // Number of pages at the start and end
+    siblingCount={1} // Number of pages before and after the current page
+    showFirstButton // Show button for first page
+    showLastButton // Show button for last page
+  />
+</Box>
+
             <div className={styles.searchContainer}>
+            <select 
+                value={searchCategory}
+                onChange={handleCategoryChange}
+                className={styles.searchInput}
+              >
+                <option value="">All Categories</option>
+                <option value="Arts">Arts</option>
+                <option value="Metaverse">Metaverse</option>
+                <option value="Utility">Utility</option>
+                <option value="Collectibles">Collectibles</option>
+                <option value="Gaming">Gaming</option>
+                <option value="Music">Music</option>
+                <option value="Sports">Sports</option>
+                <option value="Virtual Real Estate">Virtual Real Estate</option>
+                <option value="Fashion">Fashion</option>
+                <option value="Celebrity/Influencer">Celebrity/Influencer</option>
+                <option value="Memes">Memes</option>
+              </select>
               <input
                 type="text"
                 placeholder="Search by name"

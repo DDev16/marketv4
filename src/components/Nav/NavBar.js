@@ -130,7 +130,7 @@ const NavBar = () => {
             </Link>
           </li>
           <li>
-            <Link to="/auction" onClick={toggleNav}>
+            <Link to="/all-auctions" onClick={toggleNav}>
               <FaDatabase className="nav-icon" />
              Auction
             </Link>

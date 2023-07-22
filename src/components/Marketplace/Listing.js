@@ -1,9 +1,14 @@
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import React, { useState, useContext, useEffect } from 'react';
 import { Web3Context } from '../../utils/Web3Provider';
 import './Listing.css';
-import MarketListings from './MarketListings/MarketListings';
 import BatchListing from './Batch/BatchListing';
-import ListAllTokens from './Collection/ListAllTokenForSale';
+import { Link } from 'react-router-dom';
+
 const MarketList = () => {
   const { web3, marketplaceContract } = useContext(Web3Context);
   const [tokenDetails, setTokenDetails] = useState({
@@ -116,60 +121,81 @@ const MarketList = () => {
   };
 
   return (
-    <form onSubmit={listToken}>
-      <input
-        name="contractAddress"
-        placeholder="Token Contract Address"
-        onChange={handleChange}
-        required
-      />
-      <input
-        name="tokenId"
-        placeholder="Token ID"
-        onChange={handleChange}
-        required
-      />
-      <input
-        name="price"
-        placeholder="Price in Ether"
-        onChange={handleChange}
-        required
-      />
-      
-      {currentAccount && tokenOwner && currentAccount !== tokenOwner && (
-        <p className="error-message">You are not the owner of this token.</p>
-      )}
-      {!showReassurance && (
-        <div>
-          <p>
-            By clicking "List Token," you are giving permission to the Marketplace to manage your token on your behalf. This is required for the token to be listed and sold. Rest assured, this action is safe and your ownership rights will be protected.
-          </p>
-          <p>
-            We prioritize the security and integrity of your assets. The Marketplace implements industry-standard security measures and follows best practices to ensure the safety of your token. If you have any concerns or questions, please don't hesitate to <button onClick={handleReassuranceClick}>contact us</button>.
-          </p>
-        </div>
-      )}
-      {showReassurance && (
-        <div>
-          <p>
-            Here is some more information about why it's necessary to approve the Marketplace and how it ensures the safety of your token:
-          </p>
-          <ul>
-            <li>Explanation of the approval process</li>
-            <li>Details about the security measures in place</li>
-            <li>Contact information for support or inquiries</li>
-          </ul>
-        </div>
-      )}
-      <button type="submit" className="list-token-button">List Token</button>
-      <BatchListing />
-      <MarketListings />
-      <ListAllTokens />
-      
-    </form>
+    <div className="marketlist">
+      <div className="ListingNFT">
+    <h2>Listing NFT Tools</h2>
+    <p>Here, you can list any ERC721 token for sale, irrespective of the smart contract it originated from.</p>
+    <p>Once your token is listed, it will appear in the <Link to="/marketlistings">Marketplace Listings</Link>.</p>
+<Accordion style={{ display: 'block' }}>
     
-   
+
+      <AccordionSummary
+        expandIcon={<ExpandMoreIcon />}
+      >
+        <Typography>Market List</Typography>
+      </AccordionSummary>
+      <AccordionDetails>
+        <form onSubmit={listToken}>
+          <input
+            name="contractAddress"
+            placeholder="Token Contract Address"
+            onChange={handleChange}
+            required
+          />
+          <input
+            name="tokenId"
+            placeholder="Token ID"
+            onChange={handleChange}
+            required
+          />
+          <input
+            name="price"
+            placeholder="Price in Ether"
+            onChange={handleChange}
+            required
+          />
+
+          {currentAccount && tokenOwner && currentAccount !== tokenOwner && (
+            <p className="error-message">You are not the owner of this token.</p>
+          )}
+          {!showReassurance && (
+            <div>
+              <p>
+                By clicking "List Token," you are giving permission to the Marketplace to manage your token on your behalf. This is required for the token to be listed and sold. Rest assured, this action is safe and your ownership rights will be protected.
+              </p>
+              <p>
+                We prioritize the security and integrity of your assets. The Marketplace implements industry-standard security measures and follows best practices to ensure the safety of your token. If you have any concerns or questions, please don't hesitate to <button onClick={handleReassuranceClick}>More Info</button>.
+              </p>
+            </div>
+          )}
+         {showReassurance && (
+          <div>
+            <p>
+              In blockchain transactions, approval is a fundamental security feature that protects your assets. When you approve the Marketplace, you grant it permissions to execute specific operations with your token, such as listing it for sale or transferring ownership upon a successful sale.
+            </p>
+            <p>
+              Importantly, this approval doesn't give the Marketplace unlimited access to your assets. It can only interact with the specific token you've approved for listing. You remain the owner of your token until it is sold and transferred to a new owner.
+            </p>
+            <p>
+              The Marketplace follows strict security protocols to ensure the integrity and safety of your tokens. All transactions are carried out on the secure Ethereum blockchain, which is monitored and verified by a global network of computers. This ensures the security, transparency, and immutability of all transactions.
+            </p>
+            <p>
+              For any inquiries or additional support, please reach out to our dedicated team at [support email or contact form link]. We're here to help you with any questions or concerns you may have.
+            </p>
+          </div>
+        )}
+          <button type="submit" className="list-token-button">List Token</button>
+        
+          
+         
+        </form>
+      <BatchListing />
+      </AccordionDetails>
+    </Accordion>
+    </div>
+    </div>
   );
+
 };
 
 export default MarketList;

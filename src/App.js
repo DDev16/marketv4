@@ -25,6 +25,9 @@ import CreateAuction from './components/Marketplace/Auction/Auction';
 import SwapMeet from './components/Marketplace/Auction/SwapMeet';
 import CourseCard from './components/courses/CourseCard';
 import Gaming from './components/Gaming/Gaming';
+import MyAuctions from './components/Marketplace/Auction/MyAuctions/MyAuctions';
+import AllAuctions from './components/Marketplace/Auction/GetAllAuctions';
+
 function App() {
   const [user, setUser] = React.useState(null);
 
@@ -46,6 +49,9 @@ function App() {
                   <Route path="/marketplace" element={<MarketList />} />
                   <Route path="/create-collection" element={<CreateCollection />} />
                   <Route path="/my-collections" element={<MyCollections />} />
+                  <Route path="/my-auctions" element={<MyAuctions />} />
+                  <Route path="/all-auctions" element={<AllAuctions />} />
+
                   <Route path="/all-collections" element={<AllCollections />} />
                   <Route path="/swap-meet" element={<SwapMeet/>} />
                   <Route path="/add-to-collection" element={<AddToCollection />} />

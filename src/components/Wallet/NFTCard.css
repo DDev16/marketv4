@@ -19,8 +19,7 @@
   
   body {
     font-family: var(--primary-font);
-    color: var(--main-font-color);
-background: url('../../assets/stock_back_low.gif');
+background: #252525;
     background-repeat: no-repeat;
     background-size: cover;
   }

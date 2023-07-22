@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/system';
+import Swal from 'sweetalert2';
 
 
 const StyledImage = styled('img')`
@@ -39,13 +40,29 @@ const AddToCollection = () => {
     setTokenId(event.target.value);
   };
 
+  
   const addToCollection = async () => {
     try {
       const accounts = await web3.eth.getAccounts();
       await marketplaceContract.methods.addTokenToCollection(collectionId, contractAddress, tokenId).send({ from: accounts[0] });
-      console.log('Token added to the collection successfully');
+
+      // Display success message with SweetAlert2
+      Swal.fire({
+        title: 'Success!',
+        text: 'Token added to the collection successfully',
+        icon: 'success',
+        confirmButtonText: 'Cool'
+      });
     } catch (error) {
       console.error('An error occurred while adding the token to the collection:', error);
+
+      // Display error message with SweetAlert2
+      Swal.fire({
+        title: 'Error!',
+        text: 'An error occurred while adding the token to the collection',
+        icon: 'error',
+        confirmButtonText: 'Try again'
+      });
     }
   };
 

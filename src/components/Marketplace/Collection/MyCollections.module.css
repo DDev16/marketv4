@@ -55,9 +55,7 @@
   transform: perspective(500px) rotateX(0deg) scale(1.1);
 }
 
-body {
-  background-color: #333;
-}
+
 
 
 .cardsContainer {
@@ -68,7 +66,7 @@ body {
 }
 
 .collectionCard {
-  width: 90%;
+  width: 100%;
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 20px;
@@ -95,11 +93,11 @@ body {
 }
 
 .collectionLogo {
-  width: 100%;
-  height: 500px;
+  width: 30%;
+  height: 350px;
   display: block;
   margin: 10px auto;
-  border-radius: 25px;
+  border-radius: 55px;
     box-shadow: 0px 5px 15px rgba(0,0,0,0.8);
 
 } 
@@ -108,7 +106,7 @@ body {
   height: 200px;
   width: 100%;
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: 50px;
   transition: all 0.3s ease-in-out; 
 }
 

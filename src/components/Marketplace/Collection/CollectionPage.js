@@ -273,7 +273,6 @@ const CollectionPage = () => {
       </div>
     )}
       <h1>{collection.name}</h1>
-      <p className="owner">Owned by: {collection.owner}</p>
 
       <div className="collectionlogo">
         <img src={`https://ipfs.io/ipfs/${collection.logoIPFS}`} alt="Logo" />
@@ -287,7 +286,8 @@ const CollectionPage = () => {
         {qrCodeUrl && <QRCode value={qrCodeUrl} />}
         <button onClick={downloadQRCode}>Download QR Code</button>
       </div>
-  
+      <p className="owner">Collection owned by: {collection.owner}</p>
+
       <div className="cardContainer">
         {tokens.map((token, index) => (
           <div className="card" key={index}>
@@ -306,6 +306,7 @@ const CollectionPage = () => {
     <p className={token.tokenPrice !== null ? "for-sale" : "not-for-sale"}>
     Token Price: {token.tokenPrice ? web3.utils.fromWei(token.tokenPrice.toString(), 'ether') : 'Not for sale'}
 </p>
+
 <p> <span className="token-label">Royalty:</span>  {token.royaltyAmount ? web3.utils.fromWei(token.royaltyAmount.toString(), 'ether') : '0'} ETH</p>
 <p> <span className="token-label">Royalty Receiver:</span>  {token.royaltyReceiver}</p>
 </div>

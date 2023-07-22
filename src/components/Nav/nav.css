@@ -70,6 +70,7 @@
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
   
   
+  
 }
 
 
@@ -86,6 +87,9 @@
   cursor: pointer;
   font-size: 24px;
   transition: transform 0.3s ease;
+  border-radius: 8px;
+
+  
 }
 
 .menu-button:hover {
@@ -95,6 +99,7 @@
 
 .menu-button.open {
   color: #ef5350;
+  
 }
 
 .nav-links {
@@ -116,6 +121,7 @@
   padding: 10px;
   border-radius: 5px;
   transition: background-color 0.3s ease;
+  
 }
 
 .nav-links li:hover {
@@ -151,7 +157,7 @@
 
   .nav-links {
     position: static;
-    width: 100%;
+    width: 90%;
     padding: 20px 0;
     box-sizing: border-box;
   }

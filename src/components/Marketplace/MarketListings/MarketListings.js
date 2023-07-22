@@ -312,6 +312,7 @@ const MarketListings = () => {
   }
 
   return (
+    
     <div className="market">
       <div className="marketListings">
         {showConfetti && (

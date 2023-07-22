@@ -1,113 +1,128 @@
+/* Listing.css */
+.marketlist .MuiAccordion-root {
+  width: 80%;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 5px;
+  overflow: auto;
+}
 
-
-form {
+.ListingNFT {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   padding: 20px;
-  background-color: #f7f7f7;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  margin-top:120px;
+  box-shadow: 0px 10px 15px 3px rgba(0, 0, 0, 0.4), 0px 4px 6px -2px rgba(0, 0, 0, 0.05);
+  margin-bottom:45px;
+  margin-top:70px;
 }
 
-input {
+
+.marketlist {
+  background-image: url("https://img.freepik.com/free-vector/realistic-white-golden-geometric-background_79603-2032.jpg?size=626&ext=jpg&ga=GA1.2.1715257389.1688125620&semt=ais");
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
   width: 100%;
-  padding: 12px;
-  margin-bottom: 20px;
-  border: none;
-  border-radius: 4px;
-  background-color: #f2f2f2;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height:auto;
 }
 
-p {
-  margin-bottom: 15px;
-  font-size: 18px;
-  color: #333;
+.centerTitle {
+  text-align: center;
 }
 
-button {
-  padding: 12px 24px;
-  background-color: #4caf50;
-  color: white;
+.marketlist .MuiAccordion-root {
+  width: 80%;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 5px;
+}
+
+.marketlist .MuiAccordionSummary-root {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.marketlist .MuiAccordionDetails-root {
+  display: flex;
+  flex-direction: column;
+}
+
+.marketlist form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.marketlist form input {
+  padding: 10px;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
+  outline: none;
+  font-size: 1rem;
+}
+
+.marketlist form .list-token-button {
+  padding: 10px;
+  background-color: #3498db;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
-  font-size: 16px;
-  text-transform: uppercase;
+  font-size: 1rem;
   transition: background-color 0.3s ease;
 }
 
-button:hover {
-  background-color: #45a049;
+.marketlist form .list-token-button:hover {
+  background-color: #2980b9;
 }
 
-
-
-form div {
-  margin-bottom: 25px;
+.marketlist form .error-message {
+  color: #e74c3c;
+  font-size: 0.9rem;
 }
 
-form div p:first-child {
-  margin-bottom: 20px;
-  font-weight: bold;
+.marketlist form p {
+  font-size: 0.85rem;
+  line-height: 1.4;
 }
 
-form ul {
-  margin: 0;
+.marketlist form button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: #3498db;
+  font-size: 0.9rem;
   padding: 0;
-  list-style-type: none;
+  text-decoration: underline;
 }
 
-form ul li {
-  margin-bottom: 10px;
-  font-size: 16px;
-  color: #555;
-}
+/* Responsive styles for mobile */
+@media screen and (max-width: 768px) {
+  .marketlist .MuiAccordion-root {
+    width: 95%;
+  }
 
-form ul li:before {
-  content: "▸";
-  margin-right: 8px;
-  color: #999;
-}
+  .marketlist .MuiAccordionSummary-root {
+    font-size: 1rem;
+  }
 
-button[type="submit"] {
-  width: auto;
-  margin-top: 20px;
-}
+  .marketlist form input {
+    font-size: 0.9rem;
+  }
 
+  .marketlist form .list-token-button {
+    font-size: 0.9rem;
+  }
 
+  .marketlist form p {
+    font-size: 0.8rem;
+  }
 
-input[name="contractAddress"],
-input[name="tokenId"],
-input[name="price"],
-input[name="royalty"] {
-  font-weight: bold;
-  font-size: 18px;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  box-shadow: none;
-  padding: 12px;
-}
-
-p + p {
-  margin-top: 20px;
-}
-
-button[type="submit"] {
-  background-color: #2196f3;
-}
-
-button[type="submit"]:hover {
-  background-color: #0d8bf2;
-}
-
-button[type="submit"]:focus {
-  outline: none;
-}
-
-button[type="submit"]:active {
-  background-color: #0b78d7;
+  .marketlist form button {
+    font-size: 0.8rem;
+  }
 }

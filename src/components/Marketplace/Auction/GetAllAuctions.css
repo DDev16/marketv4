@@ -3,12 +3,9 @@
     margin: 0 auto;
     padding: 20px;
     box-sizing: border-box; /* Include padding in the container width */
-    background-image: url("https://img.freepik.com/free-vector/gradient-black-background-with-cubes_23-2149161840.jpg?size=626&ext=jpg&ga=GA1.1.1715257389.1688125620&semt=ais"); /* replace 'your_image_url.jpg' with the actual URL of the image */
-    background-size: cover; /* this will make the image cover the whole area of the element */
-    background-position: center; /* this will center the image */
-    background-repeat: no-repeat; /* this will prevent the image from repeating */
-    
-  }
+    background-color: transparent !important;
+}
+  
   .container h1 {
     font-size:152px;
     text-align: center;
@@ -20,7 +17,7 @@
     margin-bottom: 1rem;
     padding: 0.5rem;
     background: linear-gradient(to right, #2b5876, #4e4376);
-    border-radius: 25px;
+    border-radius: 15px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
     transition: all 0.5s ease-in-out;
     position: relative;
@@ -61,6 +58,7 @@
   .container h1:hover:before {
     transform: translateZ(-30px);
   }
+ 
   
   .loading {
     display: flex;
@@ -107,9 +105,9 @@
   .auctionbg {
     width:100%;
     background-image: url("https://img.freepik.com/free-vector/gradient-black-background-with-cubes_23-2149161840.jpg?size=626&ext=jpg&ga=GA1.1.1715257389.1688125620&semt=ais"); /* replace 'your_image_url.jpg' with the actual URL of the image */
-    background-size: cover; /* this will make the image cover the whole area of the element */
+    background-size: contain; /* this will make the image cover the whole area of the element */
     background-position: center; /* this will center the image */
-    background-repeat: no-repeat; /* this will prevent the image from repeating */
+    background-repeat: repeat; /* this will prevent the image from repeating */
     box-shadow: 0px 10px 15px 3px rgba(0, 0, 0, 0.4), 0px 4px 6px -2px rgba(0, 0, 0, 0.05);
     margin-top:30px;
   
@@ -120,14 +118,22 @@
     font-size: 26px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    flex-grow: 1;
-    margin-left: 15px;
+    margin-right: 15px;
     margin-top: 17px;
+  }
+  
+  /* Media query for mobile devices with a maximum width of 768px */
+  @media only screen and (max-width: 768px) {
+    .search-auctions {
+      font-size: 20px; /* Decrease font size for smaller screens */
+      margin-right: 0; /* Remove right margin for better spacing */
+      margin-bottom: 15px; /* Add margin at the bottom for spacing between elements */
+    }
   }
   
   .carouselImage {
     max-width: 100%;
-    max-height: 550px; /* further decreased to provide more room for description */
+    max-height: 450px; /* further decreased to provide more room for description */
     object-fit: contain;
     background-color: #f8f9fa;
     background-image: url("https://img.freepik.com/free-vector/abstract-techno-background-with-connecting-dots_1048-6093.jpg?size=626&ext=jpg&ga=GA1.2.1715257389.1688125620&semt=ais");
@@ -136,28 +142,24 @@
     background-repeat: no-repeat;
   }
 
-  .sort-container,
-.search-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
+.search-auctions {
+  padding: 8px;
+  font-size: 26px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 15px;
+  margin-top: 17px;
 }
 
-.sort-container label,
-.search-container label {
-  margin-right: 10px;
+/* Media query for mobile devices with a maximum width of 768px */
+@media only screen and (max-width: 768px) {
+  .search-auctions {
+    font-size: 20px; /* Decrease font size for smaller screens */
+    margin-right: 0; /* Remove right margin for better spacing */
+    margin-bottom: 15px; /* Add margin at the bottom for spacing between elements */
+  }
 }
 
-.sort-container select,
-.search-container input[type="text"] {
-  padding: 5px 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  width: 200px;
-}
-
-  
 
   .auctionIndex {
     font-size: 18px; /* Set the font size */
@@ -228,8 +230,6 @@
     color: #999; /* You can customize the color as needed */
     font-style: italic; /* You can add other styles like font-size, font-weight, etc. */
   }
- 
-
   .sort-container {
     display: flex;
     justify-content: space-between;
@@ -243,7 +243,8 @@
     color: #444;
   }
   
-  .sort-container select, .sort-container button {
+  .sort-container select,
+  .sort-container button {
     padding: 0.5rem 1rem;
     font-size: 1.2rem;
     border-radius: 5px;
@@ -253,12 +254,14 @@
     transition: all 0.3s ease;
   }
   
-  .sort-container select:focus, .sort-container button:focus {
+  .sort-container select:focus,
+  .sort-container button:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(0,123,255,.25);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
   }
   
-  .sort-container select:hover, .sort-container button:hover {
+  .sort-container select:hover,
+  .sort-container button:hover {
     background-color: #007bff;
     color: white;
     cursor: pointer;
@@ -271,6 +274,23 @@
   .sort-container button:disabled {
     background-color: #6c757d;
     color: white;
+  }
+  
+  /* Media query for mobile devices with a maximum width of 768px */
+  @media only screen and (max-width: 768px) {
+    .sort-container {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .sort-container label {
+      margin-bottom: 0.5rem;
+    }
+  
+    .sort-container button {
+      margin-top: 0.5rem;
+      margin-left: 0;
+    }
   }
   
 

@@ -9,10 +9,10 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { useMediaQuery } from '@mui/material';
 import Typography from '@mui/material/Typography';
+import Swal from 'sweetalert2'; // Import SweetAlert2
 
-const AUCTION_CONTRACT_ADDRESS = '0x59b670e9fA9D0A427751Af201D676719a970857b';
+const AUCTION_CONTRACT_ADDRESS = '0x4826533B4897376654Bb4d4AD88B7faFD0C98528';
 
 
 
@@ -46,11 +46,54 @@ function WeiToEther(wei) {
 }
 
 async function buyNow(auctionIndex, price) {
-  const web3 = new Web3(window.ethereum);
-  const auctionContractInstance = new web3.eth.Contract(AuctionContractABI, AUCTION_CONTRACT_ADDRESS);
-  const accounts = await web3.eth.getAccounts();
-  const fromAccount = accounts[0];
-  await auctionContractInstance.methods.buyNow(auctionIndex).send({ from: fromAccount, value: web3.utils.toWei(price, 'ether') });
+  try {
+    const web3 = new Web3(window.ethereum);
+    const auctionContractInstance = new web3.eth.Contract(AuctionContractABI, AUCTION_CONTRACT_ADDRESS);
+    const accounts = await web3.eth.getAccounts();
+    const fromAccount = accounts[0];
+
+    // Show "Buying..." message while the transaction is being signed
+    Swal.fire({
+      icon: 'info',
+      title: 'Buying...',
+      text: 'Please wait while we process your request.',
+      showConfirmButton: false,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+    });
+
+    const transaction = await auctionContractInstance.methods.buyNow(auctionIndex).send({ from: fromAccount, value: web3.utils.toWei(price, 'ether') });
+    
+    // Check if the transaction receipt has a status of 1 (successful transaction)
+    if (transaction.status) {
+      Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: 'Auction purchased successfully.',
+      });
+    } else {
+      throw new Error('Transaction status not successful.');
+    }
+  } catch (error) {
+    console.error('Error while purchasing auction:', error);
+    let errorMessage = 'Failed to purchase the auction. Please try again later.';
+
+    if (error.message.includes('This auction has already ended.')) {
+      errorMessage = 'This auction has already ended.';
+    } else if (error.message.includes('Sent value must be equal to buy now price.')) {
+      errorMessage = 'Sent value must be equal to buy now price.';
+    } else if (error.message.includes('Transfer of bid to seller failed.')) {
+      errorMessage = 'Transfer of bid to seller failed.';
+    } else if (error.message.includes('Transfer of fee to owner failed.')) {
+      errorMessage = 'Transfer of fee to owner failed.';
+    }
+
+    Swal.fire({
+      icon: 'error',
+      title: 'Error!',
+      text: errorMessage,
+    });
+  }
 }
 
 function GetAllAuctions() {
@@ -94,14 +137,49 @@ function GetAllAuctions() {
     return { days, hours, minutes, seconds };
   }
 
-  async function placeBid(auctionIndex) {
+async function placeBid(auctionIndex) {
+  try {
     const web3 = new Web3(window.ethereum);
-    const auctionContractInstance = new web3.eth.Contract(AuctionContractABI, AUCTION_CONTRACT_ADDRESS);
+    const auctionContractInstance = new web3.eth.Contract(
+      AuctionContractABI,
+      AUCTION_CONTRACT_ADDRESS
+    );
     const accounts = await web3.eth.getAccounts();
     const fromAccount = accounts[0];
-    await auctionContractInstance.methods.bid(auctionIndex).send({ from: fromAccount, value: web3.utils.toWei(bidValue, 'ether') });
-  }
 
+    // Check if the auction has ended before placing a bid
+    const auctionEnded = await auctionContractInstance.methods
+      .hasAuctionEnded(auctionIndex)
+      .call();
+
+    if (auctionEnded) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Auction Ended!',
+        text: 'Sorry, this auction has already ended.',
+      });
+      return;
+    }
+
+    await auctionContractInstance.methods
+      .bid(auctionIndex)
+      .send({ from: fromAccount, value: web3.utils.toWei(bidValue, 'ether') });
+
+    // Display a success message after the transaction
+    Swal.fire({
+      icon: 'success',
+      title: 'Success!',
+      text: 'Bid placed successfully.',
+    });
+  } catch (error) {
+    console.error('Error while placing bid:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error!',
+      text: 'Failed to place the bid. Please try again later.',
+    });
+  }
+}
   useEffect(() => {
     const web3 = new Web3(window.ethereum);
     const auctionContractInstance = new web3.eth.Contract(AuctionContractABI, AUCTION_CONTRACT_ADDRESS);
@@ -161,10 +239,11 @@ function GetAllAuctions() {
       <div className="sort-container">
         <label>Sort by: </label>
         <select value={sortingMethod} onChange={(e) => setSortingMethod(e.target.value)}>
+        <option value="active">Active Auctions</option>
           <option value="time">Time Remaining</option>
           <option value="highestBid">Highest Bid</option>
           <option value="buyNowPrice">Buy Now Price</option>
-          <option value="active">Active Auctions</option>
+          
           <option value="ended">Ended Auctions</option>
         </select>
         <input
@@ -190,7 +269,8 @@ function GetAllAuctions() {
                       flexGrow: 1,
                       backgroundColor: '#1e1e1e', 
                       color: '#fff', 
-                      fontSize: '20px'
+                      fontSize: '20px',
+                      marginTop: '30px'
                     }}>
                       {token.description}
                     </p>}

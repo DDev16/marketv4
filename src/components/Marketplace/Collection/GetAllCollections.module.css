@@ -179,28 +179,60 @@
   transform: scale(1.02);
   box-shadow: 0 5px 20px rgba(0,0,0,0.3);
 }
-
-.searchContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 10px 0;
-  gap: 10px;
-}
-
 .searchInput {
-  margin: 0 10px;
-  padding: 10px 20px;
+  display: block;
+  width: 100%;
+  height: 35px;
+  padding: 6px 12px;
+  font-size: 16px;
+  line-height: 1.42857143;
+  color: #333;
+  background-color: black;
+  background-image: none;
+  border: 2px solid #ccc;
   border-radius: 8px;
-  border: 1px solid #007bff;
-  transition: all 0.3s ease-in-out;
-  width: 200px;
-  font-size: 1em;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 
 .searchInput:focus {
-  box-shadow: 0 0 0 3px rgba(0,123,255,0.5);
-  outline: none;
+  border-color: #5a9;
+  outline: 0;
+  box-shadow: 0 0 10px rgba(90, 160, 150, .6);
+}
+
+/* Custom dropdown arrow */
+.searchInput::-ms-expand {
+  display: none;
+}
+
+.searchInput::after {
+  content: "\25BC";
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0 1em;
+  background: #ccc;
+  cursor: pointer;
+  pointer-events: none;
+  -webkit-transition: .25s all ease;
+  -o-transition: .25s all ease;
+  transition: .25s all ease;
+}
+
+/* Custom scrollbar for dropdown options */
+.searchInput option {
+  background: #f6f6f6;
+}
+
+.searchInput option:hover {
+  background: #b3d4fc;
+}
+
+/* When select is focused */
+.searchInput:focus::after {
+  transform: rotate(180deg);
+  background: #5a9;
 }
 
 /* Responsive styles for smaller screens */
@@ -257,6 +289,24 @@
     width: 100%; /* Full width on small screens */
   }
 }
+.collectionCategory {
+  font-size: 14px;
+  color: #666666;
+  margin-bottom: 10px;
+  z-index: 10;
+  background-color: #f5f5f5;
+  padding: 10px;
+  border-radius: 5px;
+  text-transform: uppercase;
+  font-weight: bold;
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.collectionCategory:hover {
+  background-color: #666666;
+  color: #f5f5f5;
+}
+
 
 
 
@@ -381,3 +431,44 @@
 
 
 
+.searchInput {
+    display: block;
+    width: 100%;
+    height: 35px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+.searchInput:focus {
+    border-color: #66afe9;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102, 175, 233, .6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102, 175, 233, .6);
+}
+
+.searchInput::-ms-expand {
+    background-color: transparent;
+    border: 0;
+}
+
+
+.getall {
+  width:100%;
+  background-image: url("https://img.freepik.com/free-vector/realistic-white-golden-geometric-background_79603-2032.jpg?size=626&ext=jpg&ga=GA1.2.1715257389.1688125620&semt=ais"); /* replace 'your_image_url.jpg' with the actual URL of the image */
+  background-size: contain; /* this will make the image cover the whole area of the element */
+  background-position: center; /* this will center the image */
+  background-repeat: repeat; /* this will prevent the image from repeating */
+  box-shadow: 0px 10px 15px 3px rgba(0, 0, 0, 0.4), 0px 4px 6px -2px rgba(0, 0, 0, 0.05);
+  margin-top:30px;
+
+}

@@ -37,6 +37,9 @@ const UserDashboard = ({ user, signOutUser }) => {
               <NavLink exact="true" to="/my-collections" activeclassname="active" className="nav-link">
                 <FiSettings className="nav-icon" /> My Collections
               </NavLink>
+              <NavLink exact="true" to="/my-auctions" activeclassname="active" className="nav-link">
+                <FiSettings className="nav-icon" /> My Auctions
+              </NavLink>
               
         
     

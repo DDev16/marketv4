@@ -50,24 +50,38 @@ const BulkAddToCollection = () => {
             const tokens = parseTokenData();
             const contractAddresses = tokens.map(token => token.contractAddress);
             const tokenIds = tokens.map(token => Number(token.tokenId));
-
+    
             await marketplaceContract.methods.BulkAddToCollection(
                 collectionId,
                 contractAddresses,
                 tokenIds
             ).send({ from: accounts[0] });
-
+    
             Swal.fire('Success!', 'Tokens successfully added to the collection!', 'success');
             setTokenData('');
             setCollectionId('');
         } catch (error) {
             console.error("An error occurred while adding the tokens to the collection:", error);
-            Swal.fire('Error!', 'There was an error while adding the tokens to the collection. Please check console for more details.', 'error');
+            
+            if (error.message.includes("Collection does not exist")) {
+                Swal.fire('Error!', 'The collection you are trying to add tokens to does not exist.', 'error');
+            } else if (error.message.includes("Only the collection owner can add tokens")) {
+                Swal.fire('Error!', 'Only the owner of the collection can add tokens.', 'error');
+            } else if (error.message.includes("Exceeds batch process limit")) {
+                Swal.fire('Error!', 'The number of tokens you are trying to add exceeds the batch processing limit.', 'error');
+            } else if (error.message.includes("Mismatched input arrays")) {
+                Swal.fire('Error!', 'The provided token IDs and contract addresses do not match.', 'error');
+            } else if (error.message.includes("Only token owner can perform this action")) {
+                Swal.fire('Error!', 'You must be the owner of all the tokens to add them to the collection.', 'error');
+            } else {
+                Swal.fire('Error!', 'There was an unknown error while adding the tokens to the collection. Please check console for more details.', 'error');
+            }
+    
         } finally {
             setIsLoading(false);
         }
     };
-
+    
     return (
         <div className="bulk-add-to-collection">
             <h2>Bulk Add To Collection</h2>

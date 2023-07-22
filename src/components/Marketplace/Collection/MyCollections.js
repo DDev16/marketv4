@@ -10,7 +10,7 @@ import MyTokens from '../../../components/MyNFTs/MyTokens.js'
 import ListAllTokens from '../Collection/ListAllTokenForSale';
 import '../../../components/Marketplace/Collection/MyCollections.module.css';
 import { styled } from '@mui/system';
-
+import MarketListings from '../../../components/Marketplace/Listing.js';
 const StyledImage = styled('img')`
   width: 15%;
   height: 150px;
@@ -126,6 +126,7 @@ const MyCollections = () => {
       <AddToCollection />
       <BulkAddToCollection />
       <ListAllTokens />
+      <MarketListings />
       <MyTokens />
 
 
