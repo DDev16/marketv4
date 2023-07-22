@@ -13,7 +13,7 @@
   justify-content: space-between; 
   align-items: center;
   padding: 25px; 
-  margin-top:70px; 
+  margin-top:6px; 
   background: linear-gradient(to right, #2b5876, #4e4376);
   color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -44,7 +44,9 @@
   margin-right:500px;
   margin-bottom:5px;
   width:200px;
+  height:50px;
   background: #252525;
+  color:white;
   border-radius: 4px;
 
 
@@ -81,7 +83,6 @@
   position: absolute;
   height: 3px;
   background-color: #ef5350;
-  /* Change this to your preferred highlight color */
   width: 0;
   bottom: 0;
   left: 50%;
