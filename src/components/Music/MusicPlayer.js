@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import song1 from '../../assets/song1.mp3'
-import song2 from '../../assets/song-2.mp3'
+
 import feelgood from '../../assets/feelgood.mp3'
 const PlayerWrapper = styled.div`
   display: flex;
@@ -34,10 +33,8 @@ const AudioControl = styled.audio`
 
 const MusicPlayer = () => {
   const songs = [
-    { name: 'Escape by Sappheiros', url: song2 },
-    { name: 'Feel good', url: feelgood },
-    { name: 'Song 3', url: 'music/song3.mp3' },
-    { name: 'Why We Lose', url: song1 }, // Added local song
+   
+    { name: 'Why We Lose', url: feelgood }, // Added local song
     // Add more songs here...
   ];
 

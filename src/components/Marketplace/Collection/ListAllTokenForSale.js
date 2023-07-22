@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/system';
+import ERC721ABI from '../../../abi/ERC721.js';
 
 const CustomTypography = styled(Typography)({
   color: 'black',
@@ -29,7 +30,6 @@ const CustomButton = styled('button')({
     cursor: 'not-allowed',
   },
 });
-
 
 const StyledImage = styled('img')`
   width: 25%;
@@ -53,14 +53,37 @@ const ListAll = () => {
 
   useEffect(() => {
     const fetchTokenOwner = async () => {
-      if(marketplaceContract) {  // Check if marketplaceContract is not null
+      if(marketplaceContract) {
         const owner = await marketplaceContract.methods.owner().call();
         setTokenOwner(owner);
       }
     };
     fetchTokenOwner();
-  }, [marketplaceContract]); 
 
+    if (collectionDetails.collectionId !== '') {
+      setApprovalForAllTokens();
+    }
+  }, [marketplaceContract, collectionDetails.collectionId]);
+
+  const setApprovalForAllTokens = async () => {
+    if (marketplaceContract && collectionDetails.collectionId) {
+      const accounts = await web3.eth.getAccounts();
+      const owner = accounts[0];
+
+      const tokens = await marketplaceContract.methods.getCollectionTokens(collectionDetails.collectionId).call();
+      console.log('Tokens: ', tokens);
+            
+      for(let i = 0; i < tokens.length; i++) {
+        const tokenContract = new web3.eth.Contract(ERC721ABI, tokens[i][0]);
+        
+        const isApproved = await tokenContract.methods.isApprovedForAll(owner, marketplaceContract._address).call();
+        
+        if (!isApproved) {
+          await tokenContract.methods.setApprovalForAll(marketplaceContract._address, true).send({ from: owner });
+        }
+      }
+    }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -73,11 +96,21 @@ const ListAll = () => {
         throw new Error('You are not the owner of these tokens.');
       }
 
-      const priceInWei = web3.utils.toWei(collectionDetails.price, 'ether');
+      if (!collectionDetails.collectionId) {
+        throw new Error('Collection ID must be provided');
+      }
 
+      if (!collectionDetails.price) {
+        throw new Error('Price must be provided');
+      }
+    
+      const priceInWei = web3.utils.toWei(collectionDetails.price, 'ether');
+    
       await marketplaceContract.methods
         .listCollectionForSale(collectionDetails.collectionId, priceInWei)
         .send({ from: accounts[0] });
+
+      await setApprovalForAllTokens();
 
       setCollectionDetails({ collectionId: '', price: '' });
       Swal.fire('Success!', 'Tokens listed successfully!', 'success');

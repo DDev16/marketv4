@@ -43,9 +43,9 @@ const Web3Provider = ({ children }) => {
             contractAddress = '0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0';
             marketplaceAddress = '0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82';
           } else if (networkId === 31337) {
-            contractAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
-             marketplaceAddress = '0x04C89607413713Ec9775E14b954286519d836FEf';
-             auctionAddress = '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0';
+            contractAddress = '0xCD8576bA58AC9a0B773fb2E5f08FFA59FD23F707';
+             marketplaceAddress = '0x227b259e612b690411350fF92e591ABAE4750FC6';
+             auctionAddress = '0xaC28e7d04833BfBB90De57103e4423Fafc74F8A0';
           } 
 
           const contractInstance = new web3Instance.eth.Contract(

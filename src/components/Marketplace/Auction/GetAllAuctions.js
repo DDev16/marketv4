@@ -12,7 +12,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Typography from '@mui/material/Typography';
 import Swal from 'sweetalert2'; // Import SweetAlert2
 
-const AUCTION_CONTRACT_ADDRESS = '0x4826533B4897376654Bb4d4AD88B7faFD0C98528';
+const AUCTION_CONTRACT_ADDRESS = '0xaC28e7d04833BfBB90De57103e4423Fafc74F8A0';
 
 
 

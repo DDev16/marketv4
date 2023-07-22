@@ -340,8 +340,8 @@ const withinMaxPrice = maxPrice === '' || priceNum <= parseFloat(maxPrice);
   <div className="market">
     <div className="marketListings">
       {showConfetti && (
-        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%'  }}>
-          <Confetti numberOfPieces={300} />
+      <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 999 }}>
+      <Confetti numberOfPieces={300} />
           <p>Confetti effect indicates a successful purchase.</p>
         </div>
       )}

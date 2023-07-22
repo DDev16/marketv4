@@ -147,7 +147,7 @@ const Button = styled.button`
     background-color: #4c5edf;
   }
 `;
-const CONTRACT_ADDRESS = '0x4826533B4897376654Bb4d4AD88B7faFD0C98528';
+const CONTRACT_ADDRESS = '0xaC28e7d04833BfBB90De57103e4423Fafc74F8A0';
 
 // ERC721 ABI
 const ERC721_ABI = [
@@ -307,8 +307,9 @@ const MyAuctions = () => {
 
     return (
         <MyAuctionsContainer>
-            <Title>My Auctions</Title>
-            {auctions.map((auction) => (
+        <Title>My Auctions</Title>
+        {auctions.length > 0 ? (
+            auctions.map((auction) => (
                 <AuctionItemContainer key={auction.auctionIndex}>
                     <AuctionItemTitle>Auction {auction.auctionIndex + 1}</AuctionItemTitle>
                     <StyledCarousel showThumbs={false}>
@@ -331,10 +332,13 @@ const MyAuctions = () => {
                         <Button onClick={() => endAuction(auction.auctionIndex)}>End Auction</Button>
                         <Button onClick={() => cancelAuction(auction.auctionIndex)}>Cancel Auction</Button>
                     </ButtonContainer>
-                </AuctionItemContainer>
-            ))}
-        </MyAuctionsContainer>
-    );
+                    </AuctionItemContainer>
+            ))
+        ) : (
+            <p>No auctions found</p>
+        )}
+    </MyAuctionsContainer>
+);
 };
 
 
