@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-
+import song1 from '../../assets/song1.mp3'
+import song2 from '../../assets/song-2.mp3'
+import feelgood from '../../assets/feelgood.mp3'
 const PlayerWrapper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -29,11 +31,13 @@ const AudioControl = styled.audio`
 
 `;
 
+
 const MusicPlayer = () => {
   const songs = [
-    { name: 'Song 1', url: 'https://example.com/song1.mp3' },
-    { name: 'Song 2', url: 'https://example.com/song2.mp3' },
-    { name: 'Song 3', url: 'https://example.com/song3.mp3' },
+    { name: 'Escape by Sappheiros', url: song2 },
+    { name: 'Feel good', url: feelgood },
+    { name: 'Song 3', url: 'music/song3.mp3' },
+    { name: 'Why We Lose', url: song1 }, // Added local song
     // Add more songs here...
   ];
 
@@ -51,10 +55,11 @@ const MusicPlayer = () => {
         ))}
       </SongSelect>
 
-      <AudioControl controls>
-        <source src={currentSong} type="audio/mpeg" />
-        Your browser does not support the audio element.
-      </AudioControl>
+      <AudioControl key={currentSong} controls>
+  <source src={currentSong} type="audio/mpeg" />
+  Your browser does not support the audio element.
+</AudioControl>
+
     </PlayerWrapper>
   );
 };

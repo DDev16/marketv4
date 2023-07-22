@@ -267,9 +267,9 @@ const CollectionPage = () => {
 
   return (
     <div className="collectionPage">
-      {showConfetti && (
-      <div style={{position: 'fixed', top: 0, left: 0, width: '100%', height: '100%'}}>
-        <Confetti numberOfPieces={200} />
+       {showConfetti && (
+      <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 999 }}>
+        <Confetti numberOfPieces={400} />
       </div>
     )}
       <h1>{collection.name}</h1>

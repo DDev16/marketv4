@@ -277,7 +277,7 @@ const MyTokens = () => {
                       <p className="contract-address"> Contract Address: {token.contractAddress}</p>
                       <input
                         type="number"
-                        placeholder="Enter price in ETH"
+                        placeholder="Enter price in Native Token"
                         value={tokenPrices[token.id] || ''}
                         onChange={(e) =>
                           setTokenPrices({ ...tokenPrices, [token.id]: e.target.value })
