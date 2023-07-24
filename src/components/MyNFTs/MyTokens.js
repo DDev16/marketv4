@@ -158,7 +158,7 @@ const MyTokens = () => {
             .getTokenInfo(tokenId)
             .call({ from: account });
       
-          const metadataUri = tokenInfo.uri.replace('ipfs://', 'https://cloudflare-ipfs.com/ipfs/');
+          const metadataUri = tokenInfo.uri.replace('ipfs://', 'https://ipfs.io/ipfs/');
           const response = await fetch(metadataUri);
           const metadata = await response.json();
       
