@@ -34,8 +34,8 @@ const Web3Provider = ({ children }) => {
           let auctionAddress = '';
 
           if (networkId === 19) {
-            contractAddress = '0xEe2d1f6D5C8d71e8c97CAA4A80fF9eD87dbB9C34';
-            marketplaceAddress = '0xc7095B03A1c6b50B4f8B2E6D8c87CBddD188640A';
+            contractAddress = '0xa3e7F6e322281F945abE5cB82Fc2EbAd32756a87';
+            marketplaceAddress = '0x529e76715e99D02a34EDACD7E47415297012c00f';
           } else if (networkId === 14) {
             contractAddress = '0x8d1A663F84c5a7cf0c0458848089783d0a0A3b6A';
             marketplaceAddress = '0x73710334E4E5CA4482F5526faBEa45bce503BD98';
@@ -43,8 +43,8 @@ const Web3Provider = ({ children }) => {
             contractAddress = '0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0';
             marketplaceAddress = '0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82';
           } else if (networkId === 31337) {
-            contractAddress = '0xCD8576bA58AC9a0B773fb2E5f08FFA59FD23F707';
-             marketplaceAddress = '0x227b259e612b690411350fF92e591ABAE4750FC6';
+            contractAddress = '0xbdEd0D2bf404bdcBa897a74E6657f1f12e5C6fb6';
+             marketplaceAddress = '0x2910E325cf29dd912E3476B61ef12F49cb931096';
              auctionAddress = '0xaC28e7d04833BfBB90De57103e4423Fafc74F8A0';
           } 
 

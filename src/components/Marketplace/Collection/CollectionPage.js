@@ -177,6 +177,16 @@ const CollectionPage = () => {
 
   const buyToken = async (contractAddress, tokenId) => {
     try {
+      Swal.fire({
+        title: 'Processing',
+        html: 'Please wait...',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        didOpen: () => {
+          Swal.showLoading()
+        },
+      });
+
       if (!web3) {
         console.error('Web3 object is not initialized');
         return;
@@ -202,6 +212,7 @@ const CollectionPage = () => {
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 5000); // Show confetti for 5 seconds
   
+      Swal.close();
       Swal.fire({
         title: `Congratulations!`,
         text: `You're now the proud owner of the "${token.name}" NFT!`,
@@ -231,6 +242,7 @@ const CollectionPage = () => {
       setIsBuying(false);
 
     } catch (error) {
+      Swal.close();
       console.error('Error buying token:', error);
       setIsBuying(false); // If the purchase fails, reset the buying state
 
@@ -258,7 +270,7 @@ const CollectionPage = () => {
       setIsBuying(false); // Set buying state to false when an error occurs
     }
   };
-  
+
 
 
   if (!collection) {

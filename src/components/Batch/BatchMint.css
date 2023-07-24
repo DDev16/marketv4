@@ -53,19 +53,38 @@
     color: var(--main-font-color);
     width: 70%;
     margin-top:100px;
+    border-radius: 10px;
+
   }
-  
+
+  /* Style for the explanatory span */
+/* Style for the explanatory span */
+.explanation {
+  font-size: 12px; /* Default font size for the explanatory text */
+  color: #888; /* Optional: Adjust text color */
+}
+
+/* Mobile-responsive adjustments using media queries */
+@media (max-width: 767px) {
+  /* Adjust font size for smaller screens */
+  .explanation {
+    font-size: 10px;
+
+  }
+}
+
   .BatchMint form {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
-    max-width: 600px;
+    max-width: 800px;
     background: #ffffff;
     padding: 2em;
     border-radius: 10px;
     box-shadow: 0px 10px 30px -5px rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.5s ease, transform 0.5s ease;
+    
   }
   
   .BatchMint form:hover {
@@ -78,6 +97,7 @@
     flex-direction: column;
     width: 100%;
     margin-bottom: 1.5em;
+    
   }
   
   .BatchMint input,
@@ -85,7 +105,7 @@
     padding: 0.5em 1em;
     border-radius: 5px;
     border: 1px solid var(--accent-color);
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     font-size: 1em;
     transition: border-color 0.3s ease-in-out;
   }
@@ -110,6 +130,11 @@
     transform: perspective(1px) translateZ(0);
     transition-duration: 0.3s;
     transition-property: color, background-color, transform;
+    margin-bottom: 1em;
+  }
+
+  .mint-label {
+   
     margin-bottom: 1em;
   }
   

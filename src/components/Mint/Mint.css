@@ -80,11 +80,29 @@
   transform: scale(1.02);
 }
 
-.image-preview-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
+
+/* Mint.css */
+
+/* Optional: Style for the preview containers */
+.image-preview-container,
+.video-preview-container {
+  max-width: 100%;
+  margin: 0 auto; /* Center the container */
 }
+
+/* Optional: Style for the image preview */
+.image-preview {
+  max-width: 100%;
+  height: auto; /* Maintain aspect ratio */
+}
+
+/* Optional: Style for the video preview */
+.video-preview {
+  max-width: 100%;
+  height: auto; /* Maintain aspect ratio */
+}
+
 
 .image-preview {
   max-width: 100%;

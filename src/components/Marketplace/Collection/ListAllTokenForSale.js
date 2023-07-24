@@ -89,6 +89,16 @@ const ListAll = () => {
     event.preventDefault();
 
     try {
+      Swal.fire({
+        title: 'Processing',
+        html: 'Please wait...',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        didOpen: () => {
+          Swal.showLoading()
+        },
+      });
+
       setLoading(true);
       const accounts = await web3.eth.getAccounts();
 
@@ -113,14 +123,15 @@ const ListAll = () => {
       await setApprovalForAllTokens();
 
       setCollectionDetails({ collectionId: '', price: '' });
+      Swal.close();
       Swal.fire('Success!', 'Tokens listed successfully!', 'success');
     } catch (err) {
+      Swal.close();
       Swal.fire('Error!', err.message, 'error');
     } finally {
       setLoading(false);
     }
   };
-
   const handleChange = (event) => {
     setCollectionDetails({
       ...collectionDetails,

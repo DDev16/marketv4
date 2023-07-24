@@ -118,6 +118,11 @@ const Mint = () => {
   
   
 
+  // Helper function to convert basis points to percentage
+  const basisPointsToPercentage = (basisPoints) => {
+    return (basisPoints / 100).toFixed(2);
+  };
+
   return (
     <div className="background">
       <div className="mint-container">
@@ -159,16 +164,24 @@ const Mint = () => {
             onChange={(e) => setRoyaltyRecipient(e.target.value)}
           />
           <label htmlFor="royaltyBasisPoints" className="mint-label">
-  Royalty Basis Points:
-</label>
-<input
-  type="number"
-  id="royaltyBasisPoints"
-  className="mint-input"
-  placeholder="Royalty Basis Points"
-  value={royaltyBasisPoints}
-  onChange={(e) => setRoyaltyBasisPoints(e.target.value)}
-/>
+            Royalty Basis Points:
+            <span className="explanation">(e.g., 100 basis points = 1% royalty)</span>
+          </label>
+          <input
+            type="number"
+            id="royaltyBasisPoints"
+            className="mint-input"
+            placeholder="Royalty Basis Points"
+            value={royaltyBasisPoints}
+            onChange={(e) => setRoyaltyBasisPoints(e.target.value)}
+          />
+
+          {/* Display royalty as percentage */}
+          <div className="royalty-percentage">
+            {royaltyBasisPoints &&
+              `Royalty: ${basisPointsToPercentage(royaltyBasisPoints)}%`}
+          </div>
+
           <label htmlFor="file" className="mint-label">
             {imageOnly ? 'Image' : 'Video'}:
           </label>
