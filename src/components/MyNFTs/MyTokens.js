@@ -167,7 +167,7 @@ const MyTokens = () => {
             return null;
           }
       
-          const imageUrl = `https://cloudflare-ipfs.com/ipfs/${metadata.image.replace('ipfs://', '')}`;
+          const imageUrl = `https://ipfs.io/ipfs/${metadata.image.replace('ipfs://', '')}`;
           const { name, description } = metadata;
       
           return { id: tokenId, imageUrl, name, description, contractAddress: contract.options.address, ...tokenInfo };
