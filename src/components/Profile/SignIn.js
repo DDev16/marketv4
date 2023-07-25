@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
-import { GrGoogle } from "react-icons/gr";
 import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, googleAuthProvider, signInWithPopup } from "../../utils/Firebase.js";
 import styled, { keyframes } from "styled-components";
 import bgImage from "../../assets/stock_back_low.gif";
 import { fetchSignInMethodsForEmail } from "../../utils/Firebase.js";
-import { useNavigate } from 'react-router-dom';
+import Swal from "sweetalert2";
 
 
 const fadeIn = keyframes`
@@ -183,9 +182,12 @@ const SignIn = ({ setUser }) => {
   const handleSignUp = async (event) => {
     event.preventDefault();
     
-    // check if email and password fields are not empty
     if (email === "" || password === "") {
-      setError('Please provide both email and password.');
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Please provide both email and password.',
+      });
       return;
     }
   
@@ -195,15 +197,20 @@ const SignIn = ({ setUser }) => {
     try {
       const signInMethods = await fetchSignInMethodsForEmail(auth, email);
       if (signInMethods.length > 0) {
-        setError('The email address is already in use by another account.');
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'The email address is already in use by another account.',
+        });
         console.error(`[${currentId}] The email is already in use:`, email);
       } else {
         await createUserWithEmailAndPassword(auth, email, password);
+        Swal.fire('Success', 'User created successfully!', 'success');
         console.log(`[${currentId}] User creation successful`);
       }
     } catch (error) {
       console.error(`[${currentId}] Error during sign up:`, error);
-      setError(handleErrorMessage(error.code));
+      Swal.fire('Error', handleErrorMessage(error.code), 'error');
       console.error(`[${currentId}] Setting error message:`, handleErrorMessage(error.code));
     }
   };
@@ -213,11 +220,12 @@ const SignIn = ({ setUser }) => {
     try {
       console.log('Attempting to sign in user with email:', email);
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      Swal.fire('Success', 'Signed in successfully!', 'success');
       console.log('Sign in successful');
       setUser({ uid: userCredential.user.uid, email: userCredential.user.email });
     } catch (error) {
       console.error('Error during sign in:', error);
-      setError(handleErrorMessage(error.code));
+      Swal.fire('Error', handleErrorMessage(error.code), 'error');
     }
   };
   
