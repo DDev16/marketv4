@@ -155,54 +155,6 @@ const Marketplace = {
 			"inputs": [
 				{
 					"internalType": "address",
-					"name": "contractAddress",
-					"type": "address"
-				},
-				{
-					"internalType": "uint256",
-					"name": "tokenId",
-					"type": "uint256"
-				},
-				{
-					"internalType": "uint256",
-					"name": "price",
-					"type": "uint256"
-				}
-			],
-			"name": "listToken",
-			"outputs": [],
-			"stateMutability": "payable",
-			"type": "function"
-		},
-		{
-			"inputs": [],
-			"name": "renounceOwnership",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "uint256",
-					"name": "collectionId",
-					"type": "uint256"
-				},
-				{
-					"internalType": "uint256",
-					"name": "maxPrice",
-					"type": "uint256"
-				}
-			],
-			"name": "sweepCollectionFloor",
-			"outputs": [],
-			"stateMutability": "payable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "address",
 					"name": "_tokenAddress",
 					"type": "address"
 				}
@@ -256,6 +208,29 @@ const Marketplace = {
 		{
 			"inputs": [
 				{
+					"internalType": "address",
+					"name": "contractAddress",
+					"type": "address"
+				},
+				{
+					"internalType": "uint256",
+					"name": "tokenId",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "price",
+					"type": "uint256"
+				}
+			],
+			"name": "listToken",
+			"outputs": [],
+			"stateMutability": "payable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
 					"internalType": "address[]",
 					"name": "contractAddresses",
 					"type": "address[]"
@@ -296,6 +271,13 @@ const Marketplace = {
 			"type": "event"
 		},
 		{
+			"inputs": [],
+			"name": "renounceOwnership",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
 			"anonymous": false,
 			"inputs": [
 				{
@@ -325,6 +307,24 @@ const Marketplace = {
 			"name": "setListingFee",
 			"outputs": [],
 			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "collectionId",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "maxPrice",
+					"type": "uint256"
+				}
+			],
+			"name": "sweepCollectionFloor",
+			"outputs": [],
+			"stateMutability": "payable",
 			"type": "function"
 		},
 		{
@@ -828,6 +828,101 @@ const Marketplace = {
 		{
 			"inputs": [
 				{
+					"internalType": "uint256",
+					"name": "collectionId",
+					"type": "uint256"
+				}
+			],
+			"name": "getFloorPrice",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "collectionId",
+					"type": "uint256"
+				}
+			],
+			"name": "getHighestSalePrice",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "collectionId",
+					"type": "uint256"
+				}
+			],
+			"name": "getItemsCount",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "collectionId",
+					"type": "uint256"
+				}
+			],
+			"name": "getMarketCap",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "collectionId",
+					"type": "uint256"
+				}
+			],
+			"name": "getOwnersCount",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
 					"internalType": "address",
 					"name": "contractAddress",
 					"type": "address"
@@ -843,6 +938,25 @@ const Marketplace = {
 				{
 					"internalType": "uint256",
 					"name": "price",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "collectionId",
+					"type": "uint256"
+				}
+			],
+			"name": "getTotalVolume",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
 					"type": "uint256"
 				}
 			],

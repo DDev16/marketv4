@@ -26,7 +26,7 @@ const Home = () => {
       <p style={styles.description}>Our digital hub is your comprehensive gateway for seamless NFT creation and collection building, using the Ethereum Virtual Machine's capabilities. Our platform, tailored for artists, collectors, and blockchain enthusiasts, provides intuitive tools to mint unique NFTs, curate diverse collections, and enrich personal portfolios without any coding prerequisites. Firmly established in the Songbird/Flare Networks community, we bridge the gap between your artistic ambition and a global audience, acting not just as a toolset, but a creative catalyst in the thriving NFT market. We invite you to join us in pushing the limits of what decentralized applications (Dapps) can achieve on the EVM, committed to constant growth and exploration in a dynamic blockchain environment.</p>
       <p style={{ ...styles.descriptionText, ...styles.fireAnimation }}>Jumpstart your digital art journey with us! Enjoy 2 Free mints on us!</p>
       <button style={{ ...styles.button, ...styles.popButton }}>
-        <a href="/mint" style={styles.buttonLink}>Begin your creative expedition here</a>
+        <a href="/mint" style={styles.buttonLink}>Click here to begin your creative expedition here</a>
       </button>
    
       <PunkWorld />
@@ -119,31 +119,6 @@ const styles = {
   spinAnimation,
   fireAnimation,
 };
-
-// Media Query for smaller screens (up to 600px width)
-const mediaQuery = `@media (max-width: 600px) {
-  .container {
-    padding: 10px;
-  }
-  .logo {
-    width: 200px;
-  }
-  .heading {
-    font-size: 24px;
-  }
-  .description {
-    font-size: 16px;
-  }
-  .descriptionText {
-    font-size: 20px;
-  }
-  .popText {
-    font-size: 24px;
-  }
-  .buttonLink {
-    font-size: 16px;
-  }
-}`;
 
 
 

@@ -44,7 +44,7 @@ const Web3Provider = ({ children }) => {
             marketplaceAddress = '0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82';
           } else if (networkId === 31337) {
             contractAddress = '0xbdEd0D2bf404bdcBa897a74E6657f1f12e5C6fb6';
-             marketplaceAddress = '0x9dBbc13bd6Ea07cae8902fDD14E4cb1f2012AB01';
+             marketplaceAddress = '0xFB2696304B99897Ae2946A8a87036953CA832A9a';
              auctionAddress = '0xB35D3C9b9f2Fd72FAAb282E8Dd56da31FAA30E3d';
           } 
 

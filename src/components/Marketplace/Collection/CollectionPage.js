@@ -93,13 +93,44 @@ const CollectionPage = () => {
         if (fetchedCollection) {
           console.log('Fetched Collection:', fetchedCollection);
 
-          const collectionData = {
-            name: fetchedCollection.name,
-            logoIPFS: fetchedCollection.logoIPFS,
-            bannerIPFS: fetchedCollection.bannerIPFS,
-            description: fetchedCollection.description,
-            owner: fetchedCollection.owner,
-          };
+
+ const highestSalePrice = await marketplaceContract.methods
+      .getHighestSalePrice(collectionId)
+      .call({ from: ownerAddress });
+
+    const floorPrice = await marketplaceContract.methods
+      .getFloorPrice(collectionId)
+      .call({ from: ownerAddress });
+
+    const marketCap = await marketplaceContract.methods
+      .getMarketCap(collectionId)
+      .call({ from: ownerAddress });
+
+    const itemsCount = await marketplaceContract.methods
+      .getItemsCount(collectionId)
+      .call({ from: ownerAddress });
+
+    const ownersCount = await marketplaceContract.methods
+      .getOwnersCount(collectionId)
+      .call({ from: ownerAddress });
+
+    const totalVolume = await marketplaceContract.methods
+      .getTotalVolume(collectionId)
+      .call({ from: ownerAddress });
+
+    const collectionData = {
+      name: fetchedCollection.name,
+      logoIPFS: fetchedCollection.logoIPFS,
+      bannerIPFS: fetchedCollection.bannerIPFS,
+      description: fetchedCollection.description,
+      owner: fetchedCollection.owner,
+      highestSalePrice,
+      floorPrice,
+      marketCap,
+      itemsCount,
+      ownersCount,
+      totalVolume,
+    };
           
 
           console.log('Collection Data:', collectionData);
@@ -283,6 +314,8 @@ const CollectionPage = () => {
     return <div>Loading...</div>;
   }
 
+
+  
   return (
     <div className="collectionPage">
        {showConfetti && (
@@ -305,6 +338,27 @@ const CollectionPage = () => {
         <button onClick={downloadQRCode}>Download QR Code</button>
       </div>
       <p className="owner">Collection owned by: {collection.owner}</p>
+      <section class="collectionStatistics">
+  <article>
+    <h3>Highest Sale Price: <span>{web3.utils.fromWei(collection.highestSalePrice.toString(), 'ether')} Ether</span></h3>
+  </article>
+  <article>
+    <h3>Floor Price: <span>{web3.utils.fromWei(collection.floorPrice.toString(), 'ether')} Ether</span></h3>
+  </article>
+  <article>
+    <h3>Market Cap: <span>{web3.utils.fromWei(collection.marketCap.toString(), 'ether')} Ether</span></h3>
+  </article>
+  <article>
+    <h3>Items Count: {collection.itemsCount}</h3>
+  </article>
+  <article>
+    <h3>Owners Count: {collection.ownersCount}</h3>
+  </article>
+  <article>
+    <h3>Total Volume: <span>{web3.utils.fromWei(collection.totalVolume.toString(), 'ether')} Ether</span></h3>
+  </article>
+</section>
+
 
       <div className="cardContainer">
         {tokens.map((token, index) => (

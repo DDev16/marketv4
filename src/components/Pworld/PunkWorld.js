@@ -77,7 +77,7 @@ const StyledGifContainerLeft = styledComponents.div`
   
 
   @media (max-width: 600px) {
-    top: 65%; 
+    top: 70%; 
     left: 20%;
     width: 200px; 
     height: 200px; 
@@ -128,7 +128,7 @@ const StyledGifContainerRight = styledComponents.div`
 
 
   @media (max-width: 600px) {
-    top: 65%; 
+    top: 70%; 
     right: 20%;
     width: 200px; 
     height: 200px; 

@@ -158,6 +158,8 @@
   border: 1px solid #e0e0e0;
   border-radius: 5px;
   box-sizing: border-box;
+  word-break: break-word; /* add this line */
+
   text-align: justify;
   overflow-y: auto; /* Make the container scrollable vertically if the content exceeds its height */
   max-height: 300px; /* Set a maximum height for the description box. You can adjust this to fit your design */
@@ -369,3 +371,70 @@
 .buy-button:focus {
   outline: 2px solid #45a049; /* This will help with accessibility for keyboard navigation */
 }
+
+/* Add some overall styling to the section */
+.collectionStatistics {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 20px;
+  padding: 20px;
+  border: 2px solid #333;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+/* Add some overall styling to the section */
+.collectionStatistics {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 20px;
+  padding: 20px;
+  border: 2px solid #333;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+/* Style for the articles */
+.collectionStatistics article {
+  flex-basis: 15%;  /* This controls the size of the boxes. Adjust this as per your needs */
+  text-align: center;
+  padding: 10px;
+  margin: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Style for the heading inside articles */
+.collectionStatistics article h3 {
+  color: #333;
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+/* Style for the span inside articles */
+.collectionStatistics article h3 span {
+  color: #888;
+  font-size: 16px;
+}
+
+/* Mobile Responsive Design - for devices with max-width of 800px */
+@media screen and (max-width: 600px) {
+  .collectionStatistics {
+    flex-direction: flex;
+  }
+
+  .collectionStatistics article {
+    flex-basis: auto;  /* This controls the size of the boxes. Reset to auto for mobile screens */
+    width: 100%;
+  }
+}
+
+

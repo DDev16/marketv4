@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { FaFire } from 'react-icons/fa';
 import videoSource from '../../assets/Ecommerce-Video-1.mp4'; // adjust the path accordingly
-
+import brand from '../../assets/logo.png';
 // Styled Components
 const Wrapper = styled.section`
   position: relative;
   width: 104.5%;
-  height: 175vh;
+  height: 120vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -92,6 +92,7 @@ const IconWrapper = styled.div`
   font-size: 2em;
   margin: 20px;
   margin-bottom: 100px;
+  margin-top: 250px;
     border-radius: 50%;
   z-index: 0;
   padding: 70px;
@@ -108,6 +109,8 @@ const IconWrapper = styled.div`
   }
 `;
 
+
+
 // Hero Component
 const Hero = () => {
     const phrases = ['Welcome to Flare Fire Tools', 'Providing the Best Tools', 'Quality You Can Trust']; // add more phrases if needed
@@ -123,12 +126,49 @@ const Hero = () => {
     return (
       <Wrapper>
         <VideoBackground autoPlay loop muted playsInline src={videoSource} type="video/mp4" />
-        <IconWrapper aria-label="Fire Icon">
+        {/* <IconWrapper aria-label="Fire Icon">
           <FaFire />
-        </IconWrapper>
+        </IconWrapper> */}
+              <img src={brand} alt="Logo" style={{ ...styles.logo, ...styles.spinAnimation }} />
+
         <Heading key={index} textLength={phrases[index].length}>{phrases[index]}</Heading>
       </Wrapper>
     );
+};
+
+
+const spinAnimation = {
+  animation: 'spin 5s linear infinite',
+  transformStyle: 'preserve-3d'
+};
+
+const fireAnimation = {
+  animation: 'fire 2s linear infinite',
+};
+
+const styles = {
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '20px', // Reduce padding for smaller screens
+    borderRadius: '8px',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
+    color: '#ffffff',
+    fontFamily: 'Arial, sans-serif',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+    backgroundColor: '#282c34',
+  },
+  logo: {
+    width: '300px', // Reduce the width for smaller screens
+    marginBottom: '106px',
+  },
+ 
+  
+  spinAnimation,
+  fireAnimation,
 };
 
 export default Hero;
