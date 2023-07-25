@@ -5,6 +5,7 @@ import styled, { keyframes } from "styled-components";
 import bgImage from "../../assets/stock_back_low.gif";
 import { fetchSignInMethodsForEmail } from "../../utils/Firebase.js";
 import Swal from "sweetalert2";
+import { useNavigate } from 'react-router-dom';
 
 
 const fadeIn = keyframes`
@@ -114,18 +115,6 @@ const Button = styled.button`
   }
 `;
 
-const GoogleButton = styled(Button)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #db4437;
-  margin-bottom: 20px;
-
-  &:hover {
-    background-color: #c23321;
-  }
-`;
-
 const Error = styled.p`
   color: ${props => props.error ? '#ff0000' : '#f00'};
   text-align: center;
@@ -160,6 +149,7 @@ const SignIn = ({ setUser }) => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [passwordVisibility, setPasswordVisibility] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(userAuth => {
@@ -208,6 +198,10 @@ const SignIn = ({ setUser }) => {
         Swal.fire('Success', 'User created successfully!', 'success');
         console.log(`[${currentId}] User creation successful`);
       }
+
+       // Navigate to /my-collections
+       navigate('/my-collections');
+
     } catch (error) {
       console.error(`[${currentId}] Error during sign up:`, error);
       Swal.fire('Error', handleErrorMessage(error.code), 'error');
@@ -223,6 +217,10 @@ const SignIn = ({ setUser }) => {
       Swal.fire('Success', 'Signed in successfully!', 'success');
       console.log('Sign in successful');
       setUser({ uid: userCredential.user.uid, email: userCredential.user.email });
+      
+      // Navigate to /my-collections
+      navigate('/my-collections');
+      
     } catch (error) {
       console.error('Error during sign in:', error);
       Swal.fire('Error', handleErrorMessage(error.code), 'error');
