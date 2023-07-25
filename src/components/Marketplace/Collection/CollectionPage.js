@@ -57,14 +57,20 @@ const CollectionPage = () => {
 
   const downloadQRCode = () => {
     const canvas = qrRef.current.querySelector('canvas');
-    canvas.toBlob((blob) => {
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'qr_code.png';
-      link.click();
-      URL.revokeObjectURL(link.href);
-    });
+    const dataUrl = canvas.toDataURL('image/png');
+    
+    // For some browsers, `blob:` is needed:
+    let isAndroid = /Android/i.test(navigator.userAgent);
+    if (isAndroid && !dataUrl.startsWith('blob:')) {
+      dataUrl = 'blob:' + dataUrl;
+    }
+  
+    const link = document.createElement('a');
+    link.href = dataUrl;
+    link.download = 'qr_code.png';
+    link.click();
   };
+  
 
   useEffect(() => {
     const fetchCollectionDetails = async () => {

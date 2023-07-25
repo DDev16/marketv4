@@ -22,6 +22,32 @@ const StyledImage = styled('img')`
     height: auto;
   }
 `;
+const styles = (theme) => ({
+    subtitle: {
+      fontSize: '1.125rem',
+      fontWeight: 500,
+      lineHeight: 1.6,
+      marginBottom: '8px',
+      color: '#333',
+    },
+    textareaContainer: {
+      position: 'relative',
+    },
+    textarea: {
+      width: '100%',
+      padding: '10px',
+      border: '1px solid #ddd',
+      borderRadius: '4px',
+      color: '#333',
+      resize: 'vertical',
+      minHeight: '200px',
+      fontSize: '1rem',
+      lineHeight: 1.6,
+      '&::placeholder': {
+        color: '#999',
+      },
+    },
+  });
 
 const BulkAddToCollection = () => {
     const { web3, marketplaceContract } = useContext(Web3Context);
@@ -92,8 +118,8 @@ const BulkAddToCollection = () => {
                 Click on the title below to access the form.
             </p>
 
-            <Accordion>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Accordion >
+                <AccordionSummary  expandIcon={<ExpandMoreIcon />}>
                     <Typography>
                         Bulk Add To Collection Form: Input the Collection ID and Token Data
                     </Typography>

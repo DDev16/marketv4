@@ -1,3 +1,8 @@
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import React, { useContext, useState } from 'react';
 import { Web3Context } from '../../utils/Web3Provider';
 import './BatchTransfer.css';
@@ -5,42 +10,49 @@ import './BatchTransfer.css';
 const BatchTransfer = () => {
   const { web3, contract } = useContext(Web3Context);
   const [recipient, setRecipient] = useState('');
-  const [tokenIds, setTokenIds] = useState([]);
+  const [tokenIds, setTokenIds] = useState('');
 
   const handleRecipientChange = (e) => {
     setRecipient(e.target.value);
   };
 
-  const handleTokenIdChange = (e, index) => {
-    const newTokenIds = [...tokenIds];
-    newTokenIds[index] = e.target.value;
-    setTokenIds(newTokenIds);
-  };
-
-  const handleAddTokenId = () => {
-    setTokenIds([...tokenIds, '']);
-  };
-
-  const handleRemoveTokenId = (index) => {
-    const newTokenIds = [...tokenIds];
-    newTokenIds.splice(index, 1);
-    setTokenIds(newTokenIds);
+  const handleTokenIdsInput = (e) => {
+    setTokenIds(e.target.value);
   };
 
   const handleBatchTransfer = async () => {
     try {
-      // Validate token IDs
-      const isValidTokenIds = tokenIds.every((tokenId) => !isNaN(tokenId) && Number.isInteger(Number(tokenId)));
-      if (!isValidTokenIds) {
-        console.error('Invalid token IDs');
+      // Split the input string to extract individual token IDs
+      const tokenIdsArray = tokenIds
+        .split(/[\s,]+/)
+        .map((tokenId) => tokenId.trim())
+        .filter((tokenId) => tokenId !== '');
+
+      // Validate recipient address
+      if (!recipient) {
+        console.error('Recipient address cannot be empty');
         return;
       }
-  
+
+      // Validate token IDs
+      if (tokenIdsArray.length === 0) {
+        console.error('Token IDs cannot be empty');
+        return;
+      }
+
+      const isValidTokenIds = tokenIdsArray.every(
+        (tokenId) => !isNaN(tokenId) && Number.isInteger(Number(tokenId))
+      );
+      if (!isValidTokenIds) {
+        console.error('Invalid token IDs. Please enter valid integers separated by commas, spaces, or new lines.');
+        return;
+      }
+
       const accounts = await web3.eth.getAccounts();
       const fromAddress = accounts[0];
-  
-      await contract.methods.batchTransfer(recipient, tokenIds).send({ from: fromAddress });
-  
+
+      await contract.methods.batchTransfer(recipient, tokenIdsArray).send({ from: fromAddress });
+
       // Successful batch transfer
       console.log('Batch transfer successful');
     } catch (error) {
@@ -48,28 +60,41 @@ const BatchTransfer = () => {
       console.error('Batch transfer error:', error);
     }
   };
-  
-  
 
   return (
-    <div className="batch-transfer">
-      <h2>Batch Transfer</h2>
-      <div className="recipient">
-        <label htmlFor="recipient">Recipient:</label>
-        <input id="recipient" type="text" value={recipient} onChange={handleRecipientChange} />
-      </div>
-      <div className="token-ids">
-        <label>Token IDs:</label>
-        {tokenIds.map((tokenId, index) => (
-          <div className="token-id" key={index}>
-            <input type="text" value={tokenId} onChange={(e) => handleTokenIdChange(e, index)} />
-            <button className="remove-button" onClick={() => handleRemoveTokenId(index)}>Remove</button>
+    <Accordion>
+      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+        <Typography variant="h6">Batch Transfer</Typography>
+      </AccordionSummary>
+      <AccordionDetails>
+        <div className="batch-transfer">
+          <div className="recipient">
+            <label htmlFor="recipient">Recipient Address:</label>
+            <input
+              id="recipient"
+              type="text"
+              value={recipient}
+              onChange={handleRecipientChange}
+              placeholder="Enter the recipient's address"
+            />
           </div>
-        ))}
-        <button className="add-button" onClick={handleAddTokenId}>Add Token ID</button>
-      </div>
-      <button className="batch-transfer-button" onClick={handleBatchTransfer}>Batch Transfer</button>
-    </div>
+          <div className="token-ids">
+            <label>Token IDs:</label>
+            <textarea
+              value={tokenIds}
+              onChange={handleTokenIdsInput}
+              placeholder="Enter or paste token IDs separated by commas"
+            />
+            <p className="info">
+              For example: 1, 45, 78
+            </p>
+          </div>
+          <button className="batch-transfer-button" onClick={handleBatchTransfer}>
+            Batch Transfer
+          </button>
+        </div>
+      </AccordionDetails>
+    </Accordion>
   );
 };
 

@@ -147,7 +147,7 @@ const Button = styled.button`
     background-color: #4c5edf;
   }
 `;
-const CONTRACT_ADDRESS = '0xaC28e7d04833BfBB90De57103e4423Fafc74F8A0';
+const CONTRACT_ADDRESS = '0x968b1F578F9c225fa7e56A725B4aEB74813882a2';
 
 // ERC721 ABI
 const ERC721_ABI = [
@@ -188,11 +188,11 @@ const MyAuctions = () => {
             const nftContract = new web3.eth.Contract(ERC721_ABI, auction.nftContract);
             const nftImages = await Promise.all(auction.nftIds.map(async (id) => {
                 let uri = await nftContract.methods.tokenURI(id).call();
-                uri = uri.replace('ipfs://', 'https://cloudflare-ipfs.com/ipfs/');
+                uri = uri.replace('ipfs://', 'https://ipfs.io/ipfs/');
                 console.log(`Metadata URL for token ${id}: ${uri}`);  // log metadata URL
                 const response = await fetch(uri);
                 const metadata = await response.json();
-                const imageUrl = metadata.image.replace('ipfs://', 'https://cloudflare-ipfs.com/ipfs/');  // replace ipfs:// in image URL
+                const imageUrl = metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/');  // replace ipfs:// in image URL
                 console.log(`Image URL for token ${id}: ${imageUrl}`);  // log image URL
                 return imageUrl;
             }));

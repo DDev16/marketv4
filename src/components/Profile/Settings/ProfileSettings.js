@@ -15,10 +15,8 @@ const Profile = () => {
   const [facebook, setFacebook] = useState('');
   const [twitter, setTwitter] = useState('');
   const [telegram, setTelegram] = useState('');
-  const [spotify, setSpotify] = useState('');
   const [instagram, setInstagram] = useState('');
   const [soundcloud, setSoundcloud] = useState('');
-  const [bandcamp, setBandcamp] = useState('');
   const [walletAddress, setWalletAddress] = useState('');
   const [profileImage, setProfileImage] = useState(null);
   
@@ -39,10 +37,8 @@ const Profile = () => {
           setFacebook(data.social?.facebook || '');
           setTwitter(data.social?.twitter || '');
           setTelegram(data.social?.telegram || '');
-          setSpotify(data.social?.spotify || '');
           setInstagram(data.social?.instagram || '');
           setSoundcloud(data.social?.soundcloud || '');
-          setBandcamp(data.social?.bandcamp || '');
           setWalletAddress(data.walletAddress || '');
           setProfileImage(data.profileImage || null);
         }
@@ -85,9 +81,7 @@ const Profile = () => {
     setTelegram(e.target.value);
   };
 
-  const handleSpotifyChange = (e) => {
-    setSpotify(e.target.value);
-  };
+ 
 
   const handleInstagramChange = (e) => {
     setInstagram(e.target.value);
@@ -97,10 +91,7 @@ const Profile = () => {
     setSoundcloud(e.target.value);
   };
 
-  const handleBandcampChange = (e) => {
-    setBandcamp(e.target.value);
-  };
-
+ 
   const handleWalletAddressChange = (e) => {
     setWalletAddress(e.target.value);
   };
@@ -134,10 +125,9 @@ const Profile = () => {
             facebook,
             twitter,
             telegram,
-            spotify,
             instagram,
             soundcloud,
-            bandcamp,
+            
           },
           walletAddress,
           profileImage: imageUrl, // Save the URL of the image here
@@ -193,10 +183,7 @@ const Profile = () => {
         <label htmlFor="telegram">Telegram:</label>
         <input type="text" id="telegram" value={telegram} onChange={handleTelegramChange} />
       </div>
-      <div className="form-group">
-        <label htmlFor="spotify">Spotify:</label>
-        <input type="text" id="spotify" value={spotify} onChange={handleSpotifyChange} />
-      </div>
+      
       <div className="form-group">
         <label htmlFor="instagram">Instagram:</label>
         <input type="text" id="instagram" value={instagram} onChange={handleInstagramChange} />
@@ -205,10 +192,7 @@ const Profile = () => {
         <label htmlFor="soundcloud">Soundcloud:</label>
         <input type="text" id="soundcloud" value={soundcloud} onChange={handleSoundcloudChange} />
       </div>
-      <div className="form-group">
-        <label htmlFor="bandcamp">Bandcamp:</label>
-        <input type="text" id="bandcamp" value={bandcamp} onChange={handleBandcampChange} />
-      </div>
+      
       <div className="form-group">
         <label htmlFor="wallet-address">Wallet Address:</label>
         <input type="text" id="wallet-address" value={walletAddress} onChange={handleWalletAddressChange} />

@@ -15,6 +15,8 @@ const BatchMint = () => {
   const [error, setError] = useState(null);
   const [useSharedData, setUseSharedData] = useState(false);
   const [mintingFee] = useState(50); // Specify the minting fee in Ether
+  const [allImagesUploaded, setAllImagesUploaded] = useState(false);
+  const [allFieldsFilled, setAllFieldsFilled] = useState(false);
 
 
  // Additional state for royalty information
@@ -48,6 +50,8 @@ const BatchMint = () => {
         return newState;
       });
     }
+    setAllFieldsFilled(mintData.every(data => data.name && data.description));
+
   };
 
 
@@ -86,19 +90,23 @@ const BatchMint = () => {
   } catch (error) {
     console.error('Error while uploading image:', error);
     setError(`Error while uploading image: ${error.message}`);
+    setAllImagesUploaded(false);
+
   } finally {
     setUploading(false);
   }
 };
 
 
-  const handleAllImagesUpload = async () => {
-    for (let i = 0; i < mintData.length; i++) {
-      if (mintData[i].file && !mintData[i].uri) {
-        await handleImageUpload(i);
-      }
+const handleAllImagesUpload = async () => {
+  for (let i = 0; i < mintData.length; i++) {
+    if (mintData[i].file && !mintData[i].uri) {
+      await handleImageUpload(i);
     }
-  };
+  }
+  // All images uploaded
+  setAllImagesUploaded(true);
+};
 
   const handleAddFields = () => {
     setMintData((prevState) => {
@@ -165,12 +173,22 @@ const BatchMint = () => {
   // Calculate the cost
   const totalCost = mintingFee * mintData.length;
 
+  
+  // Helper function to convert basis points to percentage
+  const basisPointsToPercentage = (basisPoints) => {
+    return (basisPoints / 100).toFixed(2);
+  };
+
+
   return (
     <div className="background">
       <div className="BatchMint">
         <div className="Batch-Title">
           <h1>Batch Minting</h1>
         </div>
+        <p>To ensure the comprehensive sharing of data across all your minted NFTs, please diligently complete the initial form in its entirety. Upon completion, click on the 'Use Shared Data' toggle to facilitate the automatic data sharing with all NFTs.</p>
+        <p>If you choose not to share data, kindly proceed to manually input the required information for each NFT individually, ensuring that distinctive data is provided for each one.</p>
+
         <h2>Minting Fee: {mintingFee} Ether</h2>
         <h2>Number of NFTs: {mintData.length}</h2>
         <h2>Total Cost: {totalCost} Ether</h2> {/* Display the total cost */}
@@ -236,8 +254,10 @@ const BatchMint = () => {
   disabled={useSharedData}
 />
 
-<label htmlFor={`royaltyBPS-${index}`}>Royalty % (in basis points):</label>
-<input
+<label htmlFor="royaltyBasisPoints" className="mint-label">
+            Royalty Basis Points:
+            <span className="explanation">(e.g., 100 basis points = 1% royalty)</span>
+          </label><input
   type="number"
   id={`royaltyBPS-${index}`}
   name="royaltyBPS"
@@ -250,6 +270,12 @@ const BatchMint = () => {
   max={10000}
   disabled={useSharedData}
 />
+
+{/* Display royalty as percentage */}
+<div className="royalty-percentage">
+            {royaltyBPSs &&
+              `Royalty: ${basisPointsToPercentage(royaltyBPSs)}%`}
+          </div>
 
                 {
   uploading 
@@ -288,14 +314,12 @@ const BatchMint = () => {
               <p>No files added.</p>
             </div>
           )}
-          <button type="button" onClick={handleAddFields}>
-            Add More Tokens
-          </button>
+        
           {
   loading 
     ? <MintingLoading /> 
     : (
-      <button type="submit">
+      <button type="submit" disabled={!allImagesUploaded}>
         Batch Mint
       </button>
     )

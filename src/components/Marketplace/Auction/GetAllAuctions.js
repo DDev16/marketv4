@@ -12,7 +12,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Typography from '@mui/material/Typography';
 import Swal from 'sweetalert2'; // Import SweetAlert2
 
-const AUCTION_CONTRACT_ADDRESS = '0xaC28e7d04833BfBB90De57103e4423Fafc74F8A0';
+const AUCTION_CONTRACT_ADDRESS = '0x968b1F578F9c225fa7e56A725B4aEB74813882a2';
 
 
 
@@ -99,7 +99,7 @@ async function buyNow(auctionIndex, price) {
 function GetAllAuctions() {
   const [auctions, setAuctions] = useState([]);
   const [sortedAuctions, setSortedAuctions] = useState([]);
-  const [sortingMethod, setSortingMethod] = useState('highestBid');
+  const [sortingMethod, setSortingMethod] = useState('active');
   const [loading, setLoading] = useState(true);
   const [bidValue, setBidValue] = useState('');
   const [searchQuery, setSearchQuery] = useState('');

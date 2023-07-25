@@ -1,87 +1,111 @@
+/* Keyframes for fadeIn animation */
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* Keyframes for pulse animation */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* Styles for the profile container */
 .profile-container {
-  max-width: 100%; 
-  margin-top:50px;
-  padding: 5%;
-  margin-left:0px;
-  background-color: #f2f2f2;
-  border-radius: 10px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1); /* Slightly raise the container */
+  background-color: #f9f9f9; /* Change the background color */
+  border-radius: 10px; /* Add border radius */
+  transition: box-shadow 0.3s ease-in-out;
+  animation: fadeIn 1s ease-in-out;
+  margin-top: 105px;
 }
 
-h2 {
+/* Styles when hovering over the profile container */
+.profile-container:hover {
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2); /* Increase the shadow on hover */
+}
+
+/* Styles for the profile container's heading */
+.profile-container h2 {
   text-align: center;
-  font-size: 24px;
-  margin-bottom: 30px;
+  color: #333;
+  font-size: 28px; /* Slightly increase the font size */
+  margin-bottom: 30px; /* Increase the margin for better spacing */
 }
 
+/* Styles for the profile image */
+.profile-container img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+  margin: 20px auto;
+  animation: rotateImage 5s linear infinite;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow to the image */
+}
+
+/* Styles for form group elements */
 .form-group {
-  margin-bottom: 5%;
-  display: flex;
-  flex-direction: column;
+  margin-bottom: 20px; /* Increase the margin for better spacing */
 }
 
-label {
+/* Styles for form group labels */
+.form-group label {
   display: block;
-  font-weight: bold;
-  margin-bottom: 5px;
+  color: #777; /* Slightly lighten the label color */
+  margin-bottom: 10px; /* Increase the margin for better spacing */
 }
 
-input[type="text"],
-input[type="email"],
-textarea {
+/* Styles for form inputs and textarea */
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group textarea {
   width: 100%;
-  padding: 2%;
-  border: none;
-  border-radius: 5px;
-  background-color: #f8f8f8;
-  font-size: 16px;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
-  display: flex;
-  align-items: center;
+  padding: 12px; /* Increase the padding for better input field appearance */
+  border: 1px solid #ddd;
+  border-radius: 6px; /* Add a bit more border radius */
+  color: #333;
+  transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
-textarea {
+/* Styles when form inputs and textarea are focused */
+.form-group input[type="text"]:focus,
+.form-group input[type="email"]:focus,
+.form-group textarea:focus {
+  border-color: #007BFF;
+  outline: none;
+  box-shadow: 0px 0px 12px rgba(0, 119, 255, 0.3); /* Adjust the focus shadow */
+}
+
+/* Styles for textarea */
+.form-group textarea {
   resize: vertical;
-  min-height: 100px;
+  min-height: 120px; /* Increase the minimum height for better user experience */
 }
 
-button.update-btn {
+/* Styles for the update button */
+.update-btn {
   display: block;
   width: 100%;
-  padding: 2%;
-  background-color: #4CAF50;
-  color: #fff;
+  padding: 12px; /* Increase the padding for better button appearance */
   border: none;
-  border-radius: 5px;
-  font-size: 16px;
+  border-radius: 6px; /* Add a bit more border radius */
+  background-color: #007BFF;
+  color: #fff;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  margin-top: 30px; /* Increase the margin for better spacing */
+  font-size: 18px;
+  transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
-button.update-btn:hover {
-  background-color: #45a049;
-}
-
-/* Mobile responsive styles */
-@media screen and (max-width: 600px) {
-  .profile-container {
-    padding: 3%; /* Smaller padding on mobile */
-    margin-top: 0px;
-  }
-
-  h2 {
-    font-size: 20px; /* Smaller text on mobile */
-    margin-bottom: 20px;
-  }
-
-  input[type="text"],
-  input[type="email"],
-  textarea {
-    font-size: 14px; /* Smaller text on mobile */
-  }
-
-  button.update-btn {
-    padding: 3%; /* Smaller padding on mobile */
-    font-size: 14px; /* Smaller text on mobile */
-  }
+/* Styles when hovering over the update button */
+.update-btn:hover {
+  background-color: #0056b3;
+  animation: pulse 1s ease-in-out infinite;
 }

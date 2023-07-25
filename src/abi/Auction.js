@@ -478,6 +478,25 @@ const Auction=  [
 		"type": "function"
 	},
 	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "auctionIndex",
+				"type": "uint256"
+			}
+		],
+		"name": "hasAuctionEnded",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [],
 		"name": "myAuctions",
 		"outputs": [

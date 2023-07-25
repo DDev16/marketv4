@@ -45,7 +45,7 @@ const Web3Provider = ({ children }) => {
           } else if (networkId === 31337) {
             contractAddress = '0xbdEd0D2bf404bdcBa897a74E6657f1f12e5C6fb6';
              marketplaceAddress = '0x2910E325cf29dd912E3476B61ef12F49cb931096';
-             auctionAddress = '0xaC28e7d04833BfBB90De57103e4423Fafc74F8A0';
+             auctionAddress = '0xB35D3C9b9f2Fd72FAAb282E8Dd56da31FAA30E3d';
           } 
 
           const contractInstance = new web3Instance.eth.Contract(
