@@ -34,11 +34,15 @@ const StyledContainer = styledComponents.div`
   margin-bottom: 50px;
   overflow: hidden;
   perspective: 1000px;
+  margin-top:0px;
+
 
   @media (max-width: 480px) {
     padding: 0.5rem;
     height: auto;
     min-height: 100vh;
+    margin-top:0px;
+
   }
 `;
 

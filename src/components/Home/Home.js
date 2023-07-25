@@ -1,5 +1,4 @@
 import React from 'react';
-import brand from '../../assets/logo.png';
 import '../../index.css';
 import MarketListings from '../Marketplace/MarketListings/MarketListings';
 import Hero from '../Hero/Hero';
@@ -7,15 +6,17 @@ import AllCollections from '../../components/Marketplace/Collection/GetAllCollec
 import HottestCollections from '../../components/Marketplace/Collection/Hot/HottestCollections.js'
 import PunkWorld from '../Pworld/PunkWorld';
 import GetAllAuctions from '../../components/Marketplace/Auction/GetAllAuctions.js';
+import brand from '../../assets/logo.png';
+import '../../components/Home/styles.css'; // Import the CSS file
 
 const Home = () => {
   return (
     
     <div style={styles.container}>
             <Hero />
+        <img src={brand} alt="Logo" style={{ ...styles.logo, ...styles.spinAnimation }} />
 
       
-      <img src={brand} alt="Logo" style={{ ...styles.logo, ...styles.spinAnimation }} />
       <pre>
           <code>
             IgnisLibertas
@@ -48,6 +49,7 @@ const fireAnimation = {
   animation: 'fire 2s linear infinite',
 };
 
+
 const styles = {
   container: {
     display: 'flex',
@@ -64,8 +66,15 @@ const styles = {
     backgroundColor: '#282c34',
   },
   logo: {
-    width: '300px', // Reduce the width for smaller screens
-    marginBottom: '16px',
+    width: '300px',
+    zIndex: "11",
+    marginTop: '350px', // Default margin for desktop
+
+    // Media query for mobile
+    '@media (max-width: 768px)': {
+      width: '200px', // Adjust the width for mobile
+      marginTop: '350px', // Adjust margin for mobile
+    },
   },
   heading: {
     fontSize: '36px', // Reduce font size for smaller screens
@@ -73,19 +82,33 @@ const styles = {
     marginBottom: '0px',
     textAlign: 'center',
     textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)',
+    marginTop: '0px',
+    zIndex:"99",
+    marginTop:"150px",
+
+
+    // Media query for mobile
+    '@media (max-width: 668px)': {
+      marginTop: '0px', // Adjust margin for mobile
+      fontSize: '24px', // Adjust font size for mobile
+    },
   },
   description: {
     fontSize: '20px', // Reduce font size for smaller screens
-    marginBottom: '32px',
+    marginTop: '80px',
     textAlign: 'center',
     lineHeight: '1.5',
     color: 'white',
+    zIndex:"11",
   },
   descriptionText: {
     fontSize: '24px', // Increase font size for smaller screens
     marginBottom: '32px',
     textAlign: 'center',
     lineHeight: '1.5',
+    zIndex:"11",
+    marginTop: '80px',
+
   },
   popText: {
     fontSize: '36px', // Reduce font size for smaller screens
@@ -93,6 +116,8 @@ const styles = {
     color: '#61dafb',
     textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)',
     animation: 'popText 0.5s infinite alternate',
+    marginTop: '80px',
+
   },
   button: {
     padding: '10px',
@@ -118,6 +143,7 @@ const styles = {
   },
   spinAnimation,
   fireAnimation,
+  
 };
 
 

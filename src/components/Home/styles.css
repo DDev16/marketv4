@@ -1,0 +1,7 @@
+/* styles.css */
+@media (max-width: 668px) {
+    .logo {
+      margin-top: 0; /* Adjust margin for mobile */
+    }
+  }
+  

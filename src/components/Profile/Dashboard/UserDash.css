@@ -3,7 +3,7 @@
   position: absolute;
   top: 0;
   width: 100%;
-  z-index: 3;
+  z-index: 15;
   margin-top:0px; 
 
 }
@@ -112,7 +112,7 @@
   position: absolute;
   width:200px;
   max-height: auto; /* Auto height */
-  z-index: 1;
+  z-index: 15;
   background: #252525;
   border-radius: 4px;
   padding: 10px;
@@ -125,12 +125,12 @@
   flex-direction: column;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 600px) {
   .navbar-topbar-wrapper {
     position: static;
     top: 0;
     width: 100%;
-    z-index: 3;
+    z-index: 15;
     margin-top:0px; 
   
   }
@@ -140,6 +140,8 @@
     height: auto;
     padding: 15px;
     margin-top: 0px;
+    z-index: 5;
+
 
   }
 
@@ -156,6 +158,8 @@
   .sidebar {
     position: static;
     width: 100%; /* Full width for mobile */
+    z-index: 15;
+
   }
 }
 

@@ -120,6 +120,13 @@ code {
 }
 
 
+/* styles.css */
+@media (max-width: 668px) {
+  .logo {
+    marginTop: 0; /* Adjust margin for mobile */
+  }
+}
+
 @keyframes fire {
   0% {color: #FF4500;}
   25% {color: #FF8C00;}
