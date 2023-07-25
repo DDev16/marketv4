@@ -295,9 +295,10 @@ const SignIn = ({ setUser }) => {
               isSignIn ? "Sign In" : "Sign Up"
             )}
           </Button>
-          <ToggleButton onClick={() => setIsSignIn(!isSignIn)}>
-            {isSignIn ? "Don't have an account? Sign Up" : "Have an account? Sign In"}
-          </ToggleButton>
+          <ToggleButton type="button" onClick={() => setIsSignIn(!isSignIn)}>
+  {isSignIn ? "Don't have an account? Sign Up" : "Have an account? Sign In"}
+</ToggleButton>
+
         </Form>
         <Error error={error}>{error}</Error>
       </LoginContainer>
