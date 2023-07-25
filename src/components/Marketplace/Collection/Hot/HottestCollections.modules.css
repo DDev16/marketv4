@@ -107,7 +107,7 @@
   transition: all 0.3s ease-in-out;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .headerhot {
     font-size: 6 vw;
   }
@@ -115,11 +115,12 @@
 
   .containerhot {
     box-shadow: 0 0 20px 10px #ADD8E6; /* Light Blue */
+    width:100%;
   }
 
 
   .cardhot .cardhot-title {
-    font-size: 5vw;
+    font-size: 25vw;
   }
 
   .carousel-container {
@@ -129,7 +130,7 @@
   }
 
   .headerhot {
-    font-size: 5vw;
+    font-size: 6vw;
   }
 
   .cardhot .cardhot-title {
@@ -141,6 +142,18 @@
     transform: translateY(-50%);
   }
 }
+
+.cardhot .card-title {
+  font-size: 1.5em; /* default size for desktop */
+}
+
+/* for screens smaller than 768px (typical breakpoint for tablets and smaller devices) */
+@media (max-width: 768px) {
+  .cardhot .card-title {
+    font-size: 1.25em; /* size for mobile devices */
+  }
+}
+
 
 
 
