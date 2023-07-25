@@ -21,8 +21,8 @@ const VideoBackground = styled.video`
   left: 50%;
   min-width: 100%;
   min-height: 100%;
-  width: auto;
-  height: auto;
+  width: 100%;
+  height: 100%;
   z-index: 1000;
   transform: translate(-50%, -50%);
   object-fit: cover;
@@ -30,6 +30,8 @@ const VideoBackground = styled.video`
   @media (max-width: 768px) { // adjust this breakpoint as needed
     min-width: auto;
     min-height: auto;
+    object-fit: contain;
+
     width: 100%; // fill the width of the wrapper
     height: 100%; // fill the height of the wrapper
   }
