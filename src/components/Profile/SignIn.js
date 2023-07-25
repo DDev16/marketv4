@@ -4,6 +4,7 @@ import { GrGoogle } from "react-icons/gr";
 import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, googleAuthProvider, signInWithPopup } from "../../utils/Firebase.js";
 import styled, { keyframes } from "styled-components";
 import bgImage from "../../assets/stock_back_low.gif";
+import { fetchSignInMethodsForEmail } from "../../utils/Firebase.js";
 
 
 const fadeIn = keyframes`
@@ -176,23 +177,48 @@ const SignIn = ({ setUser }) => {
     return unsubscribe;
   }, [setUser]);
 
+  let id = 0;
+
   const handleSignUp = async (event) => {
     event.preventDefault();
+    
+    // check if email and password fields are not empty
+    if (email === "" || password === "") {
+      setError('Please provide both email and password.');
+      return;
+    }
+  
+    const currentId = id++;
+    console.log(`[${currentId}] Attempting to create user with email:`, email);
+    
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      const signInMethods = await fetchSignInMethodsForEmail(auth, email);
+      if (signInMethods.length > 0) {
+        setError('The email address is already in use by another account.');
+        console.error(`[${currentId}] The email is already in use:`, email);
+      } else {
+        await createUserWithEmailAndPassword(auth, email, password);
+        console.log(`[${currentId}] User creation successful`);
+      }
     } catch (error) {
+      console.error(`[${currentId}] Error during sign up:`, error);
+      setError(handleErrorMessage(error.code));
+      console.error(`[${currentId}] Setting error message:`, handleErrorMessage(error.code));
+    }
+  };
+
+const handleSignIn = async (event) => {
+    event.preventDefault();
+    try {
+      console.log('Attempting to sign in user with email:', email);  // Add log here
+      await signInWithEmailAndPassword(auth, email, password);
+      console.log('Sign in successful');  // Add log here
+    } catch (error) {
+      console.error('Error during sign in:', error);  // Add log here
       setError(handleErrorMessage(error.code));
     }
   };
 
-  const handleSignIn = async (event) => {
-    event.preventDefault();
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-    } catch (error) {
-      setError(handleErrorMessage(error.code));
-    }
-  };
 
   const signInWithGoogle = async () => {
     try {

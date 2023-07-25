@@ -1,35 +1,114 @@
-
 .batch-listing-container {
-    margin: 20px;
+  width: 80%;
+  margin: auto;
+  padding: 2rem;
+  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+  background-color: #fff;
+  font-family: 'Roboto', sans-serif;
+  border-radius: 5px;
+}
+
+.batch-listing-heading {
+  text-align: center;
+  color: #333;
+  padding: 1rem 0;
+  border-bottom: 1px solid #ddd;
+  font-size: 2rem;
+}
+
+.instruction-box {
+  background-color: #f6f8fa;
+  border-left: 4px solid #2185d0;
+  padding: 1rem 2rem;
+  margin: 1rem 0;
+  border-radius: 3px;
+}
+
+.instruction-title {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.instruction-box ul {
+  margin-top: 0.5rem;
+  margin-left: 1rem;
+}
+
+.instruction-box ul li {
+  margin-bottom: 0.5rem;
+}
+
+.input-field {
+  margin-bottom: 1rem;
+}
+
+.input-field label {
+  font-weight: 500;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.input-field textarea {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1rem;
+  border-radius: 3px;
+  border: 1px solid #ddd;
+}
+
+.error {
+  color: red;
+  margin-top: 0.5rem;
+}
+
+.list-button {
+  padding: 1rem 2rem;
+  background-color: #2185d0;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  display: block;
+  width: 100%;
+}
+
+.list-button:hover {
+  background-color: #1a69a4;
+}
+
+.list-button:focus {
+  outline: none;
+}
+
+/* Media queries */
+@media only screen and (max-width: 768px) {
+  .batch-listing-container {
+    width: 100%;
+    padding: 1rem;
   }
   
-  .batch-listing-input-group {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
+  .batch-listing-heading {
+    font-size: 1.5rem;
   }
-  
-  .batch-listing-input-group input {
-    margin-right: 10px;
+
+  .instruction-box {
+    padding: 0.5rem 1rem;
   }
-  
-  .batch-listing-add-token-button,
-  .batch-listing-remove-token-button {
-    margin-left: 10px;
+
+  .instruction-title {
+    font-size: 1em;
   }
-  
-  .batch-listing-list-tokens-button {
-    margin-top: 20px;
+
+  .input-field textarea {
+    padding: 0.5rem;
+    font-size: 0.9rem;
   }
-  
-  .batch-listing-loading {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100px;
+
+  .list-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
   }
-  
-  .batch-listing-loading-text {
-    margin-left: 10px;
-  }
-  
+}

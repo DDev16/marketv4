@@ -65,20 +65,42 @@ const MyTokens = () => {
   
 
 
+  const isAllTokensApproved = async () => {
+    const accounts = await web3.eth.getAccounts();
+    const account = accounts[0];
+  
+    const tokenIds = await contract.methods.tokensOfOwner(account).call();
+  
+    for (let i = 0; i < tokenIds.length; i++) {
+      const isApproved = await contract.methods.isApprovedForAll(account, marketplaceContract._address).call();
+  
+      if (!isApproved) {
+        return false;
+      }
+    }
+  
+    return true;
+  };
+  
   const approveAllTokens = async () => {
     try {
-      const accounts = await web3.eth.getAccounts();
-      const account = accounts[0];
-      
-      // Approve all tokens for marketplace contract
-      await contract.methods.setApprovalForAll(marketplaceContract._address, true)
-        .send({ from: account });
-      
-      alert('All tokens approved for marketplace');
+      const allTokensApproved = await isAllTokensApproved();
+  
+      if (!allTokensApproved) {
+        const accounts = await web3.eth.getAccounts();
+        const account = accounts[0];
+        
+        // Approve all tokens for marketplace contract
+        await contract.methods.setApprovalForAll(marketplaceContract._address, true)
+          .send({ from: account });
+        
+        alert('All tokens approved for marketplace');
+      } 
     } catch (error) {
       console.error('An error occurred while approving all tokens:', error);
     }
   };
+  
   
 
   const handleListToken = async (contractAddress, tokenId, priceInWei) => {

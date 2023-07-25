@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Web3Context } from '../../../utils/Web3Provider.js';
 import '../Batch/Batchlisting.css';
+import tokenContractABI from '../../../abi/ERC721.js';
 
 const BatchListing = () => {
   const { web3, marketplaceContract } = useContext(Web3Context);
-  const [tokenData, setTokenData] = useState('');
+  const [tokenDetails, setTokenDetails] = useState([]);
   const [currentAccount, setCurrentAccount] = useState('');
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const loadAccount = async () => {
@@ -17,122 +19,103 @@ const BatchListing = () => {
     loadAccount();
   }, [web3]);
 
-  const parseTokenData = () => {
-    return tokenData.split('\n').map(line => {
+  const handleTextAreaChange = (event) => {
+    const lines = event.target.value.split('\n');
+    const tokens = lines.map(line => {
       const [contractAddress, tokenId, price] = line.split(',');
-      return { contractAddress, tokenId, price };
+      if (contractAddress && tokenId && price) {
+        return { contractAddress, tokenId, price: price.trim() };
+      } else {
+        setError('Each line should have a contract address, token ID, and price, separated by commas.');
+      }
     });
+    setTokenDetails(tokens);
   };
 
-  const ownerOf = async (contractAddress, tokenId) => {
+  const approveMarketplace = async (contractAddress) => {
     const tokenContract = new web3.eth.Contract(
-      [
-        {
-          constant: true,
-          inputs: [{ name: 'tokenId', type: 'uint256' }],
-          name: 'ownerOf',
-          outputs: [{ name: '', type: 'address' }],
-          payable: false,
-          stateMutability: 'view',
-          type: 'function',
-        },
-      ],
+      tokenContractABI,
       contractAddress
     );
-    return await tokenContract.methods.ownerOf(tokenId).call();
+  
+    const isAlreadyApproved = await tokenContract.methods.isApprovedForAll(
+      currentAccount,
+      marketplaceContract.options.address
+    ).call();
+  
+    if (!isAlreadyApproved) {
+      try {
+        await tokenContract.methods
+          .setApprovalForAll(marketplaceContract.options.address, true)
+          .send({ from: currentAccount });
+        console.log(`Marketplace approved for contract ${contractAddress}`);
+      } catch (err) {
+        console.error(err);
+        alert('An error occurred while approving the marketplace.');
+      }
+    }
   };
 
-  const approveMarketplaceForAll = async (contractAddress) => {
-    const tokenContract = new web3.eth.Contract(
-      [
-        {
-          constant: false,
-          inputs: [
-            { name: 'to', type: 'address' },
-            { name: 'approved', type: 'bool' },
-          ],
-          name: 'setApprovalForAll',
-          outputs: [],
-          payable: false,
-          stateMutability: 'nonpayable',
-          type: 'function',
-        },
-      ],
-      contractAddress
-    );
-
-    await tokenContract.methods.setApprovalForAll(marketplaceContract.options.address, true).send({ from: currentAccount });
-  };
-
-  const handleBatchListTokens = async () => {
-    const tokenDetails = parseTokenData();
-    const uniqueContracts = new Set(tokenDetails.map(token => token.contractAddress));
+  const handleBatchListTokens = async (event) => {
+    event.preventDefault();
 
     const listingFeePerToken = web3.utils.toWei('0.21', 'ether');
     const totalListingFee = web3.utils.toBN(listingFeePerToken).muln(tokenDetails.length);
 
     try {
-      for (const contractAddress of uniqueContracts) {
-        await approveMarketplaceForAll(contractAddress);
+      const contractAddresses = tokenDetails.map(token => token.contractAddress);
+      const tokenIds = tokenDetails.map(token => token.tokenId);
+      const prices = tokenDetails.map(token => web3.utils.toWei(token.price.toString(), 'ether'));
+  
+      for(let contractAddress of new Set(contractAddresses)) {
+        await approveMarketplace(contractAddress);
       }
-
-      await Promise.all(
-        tokenDetails.map(async (token) => {
-          const { contractAddress, tokenId, price } = token;
-
-          if (!contractAddress || !tokenId || !price) {
-            return;
-          }
-
-          const owner = await ownerOf(contractAddress, tokenId);
-
-          if (currentAccount !== owner) {
-            return;
-          }
-
-          return marketplaceContract.methods.listToken(
-            contractAddress,
-            tokenId,
-            web3.utils.toWei(price, 'ether')
-          ).send({ from: currentAccount, value: totalListingFee.toString() });
-        })
-      );
-
+  
+      await marketplaceContract.methods.listTokens(
+        contractAddresses,
+        tokenIds,
+        prices
+      ).send({ from: currentAccount, value: totalListingFee.toString() });
+  
       alert('Tokens listed successfully!');
     } catch (err) {
+      console.error(err);
       alert('An error occurred while listing the tokens.');
     }
   };
 
   return (
     <div className="batch-listing-container">
-      <h1>Batch Listing of Tokens</h1>
-      <p>
-        Use this form to list multiple tokens at once. Please follow the example format:
-        Each line should represent one token, and the line should be in the format of
-        <code>contractAddress,tokenId,price</code>.
-      </p>
-      <p>
-        Each value should be separated by a comma. Here's an example:
-        <code>0x1234...abcd,1,1</code>
-      </p>
-      <div>
-        <textarea
-          value={tokenData}
-          onChange={(e) => setTokenData(e.target.value)}
-          placeholder="Example:
-          0x1234...abcd,1,1
-          0x5678...efgh,2,2
-          0x9abc...def0,3,3"
-        />
-        <button onClick={handleBatchListTokens}>List Tokens</button>
+      <h1 className="batch-listing-heading">Batch Listing</h1>
+      <div className="instruction-box">
+        <p className="instruction-title"><strong>Instructions:</strong></p>
+        <ul>
+          <li>Please enter the details of each token you wish to list.</li>
+          <li>Each detail should be on a new line in the following format: <code>Contract Address, Token ID, Price</code></li>
+          <li>For example:
+            <code>0x1234..., 1, 0.01</code>
+            <code>0x5678..., 2, 0.02</code>
+          </li>
+          <li>The Contract Address is the address of the ERC721 contract of the token. Token ID is the unique identifier of your token within its contract. Price is the price at which you wish to list your token, in Native Token.</li>
+        </ul>
       </div>
-      <p>
-        By clicking "List Tokens", you are confirming that you are the owner of these tokens and 
-        you agree to list them for the specified prices. A fee of 0.21 Native Token per NFT is required for listing.
-      </p>
+      <div className="input-field">
+        <label for="tokenDetails">Enter token details:</label>
+        <textarea
+          id="tokenDetails"
+          name="tokenDetails"
+          rows="10"
+          cols="50"
+          onChange={handleTextAreaChange}
+          placeholder="Example:
+          0x1234...5678, 1, 1500  
+          0x8910...6789, 2, 250"
+        />
+        {error && <p className="error">{error}</p>}
+      </div>
+      <button className="list-button" onClick={handleBatchListTokens}>List Tokens</button>
     </div>
   );
 };
-
-export default BatchListing;
+  export default BatchListing;
+  

@@ -91,42 +91,40 @@ const MarketListings = () => {
   const [maxPrice, setMaxPrice] = useState('');
 
   useEffect(() => {
-    // First, apply the search filter
+    // First, filter by the search query
     let filtered = tokens.filter((token) => {
       const { metadata, contractAddress, tokenId, price } = token;
       const lowercaseQuery = searchQuery.toLowerCase();
   
       // Convert price to Ether for comparison
-const priceNum = parseFloat(web3.utils.fromWei(price, 'ether'));
-
-// Apply additional filters for min and max price
-const withinMinPrice = minPrice === '' || priceNum >= parseFloat(minPrice);
-const withinMaxPrice = maxPrice === '' || priceNum <= parseFloat(maxPrice);
-
+      const priceNum = parseFloat(web3.utils.fromWei(price, 'ether'));
+  
+      // Check if the token matches the search query
       return (
-        withinMinPrice &&
-        withinMaxPrice &&
-        (
-          metadata.name.toLowerCase().includes(lowercaseQuery) ||
-          contractAddress.toLowerCase().includes(lowercaseQuery) ||
-          tokenId.toString().includes(searchQuery) ||
-          price.toString().toLowerCase().includes(lowercaseQuery)
-        )
+        metadata.name.toLowerCase().includes(lowercaseQuery) ||
+        contractAddress.toLowerCase().includes(lowercaseQuery) ||
+        tokenId.toString().includes(searchQuery) ||
+        price.toString().toLowerCase().includes(lowercaseQuery)
       );
+    });
+  
+    // Apply additional filters for min and max price
+    filtered = filtered.filter((token) => {
+      const priceNum = parseFloat(web3.utils.fromWei(token.price, 'ether'));
+      const withinMinPrice = minPrice === '' || priceNum >= parseFloat(minPrice);
+      const withinMaxPrice = maxPrice === '' || priceNum <= parseFloat(maxPrice);
+      return withinMinPrice && withinMaxPrice;
     });
   
     // Then sort the filtered tokens
     if (sortType === 'lowToHigh') {
-      filtered = [...filtered].sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+      filtered.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
     } else if (sortType === 'highToLow') {
-      filtered = [...filtered].sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+      filtered.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
     }
-    
   
-    console.log("SortType: ", sortType);
-    console.log("Filtered Tokens after sort: ", filtered);
     setFilteredTokens(filtered);
-}, [tokens, searchQuery, minPrice, maxPrice, sortType]);  
+  }, [tokens, searchQuery, minPrice, maxPrice, sortType]); // Remove currentPage from this dependency array
   
   
 
@@ -330,8 +328,13 @@ const withinMaxPrice = maxPrice === '' || priceNum <= parseFloat(maxPrice);
   };
 
   const pageCount = Math.ceil(filteredTokens.length / itemsPerPage);
-  const paginatedTokens = filteredTokens.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
+  // Calculate the index range for the current page
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = currentPage * itemsPerPage;
+
+  // Get the tokens for the current page directly from the filteredTokens array
+  const paginatedTokens = filteredTokens.slice(startIndex, endIndex);
   if (isLoading) {
     return <Loading />;
   }
@@ -341,7 +344,7 @@ const withinMaxPrice = maxPrice === '' || priceNum <= parseFloat(maxPrice);
     <div className="marketListings">
       {showConfetti && (
       <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 999 }}>
-      <Confetti numberOfPieces={300} />
+          <Confetti numberOfPieces={300} />
           <p>Confetti effect indicates a successful purchase.</p>
         </div>
       )}
