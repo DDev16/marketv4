@@ -5,6 +5,7 @@ import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, googl
 import styled, { keyframes } from "styled-components";
 import bgImage from "../../assets/stock_back_low.gif";
 import { fetchSignInMethodsForEmail } from "../../utils/Firebase.js";
+import { useNavigate } from 'react-router-dom';
 
 
 const fadeIn = keyframes`
@@ -207,17 +208,19 @@ const SignIn = ({ setUser }) => {
     }
   };
 
-const handleSignIn = async (event) => {
+  const handleSignIn = async (event) => {
     event.preventDefault();
     try {
-      console.log('Attempting to sign in user with email:', email);  // Add log here
-      await signInWithEmailAndPassword(auth, email, password);
-      console.log('Sign in successful');  // Add log here
+      console.log('Attempting to sign in user with email:', email);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      console.log('Sign in successful');
+      setUser({ uid: userCredential.user.uid, email: userCredential.user.email });
     } catch (error) {
-      console.error('Error during sign in:', error);  // Add log here
+      console.error('Error during sign in:', error);
       setError(handleErrorMessage(error.code));
     }
   };
+  
 
 
   const signInWithGoogle = async () => {
