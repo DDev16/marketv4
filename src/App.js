@@ -29,7 +29,7 @@ import CourseCard from './components/courses/CourseCard';
 import Gaming from './components/Gaming/Gaming';
 import MyAuctions from './components/Marketplace/Auction/MyAuctions/MyAuctions';
 import AllAuctions from './components/Marketplace/Auction/GetAllAuctions';
-
+import Hot from './components/Marketplace/Collection/Hot/HottestCollections';
 function App() {
   const [user, setUser] = React.useState(null);
 
@@ -50,6 +50,7 @@ function App() {
                   <Route path="/token-list" element={<TokenList />} />
                   <Route path="/marketplace" element={<MarketList />} />
                   <Route path="/marketListings" element={<MarketListings />} />
+                  <Route path="/hottest-collections" element={<Hot />} />
 
                   <Route path="/create-collection" element={<CreateCollection />} />
                   <Route path="/my-collections" element={<MyCollections />} />

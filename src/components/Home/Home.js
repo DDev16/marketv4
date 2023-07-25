@@ -6,7 +6,6 @@ import Hero from '../Hero/Hero';
 import Hero2 from '../Hero/Hero2';
 
 import AllCollections from '../../components/Marketplace/Collection/GetAllCollections.js'
-import HottestCollections from '../../components/Marketplace/Collection/Hot/HottestCollections.js'
 import PunkWorld from '../Pworld/PunkWorld';
 import GetAllAuctions from '../../components/Marketplace/Auction/GetAllAuctions.js';
 
@@ -32,7 +31,6 @@ const Home = () => {
       </button>
    <Hero2 />
       <PunkWorld />
-      <HottestCollections />
       <AllCollections />
   <MarketListings />
   <GetAllAuctions />

@@ -1,7 +1,7 @@
-import React from 'react';
 import videoSource from '../../assets/FlyIn Fire Logo_free (1).mp4'; // adjust the path accordingly
 import styled, { keyframes } from 'styled-components';
-
+import React, { useRef } from 'react';
+import HottestCollections from '../../components/Marketplace/Collection/Hot/HottestCollections.js';
 // Styled Component
 const Wrapper = styled.div`
   position: relative;
@@ -25,8 +25,16 @@ const VideoBackground = styled.video`
   height: auto;
   z-index: 1000;
   transform: translate(-50%, -50%);
-  object-fit: cover; // to ensure video covers full area
+  object-fit: cover;
+
+  @media (max-width: 768px) { // adjust this breakpoint as needed
+    min-width: auto;
+    min-height: auto;
+    width: 100%; // fill the width of the wrapper
+    height: 100%; // fill the height of the wrapper
+  }
 `;
+
 
 const Overlay = styled.div`
   position: absolute;
@@ -46,6 +54,7 @@ const HeroContent = styled.div`
   align-items: center;
   justify-content: center;
   height: 100%;
+  
 `;
 const textGlow = keyframes`
   0%, 100% { text-shadow: 0 0 .5em #ff3, 0 0 .5em #ff3, 0 0 .5em #ff3, 0 0 .5em #ff3; }
@@ -136,21 +145,31 @@ const scrollBounce = keyframes`
   50% { opacity: 1; }
   100% { transform: translateY(15px); opacity: 0; }
 `;
-
-
-// Hero Component
 const Hero2 = () => {
-    return (
+  // create a ref for the HottestCollections component
+  const hottestCollectionsRef = useRef();
+
+  // create a function to handle the click event on the scroll icon
+  const handleScrollClick = () => {
+      hottestCollectionsRef.current.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  return (
+    <div>
       <Wrapper>
         <VideoBackground autoPlay loop muted playsInline src={videoSource} type="video/mp4" />
         <Overlay />
         <HeroContent>
           <Title animation={fadeIn}>Adventure Awaits</Title>
           <Subtitle animation={fadeIn}>Explore the world of Blockchain with us</Subtitle>
-          <ScrollIcon animation={scrollBounce} />
+          <ScrollIcon onClick={handleScrollClick} animation={scrollBounce} />
         </HeroContent>
       </Wrapper>
-    );
+      <div ref={hottestCollectionsRef}>
+        <HottestCollections />
+      </div>
+    </div>
+  );
 };
 
 export default Hero2;
