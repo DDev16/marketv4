@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
+import { FaFire } from 'react-icons/fa';
 import videoSource from '../../assets/Ecommerce-Video-1.mp4'; // adjust the path accordingly
+
 // Styled Components
 const Wrapper = styled.section`
-  position: absolute;
-  top: 0px;
-  left: 0;
-  width: 100%;
-  height: 110vh;
+  position: relative;
+  width: 104.5%;
+  height: 175vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -15,25 +15,27 @@ const Wrapper = styled.section`
   text-align: center;
   color: white;
   overflow: hidden;
-  z-index: 5;
-
+  margin-top:0px;
 
   @media (max-width: 768px) {
-    height: 100%;
-    top: 145px;
+    height: 105vh;
+    width:375px;
+    padding: 20px;
+    top:0px;
   }
 `;
 
 
 const VideoBackground = styled.video`
-position: absolute;
-top: 50%;
-left: 50%;
-width: 100%;
-height: 100%;
-object-fit: cover;
-z-index: -2;
-transform: translate(-50%, -50%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 120%;
+  min-height: 50%;
+  width: auto;
+  height: auto;
+  z-index: 0;
+  transform: translateX(-50%) translateY(-50%);
 `;
 
 
@@ -41,20 +43,17 @@ transform: translate(-50%, -50%);
 const typing = keyframes`
   from { width: 0; }
   to { width: 100%; }
-  z-index:150;
-
 `;
 
 const blinkCaret = keyframes`
   50% { border-color: transparent; }
-  z-index:150;
-
 `;
 
 const Heading = styled.h1`
   font-size: 4em;
   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
-  margin-top: 350px;
+  z-index: 0;
+  margin-top: -50px;
   font-weight: bold;
   line-height: 1.3;
   color: #ffffff;
@@ -63,15 +62,9 @@ const Heading = styled.h1`
   border-right: .15em solid orange;
   overflow: hidden;
   white-space: nowrap;
-  z-index:100;
-  
 
   @media (min-width: 601px) {
     animation: ${typing} 3.5s steps(40, end), ${blinkCaret} .75s step-end infinite;
-    z-index:150;
-    margin-top:550px;
-
-
     width: ${({ textLength }) => textLength}ch; // ch unit is relative to the width of the "0" (zero)
   }
 
@@ -79,15 +72,42 @@ const Heading = styled.h1`
     font-size: 2.5em;
     width: 100%; // allow the text to take up the full width of its container
     white-space: normal; // allow the text to wrap onto the next line
-    z-index:159;
-    margin-top:550px;
-
     animation: none; // remove the typing animation
   }
 `;
 
+// Keyframes
+const glow = keyframes`
+  0% {
+    box-shadow: 0 0 5px #ff4d4d, 0 0 10px #ff4d4d, 0 0 15px #ff4d4d, 0 0 20px #ff4d4d;
+  }
+  100% {
+    box-shadow: 0 0 10px #ff4d4d, 0 0 20px #ff4d4d, 0 0 30px #ff4d4d, 0 0 40px #ff4d4d;
+  }
+`;
 
+const IconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2em;
+  margin: 20px;
+  margin-bottom: 100px;
+    border-radius: 50%;
+  z-index: 0;
+  padding: 70px;
+  transition: transform 0.3s ease-in-out;
+  animation: ${glow} 2s infinite;
+  color: #ff4d4d;
 
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  @media (max-width: 600px) {
+    font-size: 1.5em;
+  }
+`;
 
 // Hero Component
 const Hero = () => {
@@ -104,21 +124,12 @@ const Hero = () => {
     return (
       <Wrapper>
         <VideoBackground autoPlay loop muted playsInline src={videoSource} type="video/mp4" />
-
-        
-        
-      
+        <IconWrapper aria-label="Fire Icon">
+          <FaFire />
+        </IconWrapper>
         <Heading key={index} textLength={phrases[index].length}>{phrases[index]}</Heading>
-
       </Wrapper>
-      
     );
 };
-
-
-
-
-
-
 
 export default Hero;
