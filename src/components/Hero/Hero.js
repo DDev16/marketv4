@@ -26,16 +26,14 @@ const Wrapper = styled.section`
 
 
 const VideoBackground = styled.video`
-  position: absolute;
-  top: 70%;
-  left: 50%;
-  min-width: 120%;
-  height: 100%;
-  width: auto;
-  height: auto;
-  z-index: -2;
-  transform: translateX(-50%) translateY(-50%);
-  
+position: absolute;
+top: 50%;
+left: 50%;
+width: 100%;
+height: 100%;
+object-fit: cover;
+z-index: -2;
+transform: translate(-50%, -50%);
 `;
 
 

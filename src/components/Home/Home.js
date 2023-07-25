@@ -16,12 +16,6 @@ const Home = () => {
             <Hero />
         <img src={brand} alt="Logo" style={{ ...styles.logo, ...styles.spinAnimation }} />
 
-      
-      <pre>
-          <code>
-            IgnisLibertas
-          </code>
-        </pre>
       <h1 style={styles.heading}>Empowering Innovation: Building Robust Dapps for the Community</h1>
 
       <p style={styles.description}>Our digital hub is your comprehensive gateway for seamless NFT creation and collection building, using the Ethereum Virtual Machine's capabilities. Our platform, tailored for artists, collectors, and blockchain enthusiasts, provides intuitive tools to mint unique NFTs, curate diverse collections, and enrich personal portfolios without any coding prerequisites. Firmly established in the Songbird/Flare Networks community, we bridge the gap between your artistic ambition and a global audience, acting not just as a toolset, but a creative catalyst in the thriving NFT market. We invite you to join us in pushing the limits of what decentralized applications (Dapps) can achieve on the EVM, committed to constant growth and exploration in a dynamic blockchain environment.</p>
