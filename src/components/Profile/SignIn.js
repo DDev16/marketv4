@@ -223,13 +223,6 @@ const SignIn = ({ setUser }) => {
   
 
 
-  const signInWithGoogle = async () => {
-    try {
-      await signInWithPopup(auth, googleAuthProvider);
-    } catch (error) {
-      setError(handleErrorMessage(error.code));
-    }
-  };
 
   const handleErrorMessage = (code) => {
     switch(code) {
@@ -260,9 +253,7 @@ const SignIn = ({ setUser }) => {
         <Title>{isSignIn ? "Sign In" : "Sign Up"}</Title>
         <Description>Enter your credentials to {isSignIn ? "sign in" : "sign up"}</Description>
 
-        <GoogleButton onClick={signInWithGoogle}>
-          <GrGoogle /> Sign in with Google
-        </GoogleButton>
+        
         <Form onSubmit={isSignIn ? handleSignIn : handleSignUp}>
           <InputGroup>
             <FaEnvelope />
