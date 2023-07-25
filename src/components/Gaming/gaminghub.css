@@ -120,3 +120,34 @@
     }
   }
   
+
+  @keyframes coming-soon {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 50px 50px;
+    }
+  }
+  
+  .game-card span {
+    background: repeating-linear-gradient(
+      -45deg,
+      #ffe4e1,
+      #ffe4e1 10px,
+      #ff6347 10px,
+      #ff6347 20px
+    );
+    color: white;
+    display: inline-block;
+    border-radius: 5px;
+    padding: 10px 20px;
+    animation: coming-soon 2s linear infinite;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-weight: bold;
+    display: center;
+   
+    align-items: center;
+    justify-content: center;
+  }
+  
