@@ -7,6 +7,8 @@
   font-family: 'Roboto', sans-serif;
   color: #212121;
   background: #fafafa;
+  width: 100%;
+  
 }
 
 
@@ -44,10 +46,14 @@
 .token-list {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center; /* This line is changed */
   width: 100%;
   margin-top: 2rem;
+  
+
 }
+
+
 
 .loading-container {
   display: flex;
@@ -140,12 +146,39 @@ input[type="number"] {
   border: 1px solid #bdbdbd;
   margin-bottom: 1rem;
 }
+.token-card {
+  flex: 0 0 24%; 
+  max-width: 24%;
+  min-width: 500px; /* Adding a minimum width */
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 900px) {
+  .token-card {
+    flex: 0 0 50%;
+    max-width: 50%;
+    min-width: 400px; /* Adjust according to your design */
+  }
+}
+
+@media (max-width: 600px) {
+  .token-card {
+    flex: 0 0 100%;
+    max-width: 100%;
+    min-width: 200px; /* Adjust according to your design */
+  }
+}
 
 
 
 /* Mobile devices */
 @media (max-width: 600px) {
   .token-card {
+    width: 100%;
+  }
+
+  .token-container {
     width: 100%;
   }
   .tokens-heading {

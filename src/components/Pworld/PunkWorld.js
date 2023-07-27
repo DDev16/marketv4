@@ -283,12 +283,19 @@ const PunkWorld = () => {
   // Your smart contract address
   const contractAddress = "0xcd61F8F6E215CE93F7724a6BB4F5641b108D0276";
 
-  // Initialize web3, account, and contract
   useEffect(() => {
     const init = async () => {
       if (window.ethereum) {
         const web3Instance = new Web3(window.ethereum);
-        await window.ethereum.enable();
+        
+        try {
+          // Request account access
+          await window.ethereum.request({ method: 'eth_requestAccounts' });
+        } catch (error) {
+          // User denied account access...
+          console.error("User denied account access");
+        }
+        
         const accounts = await web3Instance.eth.getAccounts();
         const contractInstance = new web3Instance.eth.Contract(
           contractABI,
@@ -402,9 +409,7 @@ const mintToken = async () => {
             <StyledInfoMessage>
       Minting an NFT will give you access to PunksWorld! Future Airdrops, and exclusive membership perks!
     </StyledInfoMessage>
-    <StyledInfoMessage>
-      Nft holders will recieve 10% of marketplace fees
-    </StyledInfoMessage>
+  
 
           <StyledWorldButton 
     sx={{ marginTop: '2rem' }} // Add margin-top directly here

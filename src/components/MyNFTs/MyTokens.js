@@ -4,6 +4,7 @@ import React, { useContext, useState, useEffect, useCallback, useRef } from 'rea
 import { Web3Context } from '../../utils/Web3Provider';
 import '../../components/MyNFTs/MyToken.css';
 import { styled } from '@mui/system';
+import Swal from 'sweetalert2';
 
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -17,12 +18,12 @@ import Grid from '@mui/material/Grid';
 
 const StyledImage = styled('img')`
   width: 15%;
-  height: 250px;
+  height: auto;
   margin-bottom: 20px;
+  
 
   @media (max-width: 768px) {
     width: 100%;
-    height: auto;
   }
 `;
 
@@ -69,17 +70,8 @@ const MyTokens = () => {
     const accounts = await web3.eth.getAccounts();
     const account = accounts[0];
   
-    const tokenIds = await contract.methods.tokensOfOwner(account).call();
-  
-    for (let i = 0; i < tokenIds.length; i++) {
-      const isApproved = await contract.methods.isApprovedForAll(account, marketplaceContract._address).call();
-  
-      if (!isApproved) {
-        return false;
-      }
-    }
-  
-    return true;
+    const isApproved = await contract.methods.isApprovedForAll(account, marketplaceContract._address).call();
+    return isApproved;
   };
   
   const approveAllTokens = async () => {
@@ -94,14 +86,12 @@ const MyTokens = () => {
         await contract.methods.setApprovalForAll(marketplaceContract._address, true)
           .send({ from: account });
         
-        alert('All tokens approved for marketplace');
+        Swal.fire('Success', 'All tokens approved for marketplace', 'success');
       } 
     } catch (error) {
       console.error('An error occurred while approving all tokens:', error);
     }
   };
-  
-  
 
   const handleListToken = async (contractAddress, tokenId, priceInWei) => {
     try {
@@ -113,13 +103,12 @@ const MyTokens = () => {
     // Approve all tokens for marketplace contract
     await approveAllTokens();
 
-
       // Call listToken method
       await marketplaceContract.methods
         .listToken(contractAddress, tokenId, priceInWei)
         .send({ from: account, value: listingFee });
   
-      alert('Token listed successfully');
+      Swal.fire('Success', 'Token listed successfully', 'success');
   
       // Clear the price input
       setTokenPrices({ ...tokenPrices, [tokenId]: '' });
@@ -130,7 +119,24 @@ const MyTokens = () => {
       console.error('An error occurred while listing the token:', error);
     }
   };
-  
+
+  const cancelListing = async (contractAddress, tokenId) => {
+    try {
+      const accounts = await web3.eth.getAccounts();
+      const account = accounts[0];
+
+      await marketplaceContract.methods
+        .cancelListing(contractAddress, tokenId)
+        .send({ from: account });
+
+      Swal.fire('Success', 'Listing cancelled successfully', 'success');
+
+      // Update token status
+      updateTokenStatus(contractAddress, tokenId);
+    } catch (error) {
+      console.error('An error occurred while cancelling the token listing:', error);
+    }
+  };
   
 
   const handleVideoClick = () => {
@@ -147,23 +153,6 @@ const MyTokens = () => {
     return extension !== 'mp4';
   };
 
-  const cancelListing = async (contractAddress, tokenId) => {
-    try {
-      const accounts = await web3.eth.getAccounts();
-      const account = accounts[0];
-
-      await marketplaceContract.methods
-        .cancelListing(contractAddress, tokenId)
-        .send({ from: account });
-
-      alert('Listing cancelled successfully');
-
-      // Update token status
-      updateTokenStatus(contractAddress, tokenId);
-    } catch (error) {
-      console.error('An error occurred while cancelling the token listing:', error);
-    }
-  };
   
   
   const fetchTokens = useCallback(async () => {

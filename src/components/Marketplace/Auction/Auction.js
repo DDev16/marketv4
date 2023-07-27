@@ -98,12 +98,19 @@ const AuctionComponent = () => {
             if(window.ethereum) {
                 const web3Instance = new Web3(window.ethereum);
                 setWeb3(web3Instance);
-
+    
                 // Request account access
-                await window.ethereum.enable();
+                try {
+                    // Request account access
+                    await window.ethereum.request({ method: 'eth_requestAccounts' });
+                } catch (error) {
+                    // User denied account access...
+                    console.error("User denied account access")
+                }
+    
                 const accounts = await web3Instance.eth.getAccounts();
                 setAccount(accounts[0]);
-
+    
                 window.ethereum.on('accountsChanged', (accounts) => {
                     setAccount(accounts[0]);
                 });
@@ -113,6 +120,7 @@ const AuctionComponent = () => {
         }
         initWeb3();
     }, []);
+    
 
     const createAuction = async (event) => {
         event.preventDefault();

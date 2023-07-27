@@ -170,12 +170,18 @@ const MyAuctions = () => {
     const fetchAuctions = async () => {
         if (window.ethereum) {
             window.web3 = new Web3(window.ethereum);
-            await window.ethereum.enable();
+            try {
+                // Request account access
+                await window.ethereum.request({ method: 'eth_requestAccounts' });
+            } catch (error) {
+                // User denied account access...
+                console.error("User denied account access")
+            }
         } else {
             window.alert('Non-Ethereum browser detected. Please install MetaMask!');
             return;
         }
-
+        
         const web3 = window.web3;
         const accounts = await web3.eth.getAccounts();
         setAccounts(accounts);

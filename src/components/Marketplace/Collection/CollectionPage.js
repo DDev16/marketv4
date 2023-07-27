@@ -340,13 +340,13 @@ const CollectionPage = () => {
       <p className="owner">Collection owned by: {collection.owner}</p>
       <section class="collectionStatistics">
   <article>
-    <h3>Highest Sale Price: <span>{web3.utils.fromWei(collection.highestSalePrice.toString(), 'ether')} Ether</span></h3>
+    <h3>Highest Sale Price: <span>{web3.utils.fromWei(collection.highestSalePrice.toString(), 'ether')} Native Token</span></h3>
   </article>
   <article>
-    <h3>Floor Price: <span>{web3.utils.fromWei(collection.floorPrice.toString(), 'ether')} Ether</span></h3>
+    <h3>Floor Price: <span>{web3.utils.fromWei(collection.floorPrice.toString(), 'ether')} Native Token</span></h3>
   </article>
   <article>
-    <h3>Market Cap: <span>{web3.utils.fromWei(collection.marketCap.toString(), 'ether')} Ether</span></h3>
+    <h3>Market Cap: <span>{web3.utils.fromWei(collection.marketCap.toString(), 'ether')} Native Token</span></h3>
   </article>
   <article>
     <h3>Items Count: {collection.itemsCount}</h3>
@@ -355,7 +355,7 @@ const CollectionPage = () => {
     <h3>Owners Count: {collection.ownersCount}</h3>
   </article>
   <article>
-    <h3>Total Volume: <span>{web3.utils.fromWei(collection.totalVolume.toString(), 'ether')} Ether</span></h3>
+    <h3>Total Volume: <span>{web3.utils.fromWei(collection.totalVolume.toString(), 'ether')} Native Token</span></h3>
   </article>
 </section>
 

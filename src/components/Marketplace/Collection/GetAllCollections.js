@@ -145,7 +145,7 @@ const [searchCategory, setSearchCategory] = useState(''); // new state for categ
         <svg 
     xmlns="http://www.w3.org/2000/svg" 
     viewBox="0 0 1440 320" 
-    class="wave"
+    className="wave"
     role="img" 
     aria-label="Wave graphic"
     preserveAspectRatio="xMidYMid meet">
@@ -153,10 +153,10 @@ const [searchCategory, setSearchCategory] = useState(''); // new state for categ
 
   <defs>
     <linearGradient id="waveGradient" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="5%"  stop-color="#2b5876" /> 
-      <stop offset="50%" stop-color="#4e4376" /> 
-      <stop offset="70%" stop-color="#ef5350" /> 
-      <stop offset="95%" stop-color="#202020" /> 
+      <stop offset="5%"  stopColor="#2b5876" /> 
+      <stop offset="50%" stopColor="#4e4376" /> 
+      <stop offset="70%" stopColor="#ef5350" /> 
+      <stop offset="95%" stopColor="#202020" /> 
     </linearGradient>
   </defs>
 
