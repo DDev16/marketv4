@@ -8,12 +8,10 @@ import Swal from 'sweetalert2';
 import { keyframes } from 'styled-components';
 import { bounceIn } from 'react-animations';
 import styledComponents from 'styled-components';
-import logo from '../../assets/logo.png';
 import backgroundImage from '../../assets/background.jpg';
 import gifLeft from '../../assets/punk1.png';
 import gifRight from '../../assets/punk2.png';
 import styled from 'styled-components';
-import RotatingSphere from './3d.js';
 
 const bounceInAnimation = keyframes`${bounceIn}`;
 
@@ -24,7 +22,7 @@ const StyledContainer = styledComponents.div`
   align-items: center;
   justify-content: flex-start; 
   height: 100vh;
-  width: 100vw;
+  width: 99vw;
   padding: 1rem;
   text-align: center;
   background-image: url(${backgroundImage});
@@ -208,20 +206,6 @@ const StyledWorldButton = styledComponents(Button)`
 
 `;
 
-const StyledThreeContainer = styledComponents.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1; 
-
-  @media (max-width: 768px) {
-    height: 100vh;
-    width: 100vw;
-  }
-`;
-
 
 const Heading = styled.h1`
   position: relative;
@@ -389,10 +373,7 @@ const mintToken = async () => {
       <StyledGifContainerLeft />
       <StyledGifContainerRight />
 
-      {/* <StyledLogo src={logo} alt="Logo" /> */}
-      <StyledThreeContainer>
-        <RotatingSphere />
-      </StyledThreeContainer>
+     
       <StyledAccountText>
         {account ? `Your account: ${account}` : 'No account connected'}
       </StyledAccountText>

@@ -4,12 +4,14 @@ import '../../index.css';
 import MarketListings from '../Marketplace/MarketListings/MarketListings';
 import Hero from '../Hero/Hero';
 import Hero2 from '../Hero/Hero2';
-
+import HottestCollections from '../Marketplace/Collection/Hot/HottestCollections';
 import AllCollections from '../../components/Marketplace/Collection/GetAllCollections.js'
 import PunkWorld from '../Pworld/PunkWorld';
 import GetAllAuctions from '../../components/Marketplace/Auction/GetAllAuctions.js';
 
 const Home = () => {
+
+ 
   return (
     
     <div style={styles.container}>
@@ -30,7 +32,9 @@ const Home = () => {
         <a href="/mint" style={styles.buttonLink}>Click here to begin your creative expedition here</a>
       </button>
    <Hero2 />
+  
       <PunkWorld />
+        <HottestCollections />
       <AllCollections />
   <MarketListings />
   <GetAllAuctions />
@@ -55,7 +59,6 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     padding: '20px', // Reduce padding for smaller screens
-    borderRadius: '8px',
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
     color: '#ffffff',
     fontFamily: 'Arial, sans-serif',

@@ -6,7 +6,7 @@ import videoSource from '../../assets/Ecommerce-Video-1.mp4'; // adjust the path
 // Styled Components
 const Wrapper = styled.section`
   position: relative;
-  width: 104.5%;
+  width: 99vw;
   height: 175vh;
   display: flex;
   flex-direction: column;
@@ -17,9 +17,10 @@ const Wrapper = styled.section`
   overflow: hidden;
   margin-top:0px;
 
+
   @media (max-width: 768px) {
     height: 105vh;
-    width:375px;
+    width:360px;
     padding: 20px;
     top:0px;
   }
@@ -30,7 +31,7 @@ const VideoBackground = styled.video`
   position: absolute;
   top: 50%;
   left: 50%;
-  min-width: 120%;
+  min-width: 100%;
   min-height: 50%;
   width: auto;
   height: auto;

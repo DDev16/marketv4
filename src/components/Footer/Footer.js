@@ -46,7 +46,7 @@ function Footer() {
             </ul>
           </Col>
           <Col xs={3} className="footer-col">
-            <h4>SGB/FLR Community</h4>
+            <h4>SGB/FLR </h4>
             <p>&copy; {new Date().getFullYear()} All rights reserved.</p>
           </Col>
         </Row>

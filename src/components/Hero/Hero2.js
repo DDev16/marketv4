@@ -1,7 +1,6 @@
 import videoSource from '../../assets/FlyIn Fire Logo_free (1).mp4'; // adjust the path accordingly
 import styled, { keyframes } from 'styled-components';
-import React, { useRef } from 'react';
-import HottestCollections from '../../components/Marketplace/Collection/Hot/HottestCollections.js';
+import React from 'react';
 import SupporterFont from '../../components/Hero/FlamesItalicPersonalUseBoldItalic-rgAWK.ttf';
 import { createGlobalStyle } from 'styled-components';
 
@@ -20,48 +19,45 @@ const GlobalStyle = createGlobalStyle`
 
 const Wrapper = styled.div`
   position: relative;
-  width: 2000px;
-  height: 100vh; // this will take the full height of the viewport
+  width: 99vw;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
   text-align: center;
-  overflow: hidden; // to ensure no scroll
-`;
+  overflow: hidden;
 
-const VideoBackground = styled.video`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  min-width: 100%;
-  min-height: 100%;
-  width: 100%;
-  height: 100%;
-  z-index: 1000;
-  transform: translate(-50%, -50%);
-  object-fit: cover;
+  @media (max-width: 768px) {
+    height: 100vh;
+    flex-direction: column; // Stack elements vertically on mobile
+    justify-content: space-around; // Vertically space elements evenly
+    width: 100%%;
+    
 
-  @media (max-width: 768px) { // adjust this breakpoint as needed
-    min-width: auto;
-    min-height: auto;
-    object-fit: contain;
-
-    width: 100%; // fill the width of the wrapper
-    height: 100%; // fill the height of the wrapper
   }
 `;
 
 
-const Overlay = styled.div`
+const VideoBackground = styled.video`
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 500;
+  z-index: 1000;
+  object-fit: cover;
+
+  @media (max-width: 768px) {
+    position: relative; // Remove absolute positioning on mobile
+    width: 360px;
+    height: 100%; // Adjust video height on mobile as needed
+
+  }
 `;
+
+
+
 
 const HeroContent = styled.div`
   position: relative;
@@ -71,7 +67,7 @@ const HeroContent = styled.div`
   align-items: center;
   justify-content: center;
   height: 100%;
-  
+
 `;
 const textGlow = keyframes`
   0%, 100% { text-shadow: 0 0 .5em #ff3, 0 0 .5em #ff3, 0 0 .5em #ff3, 0 0 .5em #ff3; }
@@ -83,6 +79,8 @@ const Title = styled.h1`
   font-size: 8em;
   color: #fff;
   font-family: 'Supporter Font', sans-serif; // Use the custom font
+
+  margin-top:0px;
 
   text-transform: uppercase;
   margin-bottom: 0.5em;
@@ -96,7 +94,9 @@ const Title = styled.h1`
   }
 
   @media (max-width: 768px) {
-    font-size: 2em;
+    font-size: 4em;
+    margin-top:0px;
+
   }
 `;
 
@@ -148,6 +148,11 @@ const ScrollIcon = styled.div`
     transform: translate(-50%, -50%);
     animation: ${props => (props.animation ? props.animation : null)} 1.5s infinite;
   }
+
+  @media (max-width: 768px) {
+    font-size: 1em;
+    bottom: 7px;
+  }
 `;
 
 const fadeIn = keyframes`
@@ -167,31 +172,23 @@ const scrollBounce = keyframes`
   100% { transform: translateY(15px); opacity: 0; }
 `;
 const Hero2 = () => {
-  // create a ref for the HottestCollections component
-  const hottestCollectionsRef = useRef();
 
-  // create a function to handle the click event on the scroll icon
-  const handleScrollClick = () => {
-      hottestCollectionsRef.current.scrollIntoView({ behavior: 'smooth' });
-  };
 
   return (
     <div>
       <Wrapper>
         <VideoBackground autoPlay loop muted playsInline src={videoSource} type="video/mp4" />
-        <Overlay />
         <HeroContent>
           <Title animation={fadeIn}>Adventure Awaits</Title>
           
           <Subtitle animation={fadeIn}>Explore the world of Blockchain with us</Subtitle>
-          <GlobalStyle /> {/* Render the GlobalStyle component here */}
-
-          <ScrollIcon onClick={handleScrollClick} animation={scrollBounce} />
+          <GlobalStyle /> 
+          
+          <ScrollIcon  animation={scrollBounce} />
+          
         </HeroContent>
       </Wrapper>
-      <div ref={hottestCollectionsRef}>
-        <HottestCollections />
-      </div>
+      
     </div>
   );
 };
