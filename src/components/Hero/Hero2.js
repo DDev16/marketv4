@@ -2,7 +2,22 @@ import videoSource from '../../assets/FlyIn Fire Logo_free (1).mp4'; // adjust t
 import styled, { keyframes } from 'styled-components';
 import React, { useRef } from 'react';
 import HottestCollections from '../../components/Marketplace/Collection/Hot/HottestCollections.js';
-// Styled Component
+import SupporterFont from '../../components/Hero/FlamesItalicPersonalUseBoldItalic-rgAWK.ttf';
+import { createGlobalStyle } from 'styled-components';
+
+
+const GlobalStyle = createGlobalStyle`
+  @font-face {
+    font-family: 'Supporter Font';
+    src: url(${SupporterFont}) format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+ 
+`;
+
+
 const Wrapper = styled.div`
   position: relative;
   width: 2000px;
@@ -65,8 +80,10 @@ const textGlow = keyframes`
 `;
 
 const Title = styled.h1`
-  font-size: 4em;
+  font-size: 8em;
   color: #fff;
+  font-family: 'Supporter Font', sans-serif; // Use the custom font
+
   text-transform: uppercase;
   margin-bottom: 0.5em;
   animation: ${textGlow} 2s ease-in-out infinite;
@@ -84,8 +101,10 @@ const Title = styled.h1`
 `;
 
 const Subtitle = styled.p`
-  font-size: 1.5em;
+  font-size: 4em;
   color: #fff;
+  font-family: 'Supporter Font', sans-serif; // Use the custom font
+
   margin-bottom: 1em;
   animation: ${textGlow} 2s ease-in-out infinite;
   transition: transform 0.3s;
@@ -163,7 +182,10 @@ const Hero2 = () => {
         <Overlay />
         <HeroContent>
           <Title animation={fadeIn}>Adventure Awaits</Title>
+          
           <Subtitle animation={fadeIn}>Explore the world of Blockchain with us</Subtitle>
+          <GlobalStyle /> {/* Render the GlobalStyle component here */}
+
           <ScrollIcon onClick={handleScrollClick} animation={scrollBounce} />
         </HeroContent>
       </Wrapper>
