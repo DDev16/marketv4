@@ -1,9 +1,10 @@
-import videoSource from '../../assets/FlyIn Fire Logo_free (1).mp4'; // adjust the path accordingly
+import React, { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
-import React from 'react';
+
 import SupporterFont from '../../components/Hero/FlamesItalicPersonalUseBoldItalic-rgAWK.ttf';
 import { createGlobalStyle } from 'styled-components';
 
+import videoSource from '../../assets/FlyIn Fire Logo_free (1).mp4'; // adjust the path accordingly
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -12,10 +13,7 @@ const GlobalStyle = createGlobalStyle`
     font-weight: normal;
     font-style: normal;
   }
-
- 
 `;
-
 
 const Wrapper = styled.div`
   position: relative;
@@ -30,14 +28,11 @@ const Wrapper = styled.div`
 
   @media (max-width: 768px) {
     height: 100vh;
-    flex-direction: column; // Stack elements vertically on mobile
-    justify-content: space-around; // Vertically space elements evenly
-    width: 100%%;
-    
-
+    flex-direction: column;
+    justify-content: space-around;
+    width: 100%;
   }
 `;
-
 
 const VideoBackground = styled.video`
   position: absolute;
@@ -49,15 +44,11 @@ const VideoBackground = styled.video`
   object-fit: cover;
 
   @media (max-width: 768px) {
-    position: relative; // Remove absolute positioning on mobile
+    position: relative;
     width: 360px;
-    height: 100%; // Adjust video height on mobile as needed
-
+    height: 100%;
   }
 `;
-
-
-
 
 const HeroContent = styled.div`
   position: relative;
@@ -67,8 +58,8 @@ const HeroContent = styled.div`
   align-items: center;
   justify-content: center;
   height: 100%;
-
 `;
+
 const textGlow = keyframes`
   0%, 100% { text-shadow: 0 0 .5em #ff3, 0 0 .5em #ff3, 0 0 .5em #ff3, 0 0 .5em #ff3; }
   30% { text-shadow: 0 0 .5em #f33, 0 0 2em #f33, 0 0 3em #f33, 0 0 4em #f33; }
@@ -78,10 +69,8 @@ const textGlow = keyframes`
 const Title = styled.h1`
   font-size: 8em;
   color: #fff;
-  font-family: 'Supporter Font', sans-serif; // Use the custom font
-
-  margin-top:0px;
-
+  font-family: 'Supporter Font', sans-serif;
+  margin-top: 0;
   text-transform: uppercase;
   margin-bottom: 0.5em;
   animation: ${textGlow} 2s ease-in-out infinite;
@@ -95,16 +84,14 @@ const Title = styled.h1`
 
   @media (max-width: 768px) {
     font-size: 4em;
-    margin-top:0px;
-
+    margin-top: 0;
   }
 `;
 
 const Subtitle = styled.p`
   font-size: 4em;
   color: #fff;
-  font-family: 'Supporter Font', sans-serif; // Use the custom font
-
+  font-family: 'Supporter Font', sans-serif;
   margin-bottom: 1em;
   animation: ${textGlow} 2s ease-in-out infinite;
   transition: transform 0.3s;
@@ -129,20 +116,20 @@ const scrollPulse = keyframes`
 const ScrollIcon = styled.div`
   position: absolute;
   bottom: 10%;
-  height: 60px; // Increase size
-  width: 36px;  // Increase size
-  border: 3px solid #fff; // Increase border thickness
-  border-radius: 18px;  // Increase border radius
+  height: 60px;
+  width: 36px;
+  border: 3px solid #fff;
+  border-radius: 18px;
   opacity: 0.75;
-  animation: ${scrollPulse} 1s infinite;  // Add pulse effect
+  animation: ${scrollPulse} 1s infinite;
 
   &:before {
     content: "";
     position: absolute;
-    top: 15px;  // Adjust according to new size
+    top: 15px;
     left: 50%;
-    width: 12px;  // Increase size
-    height: 12px;  // Increase size
+    width: 12px;
+    height: 12px;
     background-color: #fff;
     border-radius: 50%;
     transform: translate(-50%, -50%);
@@ -171,24 +158,42 @@ const scrollBounce = keyframes`
   50% { opacity: 1; }
   100% { transform: translateY(15px); opacity: 0; }
 `;
-const Hero2 = () => {
+const LazyVideoBackground = () => {
+  return <VideoBackground autoPlay loop muted playsInline preload="metadata" src={videoSource} type="video/mp4" />;
+};
 
+const Hero2 = () => {
+  const [isScrollIconVisible, setScrollIconVisible] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollIconElement = document.getElementById('scrollIcon');
+      if (!scrollIconElement) return;
+
+      const scrollIconRect = scrollIconElement.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+
+      setScrollIconVisible(scrollIconRect.top < windowHeight);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   return (
     <div>
       <Wrapper>
-        <VideoBackground autoPlay loop muted playsInline src={videoSource} type="video/mp4" />
+        <LazyVideoBackground />
         <HeroContent>
           <Title animation={fadeIn}>Adventure Awaits</Title>
-          
           <Subtitle animation={fadeIn}>Explore the world of Blockchain with us</Subtitle>
-          <GlobalStyle /> 
-          
-          <ScrollIcon  animation={scrollBounce} />
-          
+          <GlobalStyle />
+          <ScrollIcon id="scrollIcon" animation={scrollBounce} />
         </HeroContent>
       </Wrapper>
-      
     </div>
   );
 };
