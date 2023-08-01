@@ -165,7 +165,7 @@ const ListAll = () => {
              Before using this function you must have created collection, minted NFTs,and added those nfts to the specifed collection.
             </li>
             <li>
-              You will need to enter the Collection ID and the Price (in ETH). Make sure you own all the tokens in the specified collection.
+              You will need to enter the Collection ID and the Price (in Native Token). Make sure you own all the tokens in the specified collection.
             </li>
             <li>
               The specified price will apply uniformly to all tokens within the collection.
@@ -190,7 +190,7 @@ const ListAll = () => {
             <input
               type="text"
               name="price"
-              placeholder="Enter Price in ETH here"
+              placeholder="Enter Price here"
               onChange={handleChange}
               value={collectionDetails.price}
               required

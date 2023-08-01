@@ -1,7 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Web3 from 'web3'; // Import Web3 library
 
 import './NFTCard.css';
+
+const ERC721_ABI = [
+  {
+    constant: true,
+    inputs: [{ name: 'tokenId', type: 'uint256' }],
+    name: 'tokenURI',
+    outputs: [{ name: '', type: 'string' }],
+    payable: false,
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    constant: true,
+    inputs: [{ name: 'owner', type: 'address' }],
+    name: 'balanceOf',
+    outputs: [{ name: '', type: 'uint256' }],
+    type: 'function',
+  },
+  {
+    constant: true,
+    inputs: [
+      { name: 'owner', type: 'address' },
+      { name: 'index', type: 'uint256' },
+    ],
+    name: 'tokenOfOwnerByIndex',
+    outputs: [{ name: '', type: 'uint256' }],
+    type: 'function',
+  },
+];
 
 function NFTCard({ nft }) {
   const [isTxHistoryOpen, setIsTxHistoryOpen] = useState(false);
@@ -20,13 +50,30 @@ function NFTCard({ nft }) {
     const date = new Date(Number(timestamp) * 1000);
     return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
   };
+
   useEffect(() => {
+    let isMounted = true; // To track if the component is still mounted
+  
     const fetchImageData = async () => {
       if (nft.type === 'ERC721') {
         try {
-          const response = await axios.get(nft.uri, { responseType: 'arraybuffer' });
+          // Create a new Web3 instance and set the contract ABI and address
+          const web3 = new Web3(window.ethereum);
+          const contract = new web3.eth.Contract(ERC721_ABI, nft.contractAddress);
+  
+          // Call the tokenURI function to get the token URI
+          const tokenURI = await contract.methods.tokenURI(nft.tokenID).call();
+          console.log('Token URI:', tokenURI);
+  
+          // Fetch the image data from the obtained token URI
+          const response = await axios.get(tokenURI, { responseType: 'arraybuffer' });
           const imageData = Buffer.from(response.data, 'binary').toString('base64');
-          setImageData(imageData);
+          console.log('Image data:', imageData);
+  
+          // Check if the component is still mounted before setting the state
+          if (isMounted) {
+            setImageData(imageData);
+          }
         } catch (error) {
           console.error('Error fetching image data:', error);
         }
@@ -34,7 +81,12 @@ function NFTCard({ nft }) {
     };
   
     fetchImageData();
-  }, [nft.uri, nft.type]);
+  
+    // Cleanup function to set isMounted to false when the component unmounts
+    return () => {
+      isMounted = false;
+    };
+  }, [nft.contractAddress, nft.tokenID, nft.type]);
 
   return (
     <div className="nft-card">
@@ -44,7 +96,7 @@ function NFTCard({ nft }) {
       <p className="nft-description">{nft.description}</p>
       <div className="nft-details">
         <div className="nft-info">
-        <span className="nft-field" role="heading" aria-level="2">Balance:</span>
+          <span className="nft-field" role="heading" aria-level="2">Balance:</span>
           <span className="nft-value">{nft.balance}</span>
         </div>
         <div className="nft-info">
@@ -64,9 +116,8 @@ function NFTCard({ nft }) {
           <span className="nft-value">{nft.type}</span>
         </div>
         <div className="nft-info">
-      
-        <span className="nft-field">Transaction History:</span>
-        <div className="tx-summary" onClick={handleTxHistoryClick}>
+          <span className="nft-field">Transaction History:</span>
+          <div className="tx-summary" onClick={handleTxHistoryClick}>
             <span className="tx-field">Total Transactions:</span>
             <span className="tx-value">{nft.txHistory.length}</span>
           </div>
@@ -159,3 +210,8 @@ function NFTCard({ nft }) {
 }
 
 export default NFTCard;
+
+
+
+
+

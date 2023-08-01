@@ -1,409 +1,275 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Web3 from 'web3';
-import Button from '@mui/material/Button';
-import CircularProgress from '@mui/material/CircularProgress';
-import LinearProgress from '@mui/material/LinearProgress';
-import contractABI from '../../abi/ERC721.js';
-import Swal from 'sweetalert2';
-import { keyframes } from 'styled-components';
-import { bounceIn } from 'react-animations';
-import styledComponents from 'styled-components';
-import backgroundImage from '../../assets/background.jpg';
-import gifLeft from '../../assets/punk1.png';
-import gifRight from '../../assets/punk2.png';
-import styled from 'styled-components';
+import contractABI from '../../abi/Pworld.js';
+import ProgressBar from './ProgressBar';
+import './PunkWorld.css'; // Import your custom CSS for styling
+import punk2Gif from '../../assets/punk2.gif'; // Update the file path accordingly
 
-const bounceInAnimation = keyframes`${bounceIn}`;
+const contractAddress = '0x193521C8934bCF3473453AF4321911E7A89E0E12';
+const maxSupply = 486;
 
-const StyledContainer = styledComponents.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start; 
-  height: 100vh;
-  width: 99vw;
-  padding: 1rem;
-  text-align: center;
-  background-image: url(${backgroundImage});
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  margin-bottom: 50px;
-  overflow: hidden;
-  perspective: 1000px;
-  margin-top:0px;
-
-
-  @media (max-width: 480px) {
-    padding: 0.5rem;
-    height: auto;
-    min-height: 100vh;
-    margin-top:0px;
-
-  }
-`;
-
-const StyledAccountText = styledComponents.p`
-  color: #fff;
-  background-color: rgba(0, 0, 0, 0.6);
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  font-family: monospace; /* Add this line */
-  overflow-wrap: anywhere; /* Add this line */
-
-  @media (max-width: 480px) {
-    padding: 0.25rem 0.5rem;
-    font-size: 0.875rem;
-  }
-`;
-
-const StyledGifContainerLeft = styledComponents.div`
-  position: absolute;
-  top: 30%;
-  left: 8%;
-  width: 30%;
-  height: 60%;
-  background-image: url(${gifLeft});
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 100% 100%;
-  z-index: 0;
-  border: 2px solid #fff;
-  border-radius: 50%;
-  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.6));
-  transform-style: preserve-3d;
-  transform: rotateY(45deg) translateZ(-100px);
-  transition: transform 0.5s;
-
-  
-
-  @media (max-width: 600px) {
-    top: 70%; 
-    left: 20%;
-    width: 200px; 
-    height: 200px; 
-  }
-
-  @media (min-device-width: 360px) 
-    and (max-device-width: 740px) 
-    and (-webkit-device-pixel-ratio: 3) { 
-    top: 65%; 
-    left: 12%;
-    width: 250px; 
-    height: 250px; 
-  }
-
-  @media (max-height: 600px) {
-    top: 65%;
-    left: 10%;
-    width: 180px;
-    height: 180px;
-  }
-
-  @media (max-width: 392px) and (max-height: 436px) {
-    top: 65%; 
-    left: 20%;
-    width: 200px; 
-    height: 200px; 
-  }
-`;
-
-const StyledGifContainerRight = styledComponents.div`
-  position: absolute;
-  top: 30%;
-  right: 8%;
-  width: 30%;
-  height: 60%;
-  background-image: url(${gifRight});
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 100% 100%;
-  z-index: 0;
-  border: 2px solid #fff;
-  border-radius: 50%;
-  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.6));
-  transform-style: preserve-3d;
-  transform: rotateY(-45deg) translateZ(-100px);
-  transition: transform 0.5s;
-
-
-
-  @media (max-width: 600px) {
-    top: 70%; 
-    right: 20%;
-    width: 200px; 
-    height: 200px; 
-  }
-
-  @media (min-device-width: 360px) 
-    and (max-device-width: 740px) 
-    and (-webkit-device-pixel-ratio: 3) { 
-    top: 65%; 
-    right: 12%;
-    width: 250px; 
-    height: 250px; 
-  }
-
-  @media (max-height: 600px) {
-    top: 65%;
-    right: 10%;
-    width: 180px;
-    height: 180px;
-  }
-  @media (max-width: 392px) and (max-height: 436px) {
-    top: 65%; 
-    right: 20%;
-    width: 200px; 
-    height: 200px; 
-  }
-`;
-
-const StyledButtonContainer = styledComponents.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 2rem;
-
-  @media (max-width: 480px) {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-around;
-  }
-`;
-
-const StyledButton = styledComponents(Button)`
-  margin-top: 1rem;
-  animation: 2s ${bounceInAnimation};
-  position: relative;
-  z-index: 1;
- 
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.6));
-  transition: filter 0.3s;
-
-  &:hover {
-    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.8));
-  }
-`;
-
-
-const StyledWorldButton = styledComponents(Button)`
-  margin-top: 2rem;
-  animation: 2s ${bounceInAnimation};
-  position: relative;
-  z-index: 1;
- 
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.6));
-  transition: filter 0.3s;
-
-  &:hover {
-    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.8));
-  }
-
-  @media (max-width: 480px) {
-    margin: 0.5rem;
-  }
-
-`;
-
-
-const Heading = styled.h1`
-  position: relative;
-  font-size: 3rem;
-  font-weight: bold;
-  color: #f9f9f9;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-  transition: transform 0.3s ease-in-out;
-  margin-top: 0;
-  z-index: 1; // Position the text in front of the pseudo-element
-
-
-
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to right, #00e8e4, #ff4081, #d50064, #ff4081, #00e8e4);
-    z-index: -1;
-    opacity: 0.6;
-    filter: blur(8px); // Apply the blur effect to the background
-    transition: opacity 0.3s ease-in-out;
-  }
-
-  @media (max-width: 600px) {
-    font-size: 2rem;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 1.5rem;
-  }
-`;
-
-
-const StyledInfoMessage = styledComponents.p`
-  color: #fff;
-  background-color: rgba(0, 0, 0, 0.6);
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  margin-top: 2rem;
-
-  @media (max-width: 480px) {
-    padding: 0.25rem 0.5rem;
-    font-size: 0.875rem;
-  }
-`;
-
-
-
-const PunkWorld = () => {
-  const [account, setAccount] = useState('');
-  const [contract, setContract] = useState(null);
+function PunkWorld() {
   const [web3, setWeb3] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  // Your smart contract address
-  const contractAddress = "0xcd61F8F6E215CE93F7724a6BB4F5641b108D0276";
+  const [contractInstance, setContractInstance] = useState(null);
+  const [account, setAccount] = useState(null);
+  const [mintAmount, setMintAmount] = useState(1);
+  const [fees, setFees] = useState(0);
+  const [totalSupply, setTotalSupply] = useState(0);
+  const [numMinted, setNumMinted] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [extraNFTsRemaining, setExtraNFTsRemaining] = useState(0);
+  const [extraNFTRewards, setExtraNFTRewards] = useState([]);
 
   useEffect(() => {
-    const init = async () => {
-      if (window.ethereum) {
-        const web3Instance = new Web3(window.ethereum);
-        
+    async function fetchExtraNFTsRemaining() {
+      if (contractInstance) {
         try {
-          // Request account access
-          await window.ethereum.request({ method: 'eth_requestAccounts' });
+          const remainingExtraNFTs = await contractInstance.methods.getExtraNFTsRemaining().call();
+          setExtraNFTsRemaining(parseInt(remainingExtraNFTs));
         } catch (error) {
-          // User denied account access...
-          console.error("User denied account access");
+          setError('Error fetching remaining extra NFTs');
         }
-        
-        const accounts = await web3Instance.eth.getAccounts();
-        const contractInstance = new web3Instance.eth.Contract(
-          contractABI,
-          contractAddress
-        );
-        setAccount(accounts[0]);
-        setWeb3(web3Instance);
-        setContract(contractInstance);
-      } else {
-        Swal.fire(
-          'No Ethereum wallet found',
-          'Please install MetaMask to use this dApp!',
-          'error'
-        );
       }
-    };
-    init();
+    }
+  
+    fetchExtraNFTsRemaining(); // Move the function call here
+  
+  }, [contractInstance]);
+
+  // Helper function to get remaining supply
+  function getRemainingSupply() {
+    return maxSupply - totalSupply;
+  }
+
+
+  // Define the fetchExtraNFTsRemaining function
+  async function fetchExtraNFTsRemaining() {
+    if (contractInstance) {
+      try {
+        const remainingExtraNFTs = await contractInstance.methods.getExtraNFTsRemaining().call();
+        setExtraNFTsRemaining(parseInt(remainingExtraNFTs));
+      } catch (error) {
+        setError('Error fetching remaining extra NFTs');
+      }
+    }
+  }
+
+  async function getTotalSupply() {
+    if (contractInstance) {
+      try {
+        const supply = await contractInstance.methods.totalSupply().call();
+        setTotalSupply(parseInt(supply));
+      } catch (error) {
+        setError('Error fetching total supply');
+      }
+      setIsLoading(false);
+    }
+  }
+
+  getTotalSupply();
+
+  // Minting error messages
+  const getMintErrorMessage = (error) => {
+    switch (error) {
+      case 'insufficient_balance':
+        return 'Insufficient balance to mint NFTs.';
+      case 'transaction_failed':
+        return 'Transaction failed. Please try again.';
+      default:
+        return 'Error minting NFTs.';
+    }
+  };
+
+  // Minting status
+  const [isMinting, setIsMinting] = useState(false);
+
+  async function handleMint() {
+    if (!contractInstance || !account) {
+      setError('Please connect your wallet');
+      return;
+    }
+  
+    setIsMinting(true);
+  
+    try {
+      // Convert mintAmount to BigNumber to ensure proper formatting
+      const mintAmountBN = web3.utils.toBN(mintAmount);
+  
+      // Call the smart contract's mint function
+      const gasLimit = 2000000; // Adjust this value based on your needs
+      const tx = await contractInstance.methods.mint(mintAmountBN).send({
+        from: account,
+        gas: gasLimit,
+        value: web3.utils.toWei((fees * mintAmount).toString(), 'ether'), // Pay the minting fees in Ether
+      });
+  
+      // Handle the success of the transaction
+      if (tx.status) {
+        setSuccessMessage(`Successfully minted ${mintAmount} NFT(s)`);
+  
+        if (tx.events && tx.events.ExtraNFTReceived) {
+          // Reset the extraNFTsRewards to an empty array before adding new rewards
+          setExtraNFTRewards([]);
+  
+          const newExtraNFTRewards = tx.events.ExtraNFTReceived;
+          if (Array.isArray(newExtraNFTRewards)) {
+            // Multiple extra NFTs received
+            setExtraNFTRewards((prevRewards) => [...prevRewards, ...newExtraNFTRewards.map((event) => event.returnValues.tokenId)]);
+          } else {
+            // Only 1 extra NFT received
+            setExtraNFTRewards((prevRewards) => [...prevRewards, newExtraNFTRewards.returnValues.tokenId]);
+          }
+        }
+  
+        // Update total supply and remaining supply
+        await Promise.all([getTotalSupply(), fetchExtraNFTsRemaining()]);
+      } else {
+        setError('Transaction failed. Please try again.');
+      }
+    } catch (error) {
+      setError(getMintErrorMessage(error.message));
+    }
+  
+    setIsMinting(false);
+  }
+  
+  
+  
+  useEffect(() => {
+    async function initWeb3() {
+      if (window.ethereum) {
+        try {
+          await window.ethereum.enable();
+          setWeb3(new Web3(window.ethereum));
+        } catch (error) {
+          setError('User denied account access');
+        }
+      } else if (window.web3) {
+        setWeb3(new Web3(window.web3.currentProvider));
+      } else {
+        setError('Non-Ethereum browser detected. You should consider trying MetaMask!');
+      }
+    }
+
+    initWeb3();
   }, []);
 
-//   const mintToken = async (mintAmount) => {
-//     setIsLoading(true);
-//     setTooltipText('Minting in progress...');
-//     try {
-//       const result = await contract.methods.mint(mintAmount).send({
-//         from: account,
-//         onTransactionHash: () => {
-//           Swal.fire({
-//             title: 'Transaction in Progress',
-//             html: 'Minting NFT...',
-//             allowOutsideClick: false,
-//             onBeforeOpen: () => {
-//               Swal.showLoading();
-//               Swal.getContent().querySelector('strong').textContent =
-//                 Swal.getTimerLeft();
-//             },
-//           });
-//         },
-//       });
-//       if (result) {
-//         Swal.fire({
-//           title: 'Transaction successful',
-//           text: 'Your NFT is minted successfully!',
-//           icon: 'success',
-//           confirmButtonText: 'Cool',
-//           onAfterClose: () => setTooltipText('Click to mint another NFT'),
-//         });
-//       }
-//     } catch (error) {
-//       Swal.fire('Failed!', `Failed to mint NFT: ${error.message}`, 'error');
-//     }
-//     setIsLoading(false);
-//   };
+  useEffect(() => {
+    if (web3) {
+      setContractInstance(new web3.eth.Contract(contractABI, contractAddress));
+    }
+  }, [web3]);
 
+  useEffect(() => {
+    async function getAccount() {
+      if (web3) {
+        try {
+          const accounts = await web3.eth.getAccounts();
+          setAccount(accounts[0]);
+        } catch (error) {
+          setError('Error fetching accounts');
+        }
+      }
+    }
 
+    getAccount();
+  }, [web3]);
 
+  useEffect(() => {
+    async function getFees() {
+      if (contractInstance && web3) {
+        try {
+          const feesInWei = await contractInstance.methods.cost().call();
+          const feesInEth = web3.utils.fromWei(feesInWei, 'ether');
+          setFees(parseFloat(feesInEth));
+        } catch (error) {
+          setError('Error fetching fees');
+        }
+      }
+    }
 
-const mintToken = async () => {
-    const imageUrl = `https://source.unsplash.com/1600x900/?psychedelic?${Date.now()}`;
+    getFees();
+  }, [contractInstance, web3]);
 
-    Swal.fire({
-      title: 'Congratulations!',
-      text: 'Your NFT has been minted successfully.',
-      imageUrl: imageUrl,
-      imageWidth: 400,
-      imageHeight: 200,
-      imageAlt: 'Custom image',
-      timer: 5000,  // 5 seconds timer, auto-closes after this time.
-      timerProgressBar: true,
-      backdrop: `
-        rgba(0,0,123,0.4)
-        url("https://sweetalert2.github.io/images/nyan-cat.gif")
-        left top
-        no-repeat
-      `,
-    });
-  };
+ 
 
+  useEffect(() => {
+    async function getNumMinted() {
+      if (contractInstance) {
+        try {
+          const numMinted = await contractInstance.methods.balanceOf(account).call();
+          setNumMinted(parseInt(numMinted));
+        } catch (error) {
+          setError('Error fetching minted NFTs');
+        }
+      }
+    }
 
-  const enterPunkMetaWorld = () => {
-    // Code to handle entering the Punk MetaWorld
-    // Replace with your own logic
-    console.log('Entering Punk MetaWorld...');
-   
-
-  };
-
-  return (
-    <StyledContainer>
-      <Heading>Welcome to PunksWorld NFT Minting Dapp</Heading>
-
-      <StyledGifContainerLeft />
-      <StyledGifContainerRight />
-
-     
-      <StyledAccountText>
-        {account ? `Your account: ${account}` : 'No account connected'}
-      </StyledAccountText>
-      {isLoading ? (
-        <div>
-          <LinearProgress />
-          <CircularProgress />
-        </div>
-      ) : (
-        <StyledButtonContainer>
-            <StyledButton variant="contained" color="primary" onClick={() => mintToken(1)}>
-              Mint NFT
-            </StyledButton>
-            <StyledInfoMessage>
-      Minting an NFT will give you access to PunksWorld! Future Airdrops, and exclusive membership perks!
-    </StyledInfoMessage>
+    if (account) {
+      getNumMinted();
+    }
+  }, [contractInstance, account]);
   
 
-          <StyledWorldButton 
-    sx={{ marginTop: '2rem' }} // Add margin-top directly here
-    variant="contained" 
-    color="secondary" 
-    href="https://punkworld.vercel.app/"
-    onClick={enterPunkMetaWorld}>
-  Enter Punk MetaWorld
-</StyledWorldButton>
-        </StyledButtonContainer>
+  return (
+    <div className="punk-world-container">
+      <h1>Voxel Vandals of PunkWorld</h1>
+
+      {error && <p className="error-message">{error}</p>}
+      {isLoading ? <p>Loading...</p> : (
+        <>
+          <p>Connected account: {account}</p>
+          <p>Total Supply: {totalSupply}/{maxSupply} NFTs</p>
+          <p>Remaining Supply: {getRemainingSupply()} NFTs</p>
+          <p>Remaining Extra Rewards NFTs: {extraNFTsRemaining}</p>
+
+          <p>Minting fees: {fees} FLR</p>
+          <p>
+            Each Voxel Vandal NFT is a unique collectible that comes with exclusive features and benefits ie; Early Access to Punk world Metaverse, Airdrops, Staking and more. Mint your own
+            Voxel Vandal NFT and join a community of passionate collectors!
+          </p>
+          <p>
+            Theres a Random Extra NFT rewards mechanism built in, there is a 75% chance you get rewarded an Extra NFT when minting!          </p>
+          {/* <p>
+            Voxel Vandal holders will recieve 5% of Marketplace fees for 6 months, paid on a monthly basis!
+          </p> */}
+          <div className="mint-form">
+            <input
+              type="number"
+              value={mintAmount}
+              onChange={(e) => setMintAmount(parseInt(e.target.value))}
+              min={1}
+              max={Math.min(getRemainingSupply(), 10)} // Limit the max mint to remaining supply or 10, whichever is lower
+            />
+            <button onClick={handleMint} disabled={!account || isMinting || getRemainingSupply() < mintAmount}>
+  {isMinting ? 'Minting...' : `Mint ${mintAmount} NFT(s)`}
+</button>
+
+          </div>
+          {successMessage && <p className="success-message">{successMessage}</p>}
+
+          {extraNFTRewards.length > 0 &&  (
+   <div >
+    <p>Congratulations! You received the following extra NFTs:</p>
+    <ul className="mint-form">
+      {extraNFTRewards.map((tokenId) => (
+        <li  key={tokenId}>Token ID: {tokenId} </li>
+      ))}
+    </ul>
+  </div>
+)}
+
+          <div className="progress-bar-container">
+            <ProgressBar value={totalSupply} max={maxSupply} />
+          </div>
+          <img src={punk2Gif} alt="Punk2 GIF" className="punk-gif" />
+
+        </>
       )}
-    </StyledContainer>
+    </div>
   );
-};
+}
 
 export default PunkWorld;

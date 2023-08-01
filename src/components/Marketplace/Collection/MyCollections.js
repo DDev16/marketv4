@@ -42,6 +42,7 @@ const CollectionCard = React.memo(({ collection, navigateToCollectionPage }) => 
   );
 });
 
+
 CollectionCard.propTypes = {
   collection: PropTypes.object.isRequired,
   navigateToCollectionPage: PropTypes.func.isRequired,

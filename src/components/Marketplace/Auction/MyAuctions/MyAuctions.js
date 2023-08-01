@@ -147,7 +147,7 @@ const Button = styled.button`
     background-color: #4c5edf;
   }
 `;
-const CONTRACT_ADDRESS = '0x968b1F578F9c225fa7e56A725B4aEB74813882a2';
+const CONTRACT_ADDRESS = '0xCE7Cb25B5aA5422Cb1c6AFea0DAd89935EF415a6';
 
 // ERC721 ABI
 const ERC721_ABI = [
@@ -181,7 +181,7 @@ const MyAuctions = () => {
             window.alert('Non-Ethereum browser detected. Please install MetaMask!');
             return;
         }
-        
+
         const web3 = window.web3;
         const accounts = await web3.eth.getAccounts();
         setAccounts(accounts);

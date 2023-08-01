@@ -90,6 +90,9 @@ const NavBar = () => {
           <option className="options" value="14">Flare</option>
           <option className="options" value="19">Songbird</option>
           <option className="options" value="5">Goerli</option>
+          <option className="options" value="1">Ethereum</option>
+          <option className="options" value="13">Binance</option>
+          <option className="options" value="5">Polygon</option>
           <option className="options" value="31337">Localhost</option>
         </select>
         {selectedNetwork && <img className="logo-image" src={selectedNetwork} alt="Network logo" />}

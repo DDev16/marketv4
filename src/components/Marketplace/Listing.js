@@ -150,7 +150,7 @@ const MarketList = () => {
           />
           <input
             name="price"
-            placeholder="Price in Ether"
+            placeholder="Price in Token"
             onChange={handleChange}
             required
           />
@@ -177,11 +177,12 @@ const MarketList = () => {
               Importantly, this approval doesn't give the Marketplace unlimited access to your assets. It can only interact with the specific token you've approved for listing. You remain the owner of your token until it is sold and transferred to a new owner.
             </p>
             <p>
-              The Marketplace follows strict security protocols to ensure the integrity and safety of your tokens. All transactions are carried out on the secure Ethereum blockchain, which is monitored and verified by a global network of computers. This ensures the security, transparency, and immutability of all transactions.
+              The Marketplace follows strict security protocols to ensure the integrity and safety of your tokens. All transactions are carried out on the secure blockchain, which is monitored and verified by a global network of computers. This ensures the security, transparency, and immutability of all transactions.
             </p>
             <p>
-              For any inquiries or additional support, please reach out to our dedicated team at [support email or contact form link]. We're here to help you with any questions or concerns you may have.
-            </p>
+  We prioritize the security and integrity of your assets. The Marketplace implements industry-standard security measures and follows best practices to ensure the safety of your token. If you have any concerns or questions, please don't hesitate to reach out at our <a href="https://discord.gg/Q5Badjp5vR" target="_blank" rel="noopener noreferrer">Discord</a>.
+</p>
+
           </div>
         )}
           <button type="submit" className="list-token-button">List Token</button>

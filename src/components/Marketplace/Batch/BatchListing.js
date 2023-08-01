@@ -97,10 +97,12 @@ const BatchListing = () => {
             <code>0x5678..., 2, 0.02</code>
           </li>
           <li>The Contract Address is the address of the ERC721 contract of the token. Token ID is the unique identifier of your token within its contract. Price is the price at which you wish to list your token, in Native Token.</li>
+          <li>To streamline the process you can use Chat Gpt for large amounts <a href="https://chat.openai.com/" target="_blank" rel="noopener noreferrer">Link here</a> </li>
+
         </ul>
       </div>
       <div className="input-field">
-        <label for="tokenDetails">Enter token details:</label>
+        <label htmlFor="tokenDetails">Enter token details:</label>
         <textarea
           id="tokenDetails"
           name="tokenDetails"

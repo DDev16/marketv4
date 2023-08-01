@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import React, { useState, useEffect, useContext, useRef, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { Web3Context } from '../../../utils/Web3Provider.js';
 import styles from '../../../components/Marketplace/Collection/CollectionPage.modules.css';
@@ -50,10 +50,16 @@ const CollectionPage = () => {
   const [collection, setCollection] = useState(null);
   const [tokens, setTokens] = useState([]);
   const [qrCodeUrl, setQRCodeUrl] = useState('');
+  const [isLoading, setIsLoading] = useState(true); // Add a state for loading status
 
   const qrRef = useRef();
   const [showConfetti, setShowConfetti] = useState(false);
   const [isBuying, setIsBuying] = useState(false);
+ // Add a state for sorting order
+ const [sortOrder, setSortOrder] = useState('asc'); // 'asc' for ascending, 'desc' for descending
+
+ // Add a state for sorting by listed status
+ const [sortByListed, setSortByListed] = useState('all'); // 'all' for both listed and unlisted, 'listed' for listed only, 'unlisted' for unlisted only
 
   const downloadQRCode = () => {
     const canvas = qrRef.current.querySelector('canvas');
@@ -70,10 +76,58 @@ const CollectionPage = () => {
     link.download = 'qr_code.png';
     link.click();
   };
+
+  const sortTokensByName = (tokensToSort, sortOrder) => {
+    const sortedTokens = [...tokensToSort].sort((a, b) => {
+      const nameA = a.name.toLowerCase();
+      const nameB = b.name.toLowerCase();
+  
+      if (sortOrder === 'asc') {
+        return nameA.localeCompare(nameB);
+      } else {
+        return nameB.localeCompare(nameA);
+      }
+    });
+  
+    return sortedTokens;
+  };
+  
+  const sortTokensByListedStatus = (tokensToSort, sortByListed) => {
+    const sortedTokens = [...tokensToSort].sort((a, b) => {
+      if (sortByListed === 'listed') {
+        return a.isForSale === b.isForSale ? 0 : a.isForSale ? -1 : 1;
+      } else if (sortByListed === 'unlisted') {
+        return a.isForSale === b.isForSale ? 0 : a.isForSale ? 1 : -1;
+      } else {
+        return 0;
+      }
+    });
+  
+    return sortedTokens;
+  };
+  
+
+  // Call the sorting functions when sortOrder or sortByListed changes, or tokens are fetched
+  const sortedTokens = useMemo(() => {
+    let filteredTokens = tokens;
+    if (sortByListed !== 'all') {
+      filteredTokens = filteredTokens.filter((token) => {
+        return sortByListed === 'listed' ? token.isForSale : !token.isForSale;
+      });
+    }
+  
+    if (sortOrder === 'asc') {
+      return sortTokensByName(filteredTokens, sortOrder);
+    } else {
+      return sortTokensByName(filteredTokens, sortOrder).reverse();
+    }
+  }, [tokens, sortOrder, sortByListed]);
   
 
   useEffect(() => {
     const fetchCollectionDetails = async () => {
+      setIsLoading(true); // Set loading status to true before fetching data
+
       try {
         if (!web3) {
           console.error('Web3 object is not initialized');
@@ -187,11 +241,17 @@ const CollectionPage = () => {
 
           console.log('Fetched Cards:', fetchedCards);
           setTokens(fetchedCards);
+          setIsLoading(false);
+
         } else {
           console.error('Collection not found');
+          setIsLoading(false); // Set loading status to false if there's an error
+
         }
       } catch (error) {
         console.error('Error fetching collection:', error);
+        setIsLoading(false); // Set loading status to false if there's an error
+
       }
     };
 
@@ -308,13 +368,23 @@ const CollectionPage = () => {
     }
   };
 
-
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   if (!collection) {
     return <div>Loading...</div>;
   }
 
-
+  const getFilteredTokens = () => {
+    if (sortByListed === 'all') {
+      return tokens; // Return all tokens
+    } else if (sortByListed === 'listed') {
+      return tokens.filter((token) => token.isForSale); // Return only listed tokens
+    } else {
+      return tokens.filter((token) => !token.isForSale); // Return only unlisted tokens
+    }
+  };
   
   return (
     <div className="collectionPage">
@@ -338,7 +408,7 @@ const CollectionPage = () => {
         <button onClick={downloadQRCode}>Download QR Code</button>
       </div>
       <p className="owner">Collection owned by: {collection.owner}</p>
-      <section class="collectionStatistics">
+      <section className="collectionStatistics">
   <article>
     <h3>Highest Sale Price: <span>{web3.utils.fromWei(collection.highestSalePrice.toString(), 'ether')} Native Token</span></h3>
   </article>
@@ -358,10 +428,19 @@ const CollectionPage = () => {
     <h3>Total Volume: <span>{web3.utils.fromWei(collection.totalVolume.toString(), 'ether')} Native Token</span></h3>
   </article>
 </section>
+<div>
+      <button onClick={() => setSortOrder('asc')}>Sort A-Z</button>
+      <button onClick={() => setSortOrder('desc')}>Sort Z-A</button>
+    </div>
+    <div>
+      <button onClick={() => setSortByListed('all')}>All Tokens</button>
+      <button onClick={() => setSortByListed('listed')}>Listed Only</button>
+      <button onClick={() => setSortByListed('unlisted')}>Unlisted Only</button>
+    </div>
 
 
-      <div className="cardContainer">
-        {tokens.map((token, index) => (
+    <div className="cardContainer">
+      {sortedTokens.map((token, index) => (
           <div className="card" key={index}>
             {token.image.toLowerCase().endsWith('.mp4') ? (
               <video controls src={`https://ipfs.io/ipfs/${token.image.replace(/ipfs:\/\//g, '')}`} alt={`NFT Card ${index + 1}`} />
@@ -379,7 +458,7 @@ const CollectionPage = () => {
     Token Price: {token.tokenPrice ? web3.utils.fromWei(token.tokenPrice.toString(), 'ether') : 'Not for sale'}
 </p>
 
-<p> <span className="token-label">Royalty:</span>  {token.royaltyAmount ? web3.utils.fromWei(token.royaltyAmount.toString(), 'ether') : '0'} ETH</p>
+<p> <span className="token-label">Royalty:</span>  {token.royaltyAmount ? web3.utils.fromWei(token.royaltyAmount.toString(), 'ether') : '0'} In Native Token</p>
 <p> <span className="token-label">Royalty Receiver:</span>  {token.royaltyReceiver}</p>
 </div>
 

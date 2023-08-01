@@ -96,10 +96,26 @@
 
 }
 
+/* Token information container style */
 .marketListings__tokenInfo {
   margin-top: 10px;
   text-align: center;
+  font-family: 'Arial', sans-serif;
+  font-size: 16px;
+  color: #333333;
+  line-height: 1.0;
+}
 
+/* Token royalty receiver style */
+.marketListings__royalty_receiver {
+  word-wrap: break-word;
+  font-style: italic;
+  color: #666666;
+}
+
+
+.buyButton:hover {
+  background-color: #0072e6;
 }
 
 .marketListings__royalty_reciever {

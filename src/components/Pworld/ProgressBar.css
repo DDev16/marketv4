@@ -1,0 +1,58 @@
+/* ProgressBar.css */
+.progress-bar-container {
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    height: 30px; /* Increased height for additional info */
+    overflow: hidden;
+    border: 2px solid #5f27cd; /* Add a purple border to the progress bar container */
+  }
+  
+  .progress-bar {
+    height: 100%;
+    background-color: #5f27cd;
+    transition: width 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    position: relative;
+    background-image: linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.2) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.2) 50%,
+      rgba(255, 255, 255, 0.2) 75%,
+      transparent 75%,
+      transparent
+    );
+    background-size: 30px 30px;
+  }
+  
+  .progress-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 12px;
+    color: #fff;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  }
+  
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 8px;
+    background-color: #5f27cd;
+    color: #fff;
+    border-radius: 4px;
+    font-size: 12px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.2s ease;
+  }
+  
+  .progress-info-text {
+    font-size: 12px;
+  }
+  
+  /* Hover effect for the progress info section */
+  .progress-info:hover {
+    background-color: #4527a0;
+  }
+  
