@@ -24,7 +24,6 @@
     color: red;
 }
 
-/* For mobile devices */
 @media (max-width: 768px) {
     .signin {
         padding: 10px;
