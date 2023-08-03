@@ -96,15 +96,56 @@
 
 }
 
-/* Token information container style */
+/* Token Information Container Style */
 .marketListings__tokenInfo {
   margin-top: 10px;
   text-align: center;
   font-family: 'Arial', sans-serif;
   font-size: 16px;
   color: #333333;
-  line-height: 1.0;
+  line-height: 1.6;
+  /* Additional styling for a more professional appearance */
+  border: 1px solid #e5e5e5;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  /* Add transitions for a smoother user experience */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+  /* Hover effect to add interactivity */
+  cursor: pointer;
 }
+
+/* On hover, change the border color and box-shadow for a subtle effect */
+.marketListings__tokenInfo:hover {
+  border-color: #4d4dff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* If needed, you can add media queries to adjust the style for different screen sizes */
+@media (max-width: 768px) {
+  .marketListings__tokenInfo {
+    font-size: 14px;
+    padding: 10px;
+  }
+}
+
+/* Add subtle animations for a polished appearance */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Apply the fadeIn animation to the container when it appears on the page */
+.marketListings__tokenInfo {
+  animation: fadeIn 0.5s ease;
+}
+
 
 /* Token royalty receiver style */
 .marketListings__royalty_receiver {
@@ -145,6 +186,7 @@
   background-color: #1e90ff;
   color: #fff;
   cursor: pointer;
+  border-radius:5px;
 }
 
 .imageModal {
@@ -219,16 +261,7 @@
 
   }
 
-  .buyButton {
-    margin-top: 10px;
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    background-color: #1e90ff;
-    color: #fff;
-    cursor: pointer;
-  }
-
+  
   .imageModal {
     display: flex;
     justify-content: center;

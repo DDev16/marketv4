@@ -43,8 +43,8 @@ const Web3Provider = ({ children }) => {
             contractAddress = '0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0';
             marketplaceAddress = '0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82';
           } else if (networkId === 31337) {
-            contractAddress = '0xd9fEc8238711935D6c8d79Bef2B9546ef23FC046';
-             marketplaceAddress = '0x313F922BE1649cEc058EC0f076664500c78bdc0b';
+            contractAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
+             marketplaceAddress = '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512';
              auctionAddress = '0x26B862f640357268Bd2d9E95bc81553a2Aa81D7E';
           } 
 

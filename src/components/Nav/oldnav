@@ -7,54 +7,6 @@ import songbirdLogo from '../../assets/songbird-logo.png';
 import flareLogo from '../../assets/flarelogo.png';
 import '../../components/Nav/nav.css';
 import Music from '../../components/Music/MusicPlayer.js'
-import Select from 'react-select';
-
-const options = [
-  { value: '14', label: 'Flare' },
-  { value: '19', label: 'Songbird' },
-  { value: '5', label: 'Goerli' },
-  { value: '1', label: 'Ethereum' },
-  { value: '13', label: 'Binance' },
-  { value: '5', label: 'Polygon' },
-  { value: '31337', label: 'Localhost' },
-];
-
-const customStyles = {
-  control: (provided) => ({
-    ...provided,
-    borderRadius: 5,
-    width: '200px', // Increase the width of the control
-    minHeight: '40px', // Increase the minimum height of the control
-    border: '2px solid #ccc',
-    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)', // Slightly reduce the box-shadow
-    backgroundColor: '#f9f9f9', // Change the background color of the control
-  }),
-  option: (provided, state) => ({
-    ...provided,
-    padding: '8px 12px',
-    backgroundImage: state.isSelected
-      ? 'linear-gradient(to right, #2b5876, #4e4376)'
-      : state.isFocused
-      ? 'linear-gradient(to right, #f1f1f1, #f1f1f1)' // You can change the focused background color here
-      : 'white',
-    color: state.isSelected ? 'white' : '#333',
-    cursor: 'pointer',
-  }),
-  singleValue: (provided) => ({
-    ...provided,
-    color: '#333', // Change the text color of the selected value
-  }),
-  indicatorSeparator: () => ({
-    display: '', // Hide the indicator separator line
-  }),
-  dropdownIndicator: (provided) => ({
-    ...provided,
-    color: '#333', // Change the color of the dropdown indicator arrow
-    '&:hover': {
-      color: '#ef5350', // Change the color on hover
-    },
-  }),
-};
 
 const NavBar = () => {
   const { web3 } = useContext(Web3Context);
@@ -63,9 +15,8 @@ const NavBar = () => {
   const [account, setAccount] = useState('');
   const [isNavOpen, setIsNavOpen] = useState(false); // Track whether the mobile menu is open or closed
 
-  const handleNetworkChange = async (selectedOption) => {
-    const networkId = parseInt(selectedOption.value, 10);
-    setCurrentNetworkId(networkId.toString());
+  const handleNetworkChange = async (e) => {
+    const networkId = parseInt(e.target.value, 10);
     if (web3) { // Changed from web3.currentProvider.isMetaMask
       try {
         await window.ethereum.request({
@@ -91,31 +42,24 @@ const NavBar = () => {
     setIsNavOpen((prevState) => !prevState);
   };
 
-   // useEffect to fetch the initial network information when the component mounts
-   useEffect(() => {
+  useEffect(() => {
     const getCurrentNetworkId = async () => {
-      if (web3) {
+      if (web3) { // Changed from web3.currentProvider.isMetaMask
         try {
-          const accounts = await web3.eth.getAccounts();
-          if (accounts && accounts.length > 0) {
-            setAccount(accounts[0]);
-            const networkId = await web3.eth.net.getId();
-            setCurrentNetworkId(networkId.toString());
-            if (networkId === 19) {
-              setSelectedNetwork(songbirdLogo);
-            } else if (networkId === 14) {
-              setSelectedNetwork(flareLogo);
-            } else if (networkId === 5) {
-              setSelectedNetwork(null);
-            } else if (networkId === 31337) {
-              setSelectedNetwork(null);
-            }
-          } else {
-            // If the wallet is not connected, you can handle this case here.
-            // For example, you can show a message or set a default network logo.
+          const networkId = await web3.eth.net.getId();
+          setCurrentNetworkId(networkId.toString());
+          if (networkId === 19) {
+            setSelectedNetwork(songbirdLogo);
+          } else if (networkId === 14) {
+            setSelectedNetwork(flareLogo);
+          } else if (networkId === 5) {
             setSelectedNetwork(null);
-            setCurrentNetworkId(''); // Reset the currentNetworkId to an empty string
+          } else if (networkId === 31337) {
+            setSelectedNetwork(null);
           }
+
+          const accounts = await web3.eth.getAccounts();
+          setAccount(accounts[0]);
         } catch (error) {
           console.error(error);
         }
@@ -124,8 +68,6 @@ const NavBar = () => {
 
     getCurrentNetworkId();
   }, [web3, isNavOpen]);
-
-  
 
   function shortenAddress(address, frontChars = 6, backChars = 4) {
     if (!address) return '';
@@ -142,25 +84,20 @@ const NavBar = () => {
         <span className="app-name">Flare Fire</span>
         
       </div>
-      <div className="music">
-
       <Music />
-      </div>
-      <div class="connected-account">
-  Connected Account: <span>{shortenAddress(account)}</span>
-</div>
-<div className="network-select-container">
-        <h2>Select Network</h2>
-        <Select
-          options={options}
-          value={options.find((option) => parseInt(option.value, 10) === parseInt(currentNetworkId, 10))} // Convert both to numbers before comparison
-          onChange={handleNetworkChange}
-          styles={customStyles}
-        />
+      <div>
+        <select className="network-select" value={currentNetworkId} onChange={handleNetworkChange}>
+          <option className="options" value="14">Flare</option>
+          <option className="options" value="19">Songbird</option>
+          <option className="options" value="5">Goerli</option>
+          <option className="options" value="1">Ethereum</option>
+          <option className="options" value="13">Binance</option>
+          <option className="options" value="5">Polygon</option>
+          <option className="options" value="31337">Localhost</option>
+        </select>
         {selectedNetwork && <img className="logo-image" src={selectedNetwork} alt="Network logo" />}
       </div>
-
-
+      <span>{shortenAddress(account)}</span>
       <button className={`menu-button${isNavOpen ? ' open' : ''}`} onClick={toggleNav}>
         {isNavOpen ? <FiX /> : <FiMenu />}
       </button>

@@ -147,7 +147,7 @@ const Button = styled.button`
     background-color: #4c5edf;
   }
 `;
-const CONTRACT_ADDRESS = '0xCE7Cb25B5aA5422Cb1c6AFea0DAd89935EF415a6';
+const CONTRACT_ADDRESS = '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0';
 
 // ERC721 ABI
 const ERC721_ABI = [

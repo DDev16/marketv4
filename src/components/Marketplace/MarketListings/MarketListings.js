@@ -89,6 +89,50 @@ const MarketListings = () => {
   const [sortType, setSortType] = useState('lowToHigh'); // initial value
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
+  const [networkId, setNetworkId] = useState(null);
+
+  useEffect(() => {
+    // Function to fetch the network ID
+    const fetchNetworkId = async () => {
+      try {
+        const networkId = await web3.eth.net.getId();
+        setNetworkId(networkId);
+      } catch (error) {
+        console.error('Error fetching network ID:', error);
+      }
+    };
+
+    if (web3) {
+      fetchNetworkId();
+    }
+  }, [web3]);
+
+   // Function to get the appropriate currency symbol based on network ID
+   const getCurrencySymbol = () => {
+    switch (networkId) {
+      case 1: // Mainnet
+        return 'ETH';
+      case 19: // songbird
+        return 'SGB';
+      case 14: // Flare
+        return 'FLR';
+      case 4: // Rinkeby
+        return 'FLR';
+      case 42: // Kovan
+        return 'FLR';
+      case 56: // Binance Smart Chain Mainnet
+        return 'BNB';
+      case 97: // Binance Smart Chain Testnet
+        return 'BNB';
+      case 100: // xDAI
+        return 'DAI';
+      case 31337: // Hardhat Network
+        return 'HH';
+      // Add more cases for other networks if needed
+      default:
+        return 'SGB'; // Default to Songbird (SGB) network
+    }
+  };
 
   useEffect(() => {
     // First, filter by the search query
@@ -344,7 +388,7 @@ const MarketListings = () => {
     <div className="marketListings">
       {showConfetti && (
       <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 999 }}>
-          <Confetti numberOfPieces={300} />
+          <Confetti numberOfPieces={400} />
           <p>Confetti effect indicates a successful purchase.</p>
         </div>
       )}
@@ -450,10 +494,10 @@ const MarketListings = () => {
 </p>
 <p className="marketListings__tokenInfo">Token ID: {token.tokenId}</p>
 <p className="marketListings__tokenInfo">
-    Price: {parseFloat(web3.utils.fromWei(token.price, 'ether')).toFixed(2)} ETH
+Price: {parseFloat(web3.utils.fromWei(token.price, 'ether')).toFixed(2)} {getCurrencySymbol()}
 </p>
 
-<p className="marketListings__tokenInfo">Royalty: {web3.utils.fromWei(token.royaltyAmount, 'ether')} ETH</p>
+<p className="marketListings__tokenInfo">Royalty: {web3.utils.fromWei(token.royaltyAmount, 'ether')} {getCurrencySymbol()}</p>
 <p className="marketListings__tokenInfo">Royalty Receiver: {token.royaltyReceiver}</p>
 
 <p className="marketListings__tokenInfo">

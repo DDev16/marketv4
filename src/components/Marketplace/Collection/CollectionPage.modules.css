@@ -93,7 +93,7 @@
 .collectionPage h1 {
   position: relative;
   margin-top:70px;
-  font-size: 150px;
+  font-size: 100px;
   color: transparent;
   background: linear-gradient(120deg, #ff7e5f, #feb47b, #ff7e5f); /* Bright orange gradient */
   background-size: 200% 200%;
@@ -159,7 +159,7 @@
   border-radius: 5px;
   box-sizing: border-box;
   word-break: break-word; /* add this line */
-
+width:700px;
   text-align: justify;
   overflow-y: auto; /* Make the container scrollable vertically if the content exceeds its height */
   max-height: 300px; /* Set a maximum height for the description box. You can adjust this to fit your design */
@@ -206,6 +206,24 @@
     flex-direction: column;
     align-items: center;
 
+  }
+  .description {
+    margin-top: 50px;
+    padding: 15px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #333;
+    background-color: #dcdcdc; /* Change to a darker grey color */
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    box-sizing: border-box;
+    word-break: break-word; /* add this line */
+    width:300px;
+    text-align: justify;
+    overflow-y: auto; /* Make the container scrollable vertically if the content exceeds its height */
+    max-height: 300px; /* Set a maximum height for the description box. You can adjust this to fit your design */
   }
 
   .collectionlogo {
@@ -339,10 +357,8 @@
   padding: 10px;
   border-radius: 5px;
 }
-
-
 .buy-button {
-  background-color: #4caf50;
+  background: linear-gradient(to right, #2b5876, #4e4376);
   color: #ffffff;
   padding: 12px 20px;
   border: none;
@@ -358,19 +374,42 @@
 }
 
 .buy-button:hover {
-  background-color: #45a049;
-  transform: translateY(-2px); /* This will create a subtle 'lift' effect on hover */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), 0 6px 12px rgba(0, 0, 0, 0.3); /* Add deeper shadows to accentuate the lift effect */
+  background: linear-gradient(to right, #4e4376, #2b5876);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3), 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 
 .buy-button:active {
-  transform: translateY(0); /* This will reset the lift effect when button is actively being clicked */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 4px 8px rgba(0, 0, 0, 0.2); /* Reset to original shadows on active click */
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .buy-button:focus {
-  outline: 2px solid #45a049; /* This will help with accessibility for keyboard navigation */
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(68, 172, 73, 0.4);
 }
+
+.buy-button:before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  bottom: -4px;
+  left: -4px;
+  border-radius: 8px;
+  border: 2px solid #4caf50;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.buy-button:hover:before {
+  opacity: 1;
+}
+
+.buy-button:active:before {
+  opacity: 0;
+}
+
 
 /* Add some overall styling to the section */
 .collectionStatistics {
@@ -384,6 +423,7 @@
   border-radius: 10px;
   background-color: #f9f9f9;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  width:100%;
 }
 
 /* Add some overall styling to the section */

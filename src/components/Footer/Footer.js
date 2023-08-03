@@ -23,6 +23,23 @@ function Footer() {
               <li>
                 <a href="/batch-mint">Batch Mint</a>
               </li>
+              <li>
+                <a href="https://flarefire.gitbook.io/official-flare-fire-documentation/legal-info/terms-and-conditions" target="_blank" rel="noopener noreferrer">
+                  Terms & Conditions
+                </a>
+              </li>
+              <li>
+                <a href="https://flarefire.gitbook.io/official-flare-fire-documentation/legal-info/privacy-policy" target="_blank" rel="noopener noreferrer">
+                  Privacy Policy
+                </a>
+              </li>
+              
+            
+              <li>
+                <a href="https://flarefire.gitbook.io/official-flare-fire-documentation/" target="_blank" rel="noopener noreferrer">
+                  Docs/FAQS
+                </a>
+              </li>
             </ul>
           </Col>
           <Col xs={3} className="footer-col">

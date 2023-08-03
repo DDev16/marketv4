@@ -226,6 +226,7 @@
     /* Update font sizes and padding for better mobile view */
     .punk-world-container h1 {
       font-size: 24px;
+
     }
   
     .punk-world-container p {
@@ -235,3 +236,21 @@
     /* ... (other responsive adjustments) */
   }
   
+
+  @media (max-width: 768px) {
+    /* Update font sizes and padding for better mobile view */
+    .punk-world-container h1 {
+      font-size: 24px;
+    }
+
+    .punk-world-container {
+      font-size: 24px;
+      height:1300px;
+    }
+  
+    .punk-world-container p {
+      font-size: 14px;
+    }
+  
+    /* ... (other responsive adjustments) */
+  }

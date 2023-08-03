@@ -20,6 +20,15 @@
 }
 
 
+.total-volume {
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 8px;
+  text-align: center;
+  
+}
+
+
 
 /* Styles for the image */
 .carousel-item img {

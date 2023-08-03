@@ -79,7 +79,7 @@ const ErrorText = styled.span`
 
 
 // Contract address.
-const AUCTION_CONTRACT_ADDRESS = '0xCE7Cb25B5aA5422Cb1c6AFea0DAd89935EF415a6';
+const AUCTION_CONTRACT_ADDRESS = '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0';
 
 const AuctionComponent = () => {
     const [account, setAccount] = useState(null);

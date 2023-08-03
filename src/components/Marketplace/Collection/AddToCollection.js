@@ -23,7 +23,7 @@ const StyledImage = styled('img')`
 `;
 
 const AddToCollection = () => {
-  const { web3, marketplaceContract } = useContext(Web3Context);
+  const { web3, contract, marketplaceContract } = useContext(Web3Context);
   const [collectionId, setCollectionId] = useState(0);
   const [tokenId, setTokenId] = useState(0);
 
@@ -36,7 +36,7 @@ const AddToCollection = () => {
   };
 
   // Hardcoded contract address
-  const hardcodedContractAddress = '0xd9fEc8238711935D6c8d79Bef2B9546ef23FC046';
+  const hardcodedContractAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
 
   const addToCollection = async () => {
     try {

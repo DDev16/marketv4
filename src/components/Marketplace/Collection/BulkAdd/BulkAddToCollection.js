@@ -58,7 +58,7 @@ const BulkAddToCollection = () => {
   const parseTokenData = () => {
     const tokens = tokenData.split('\n').map(token => {
       const tokenId = token.trim();
-      return { contractAddress: '0xd9fEc8238711935D6c8d79Bef2B9546ef23FC046', tokenId };
+      return { contractAddress: '0x5FbDB2315678afecb367f032d93F642f64180aa3', tokenId };
     });
 
     return tokens.filter(token => token.tokenId !== '');

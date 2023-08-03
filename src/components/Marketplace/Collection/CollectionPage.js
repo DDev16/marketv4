@@ -60,6 +60,51 @@ const CollectionPage = () => {
 
  // Add a state for sorting by listed status
  const [sortByListed, setSortByListed] = useState('all'); // 'all' for both listed and unlisted, 'listed' for listed only, 'unlisted' for unlisted only
+ const [networkId, setNetworkId] = useState(null);
+
+ useEffect(() => {
+  // Function to fetch the network ID
+  const fetchNetworkId = async () => {
+    try {
+      const networkId = await web3.eth.net.getId();
+      console.log('Network ID:', networkId); // Log the networkId to see its value
+      setNetworkId(networkId);
+    } catch (error) {
+      console.error('Error fetching network ID:', error);
+    }
+  };
+
+  if (web3) {
+    fetchNetworkId();
+  }
+}, [web3]);
+
+// Function to get the appropriate currency symbol based on network ID
+const getCurrencySymbol = () => {
+  switch (networkId) {
+    case 1: // Mainnet
+      return 'ETH';
+    case 19: // songbird
+      return 'SGB';
+    case 14: // Flare
+      return 'FLR';
+    case 4: // Rinkeby
+      return 'FLR';
+    case 42: // Kovan
+      return 'FLR';
+    case 56: // Binance Smart Chain Mainnet
+      return 'BNB';
+    case 97: // Binance Smart Chain Testnet
+      return 'BNB';
+    case 100: // xDAI
+      return 'DAI';
+    case 31337: // Hardhat Network
+      return 'HH';
+    // Add more cases for other networks if needed
+    default:
+      return 'SGB'; // Default to Songbird (SGB) network
+  }
+};
 
   const downloadQRCode = () => {
     const canvas = qrRef.current.querySelector('canvas');
@@ -401,22 +446,15 @@ const CollectionPage = () => {
       <div className="banner">
         <img src={`https://ipfs.io/ipfs/${collection.bannerIPFS}`} alt="Banner" />
       </div>
-      <p className="description">{collection.description}</p>
-  
-      <div className="qrCode" ref={qrRef}>
-        {qrCodeUrl && <QRCode value={qrCodeUrl} />}
-        <button onClick={downloadQRCode}>Download QR Code</button>
-      </div>
-      <p className="owner">Collection owned by: {collection.owner}</p>
       <section className="collectionStatistics">
   <article>
-    <h3>Highest Sale Price: <span>{web3.utils.fromWei(collection.highestSalePrice.toString(), 'ether')} Native Token</span></h3>
+    <h3>Highest Sale Price: <span>{web3.utils.fromWei(collection.highestSalePrice.toString(), 'ether')} {getCurrencySymbol()}</span></h3>
   </article>
   <article>
-    <h3>Floor Price: <span>{web3.utils.fromWei(collection.floorPrice.toString(), 'ether')} Native Token</span></h3>
+    <h3>Floor Price: <span>{web3.utils.fromWei(collection.floorPrice.toString(), 'ether')} {getCurrencySymbol()}</span></h3>
   </article>
   <article>
-    <h3>Market Cap: <span>{web3.utils.fromWei(collection.marketCap.toString(), 'ether')} Native Token</span></h3>
+    <h3>Market Cap: <span>{web3.utils.fromWei(collection.marketCap.toString(), 'ether')} {getCurrencySymbol()}</span></h3>
   </article>
   <article>
     <h3>Items Count: {collection.itemsCount}</h3>
@@ -425,9 +463,17 @@ const CollectionPage = () => {
     <h3>Owners Count: {collection.ownersCount}</h3>
   </article>
   <article>
-    <h3>Total Volume: <span>{web3.utils.fromWei(collection.totalVolume.toString(), 'ether')} Native Token</span></h3>
+    <h3>Total Volume: <span>{web3.utils.fromWei(collection.totalVolume.toString(), 'ether')} {getCurrencySymbol()}</span></h3>
   </article>
 </section>
+      <p className="description">{collection.description}</p>
+  
+      <div className="qrCode" ref={qrRef}>
+        {qrCodeUrl && <QRCode value={qrCodeUrl} />}
+        <button onClick={downloadQRCode}>Download QR Code</button>
+      </div>
+      <p className="owner">Collection owned by: {collection.owner}</p>
+  
 <div>
       <button onClick={() => setSortOrder('asc')}>Sort A-Z</button>
       <button onClick={() => setSortOrder('desc')}>Sort Z-A</button>
@@ -455,12 +501,16 @@ const CollectionPage = () => {
     <p><span className="token-label">Contract Address:</span> {token.contractAddress}</p>
     <p><span className="token-label">Token Owner:</span> {token.tokenOwner}</p>
     <p className={token.tokenPrice !== null ? "for-sale" : "not-for-sale"}>
-    Token Price: {token.tokenPrice ? web3.utils.fromWei(token.tokenPrice.toString(), 'ether') : 'Not for sale'}
-</p>
+                Token Price: {token.tokenPrice ? `${web3.utils.fromWei(token.tokenPrice.toString(), 'ether')} ${getCurrencySymbol()}` : 'Not for sale'}
+              </p>
 
-<p> <span className="token-label">Royalty:</span>  {token.royaltyAmount ? web3.utils.fromWei(token.royaltyAmount.toString(), 'ether') : '0'} In Native Token</p>
-<p> <span className="token-label">Royalty Receiver:</span>  {token.royaltyReceiver}</p>
-</div>
+              <p>
+                <span className="token-label">Royalty:</span>  {token.royaltyAmount ? `${web3.utils.fromWei(token.royaltyAmount.toString(), 'ether')} ${getCurrencySymbol()}` : '0'}
+              </p>
+              <p>
+                <span className="token-label">Royalty Receiver:</span>  {token.royaltyReceiver}
+              </p>
+            </div>
 
 
             {token.isForSale && (
