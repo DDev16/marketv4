@@ -1,4 +1,3 @@
-/* PunkWorld.css */
 
 
 .punk-world-container {
@@ -8,7 +7,7 @@
     padding: 30px;
     font-family: 'Arial', sans-serif;
     background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    background-image: url('../../assets/background.jpg'); /* Add your background image path here */
+    background-image: url('../../assets/background.jpg'); 
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -19,35 +18,31 @@
   }
   
   
-//* Styling for the header container */
 .punk-world-container {
-  position: relative; /* Set position to contain pseudo-element */
+  position: relative; 
 }
 
-/* Styling for the header */
 .punk-world-container h1 {
   font-size: 76px;
   font-weight: bold;
-  color: #9b59b6; /* Purple color */
+  color: #9b59b6;
   margin-bottom: 20px;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-  background: linear-gradient(45deg, #9b59b6, #3498db); /* Gradient background */
-  background-clip: text; /* Apply the gradient to the text */
-  -webkit-background-clip: text; /* For Safari */
-  color: transparent; /* Make the text transparent to show the gradient */
-  position: relative; /* Add position for pseudo-elements */
+  background: linear-gradient(45deg, #9b59b6, #3498db); 
+  background-clip: text; 
+  -webkit-background-clip: text; 
+  color: transparent; 
+  position: relative; 
  
 }
 
 
   
-  /* Styling for the error message */
   .punk-world-container .error-message {
     color: #ff3d3d;
     margin-bottom: 10px;
   }
   
-  /* Styling for loading message */
   .punk-world-container .loading-message {
     color: #5f27cd;
     margin-bottom: 10px;
@@ -68,13 +63,11 @@
     transition: background-color 0.2s ease;
   }
   
-  /* Hover effect for the connected account section */
   .punk-world-container p:hover {
     background-color: #5f27cd;
     color: #fff;
   }
   
-  /* Styling for the progress bar container */
   .punk-world-container .progress-bar-container {
     width: 100%;
     height: 30px;
@@ -84,35 +77,30 @@
     margin-bottom: 20px;
   }
   
-  /* Styling for the progress bar fill */
   .punk-world-container .progress-bar-fill {
     height: 100%;
     background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
   }
   
-  /* Styling for the number of minted NFTs section */
   .punk-world-container .num-minted {
     font-size: 18px;
     margin-bottom: 5px;
   }
   
-  /* Styling for the remaining supply section */
   .punk-world-container .remaining-supply {
     font-size: 18px;
     margin-bottom: 20px;
   }
   
-  /* Styling for the minting fees section */
   .punk-world-container .minting-fees {
     font-size: 18px;
     margin-bottom: 20px;
   }
   
-  /* Styling for the mint form container */
   .punk-world-container .mint-form {
     display: flex;
     align-items: center;
-    justify-content: center; /* Center the form content */
+    justify-content: center; 
     margin-bottom: 20px;
     font-size: 18px;
     margin-bottom: 10px;
@@ -129,25 +117,24 @@
   }
   
 
-/* PunkWorld.css */
+
 .punk-gif {
-    max-width: 100%; /* Adjust the maximum width to fit the container */
-    height: auto; /* Maintain the aspect ratio */
+    max-width: 100%;
+    height: auto; 
     margin-top: 30px;
     margin-bottom: 30px;
-    border-radius: 50%; /* Apply a circular shape */
-    background-image: linear-gradient(135deg, #ff00cc, #3333ff, #00ccff); /* Gradient border */
+    border-radius: 50%;
+    background-image: linear-gradient(135deg, #ff00cc, #3333ff, #00ccff);
     background-origin: border-box;
     background-clip: padding-box, border-box;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add a subtle shadow */
-    animation: spinAndNeonGlow 5s linear infinite; /* Add spinning and neon glow animation */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    animation: spinAndNeonGlow 5s linear infinite; 
   }
   
-  /* Add media query for smaller screens */
   @media (max-width: 768px) {
     .punk-gif {
-      width: 100%; /* Set the width to 100% on smaller screens */
-      max-width: 500px; /* Optional: Set a maximum width to prevent it from getting too large */
+      width: 100%; 
+      max-width: 500px; 
     }
   }
   
@@ -166,7 +153,6 @@
   }
   
   
-  /* Styling for the mint input field */
   .punk-world-container input[type="number"] {
     padding: 10px;
     font-size: 16px;
@@ -176,7 +162,6 @@
     width: 70px;
   }
   
- /* Styling for the mint button */
 .punk-world-container button {
     padding: 10px 20px;
     font-size: 16px;
@@ -186,23 +171,19 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.2s ease;
-    /* New: Add a slight shadow on hover for a lift effect */
     &:hover {
       box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     }
-    /* New: Add white reflection on the rounded corners */
     box-shadow:
       2px 2px 2px 0px rgba(255, 255, 255, 0.7) inset,
       -2px -2px 2px 0px rgba(255, 255, 255, 0.7) inset;
   }
   
-  /* Styling for the mint button when disabled */
   .punk-world-container button:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
   }
   
-  /* Styling for the success message */
   .punk-world-container .success-message {
     color: #00b894;
     margin-top: 10px;
@@ -211,7 +192,6 @@
 
   }
   
-  /* Keyframes for the fadeIn animation */
   @keyframes fadeIn {
     from {
       opacity: 0;
@@ -221,9 +201,7 @@
     }
   }
   
-  /* Responsive layout for mobile devices */
   @media (max-width: 480px) {
-    /* Update font sizes and padding for better mobile view */
     .punk-world-container h1 {
       font-size: 24px;
 
@@ -233,12 +211,10 @@
       font-size: 14px;
     }
   
-    /* ... (other responsive adjustments) */
   }
   
 
   @media (max-width: 768px) {
-    /* Update font sizes and padding for better mobile view */
     .punk-world-container h1 {
       font-size: 24px;
     }
@@ -252,5 +228,4 @@
       font-size: 14px;
     }
   
-    /* ... (other responsive adjustments) */
   }

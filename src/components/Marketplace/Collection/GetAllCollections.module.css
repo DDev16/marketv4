@@ -1,12 +1,12 @@
 
 
-/* Accordion */
+
 .myAccordion {
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.15);
   margin-bottom: 20px;
-  overflow: hidden; /* For ripple effect */
+  overflow: hidden; 
   borderRadius:'5px',
 
  
@@ -20,17 +20,17 @@
 .myAccordionDetails {
   display: flex;
   flex-direction: column;
-  transition: all 0.3s ease-in-out; /* Transition */
+  transition: all 0.3s ease-in-out; 
   
 }
 
-/* Grid for Collections */
+
 .myCollectionsList {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); /* account for increased width of cards and gaps between them */
-  grid-gap: 30px; /* Increased to match the card's margin */
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); 
+  grid-gap: 30px; 
   justify-items: center;
-  align-items: start; /* added to line up items to the start */
+  align-items: start; 
   padding: 40px;
   
   width: 100%;
@@ -43,13 +43,13 @@
   align-items: center;
   background-color: rgba(255, 255, 255, 0.9);
   border-radius: 15px;
-  padding: 45px; /* Increased padding to make the card larger */
-  margin: 15px; /* Increased margin to ensure cards have ample space between them */
+  padding: 45px; 
+  margin: 15px;
   transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
   overflow: hidden;
   position: relative;
   z-index: 10;
-  width: 350px; /* This will control the max width of the card */
+  width: 350px; 
 }
 
 .collectionCard:before {
@@ -77,7 +77,7 @@
 }
 
 .collectionCard:hover {
-  transform: scale(1.03) translateY(-5px); /* Slightly increased scale effect */
+  transform: scale(1.03) translateY(-5px); 
 }
 
 .collectionCard img {
@@ -90,7 +90,7 @@
 }
 
 .collectionCard img:hover {
-  transform: scale(1.08); /* Increased scale effect */
+  transform: scale(1.08); 
   box-shadow: 0 10px 20px rgba(0,0,0,0.15);
   
 }
@@ -123,9 +123,6 @@
 
 
 
-/* Pagination and Search */
-
-/* Pagination and Search */
 .paginationContainer {
   display: flex;
   justify-content: center;
@@ -201,7 +198,7 @@
   box-shadow: 0 0 10px rgba(90, 160, 150, .6);
 }
 
-/* Custom dropdown arrow */
+
 .searchInput::-ms-expand {
   display: none;
 }
@@ -220,7 +217,7 @@
   transition: .25s all ease;
 }
 
-/* Custom scrollbar for dropdown options */
+
 .searchInput option {
   background: #f6f6f6;
 }
@@ -229,13 +226,12 @@
   background: #b3d4fc;
 }
 
-/* When select is focused */
+
 .searchInput:focus::after {
   transform: rotate(180deg);
   background: #5a9;
 }
 
-/* Responsive styles for smaller screens */
 
 @media screen and (max-width: 600px) {
   .pageButton, .firstPageButton, .lastPageButton, .nextPageButton, .previousPageButton {
@@ -244,15 +240,14 @@
   }
 
   .searchInput {
-    width: 100%; /* Take the full width of the container on smaller screens */
-    margin: 0; /* Remove margin to avoid overflow */
-    padding: 15px 16px; /* Reduced padding for smaller screens */
-  }
+    width: 100%;
+    margin: 0; 
+    padding: 15px 16px; 
+}
+
 }
 
 
-
-/* Responsive */
 @media screen and (max-width: 768px) {
   .myCollectionsContainer {
     flex-direction: column;
@@ -272,21 +267,21 @@
   }
 
 .searchInput {
-    width: 80%; /* Take the full width of the container on smaller screens */
-    margin: 0; /* Remove margin to avoid overflow */
+    width: 80%;
+    margin: 0; 
     padding: 25px 16px;
-    margin-left:10px; /* Reduced padding for smaller screens */
+    margin-left:10px; 
   }
 
 
   .collectionCard {
     width: 350px;
-    padding: 20px; /* Reduced padding for small screens */
+    padding: 20px; 
 
   }
 
   .searchInput {
-    width: 100%; /* Full width on small screens */
+    width: 100%; 
   }
 }
 .collectionCategory {
@@ -311,7 +306,7 @@
 
 
 .myCollectionsTitle {
-  font-size: 7.5vw; /* adjust as needed */
+  font-size: 7.5vw; 
   font-weight: bold;
   color: #333;
   margin-bottom: 0.5em;
@@ -319,8 +314,7 @@
   letter-spacing: 2px;
   text-shadow: 3px 3px 0 rgba(0,0,0,0.2); 
   margin-left:40px;
-  text-align: center; /* Corrected 'textAlign' to 'text-align'*/
-
+  text-align: center; 
   background: linear-gradient(to right, #2b5876, #4e4376, #ef5350, #202020); 
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent; 
@@ -357,7 +351,6 @@
 }
 
 
-/* Collection ID */
 .collectionID {
   font-size: 0.9em;
   color: #666;
@@ -370,7 +363,7 @@
 
 }
 
-/* Collection Name */
+
 .collectionName {
   font-size: 1.5em;
   color: #333;
@@ -382,7 +375,7 @@
 
 }
 
-/* Collection Logo */
+
 .collectionLogo {
   width: 300px;
   height: 80px;
@@ -396,7 +389,7 @@
   transform: scale(1.1);
 }
 
-/* Collection Banner */
+
 .collectionBanner {
   width: 100%;
   height: 400px;
@@ -413,17 +406,17 @@
   line-height: 1.5;
   font-style: italic;
   z-index: 10;
-  height: 200px; /* Or the height you prefer */
+  height: 200px;
   overflow: auto;
-  padding-right: 5px; /* Adds some space for the scrollbar */
-  overflow: break-word; /* Breaks long words onto the next line */
+  padding-right: 5px; 
+  overflow: break-word; 
 }
 
-/* Responsive styles */
+
 @media screen and (max-width: 480px) {
   .collectionDescription {
-    font-size: 0.85em; /* Adjust font-size for mobile */
-    padding: 10px; /* Adjust padding for mobile */
+    font-size: 0.85em; 
+    padding: 10px; 
   }
 }
 
@@ -464,10 +457,10 @@
 
 .getall {
   width:100%;
-  background-image: url("https://img.freepik.com/free-vector/realistic-white-golden-geometric-background_79603-2032.jpg?size=626&ext=jpg&ga=GA1.2.1715257389.1688125620&semt=ais"); /* replace 'your_image_url.jpg' with the actual URL of the image */
-  background-size: contain; /* this will make the image cover the whole area of the element */
-  background-position: center; /* this will center the image */
-  background-repeat: repeat; /* this will prevent the image from repeating */
+  background-image: url("https://img.freepik.com/free-vector/realistic-white-golden-geometric-background_79603-2032.jpg?size=626&ext=jpg&ga=GA1.2.1715257389.1688125620&semt=ais");
+  background-size: contain; 
+  background-position: center; 
+  background-repeat: repeat; 
   box-shadow: 0px 10px 15px 3px rgba(0, 0, 0, 0.4), 0px 4px 6px -2px rgba(0, 0, 0, 0.05);
   margin-top:30px;
 

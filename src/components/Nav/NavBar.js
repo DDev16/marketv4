@@ -9,15 +9,17 @@ import '../../components/Nav/nav.css';
 import Music from '../../components/Music/MusicPlayer.js'
 import Select from 'react-select';
 
-const options = [
+const options= [
   { value: '14', label: 'Flare' },
   { value: '19', label: 'Songbird' },
   { value: '5', label: 'Goerli' },
-  { value: '1', label: 'Ethereum' },
-  { value: '13', label: 'Binance' },
-  { value: '5', label: 'Polygon' },
+  { value: '1', label: 'Ethereum (Coming Soon)', disabled: true },
+  { value: '13', label: 'Binance (Coming Soon)', disabled: true },
+  { value: '5', label: 'Polygon (Coming Soon)', disabled: true },
   { value: '31337', label: 'Localhost' },
 ];
+
+
 
 const customStyles = {
   control: (provided) => ({
@@ -68,6 +70,12 @@ const NavBar = () => {
     setCurrentNetworkId(networkId.toString());
     if (web3) { // Changed from web3.currentProvider.isMetaMask
       try {
+        // Prevent the user from switching to disabled networks
+        if (selectedOption.disabled) {
+          console.log('This network is coming soon. Stay tuned!');
+          return;
+        }
+
         await window.ethereum.request({
           method: 'wallet_switchEthereumChain',
           params: [{ chainId: `0x${networkId.toString(16)}` }],

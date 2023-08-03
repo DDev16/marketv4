@@ -82,25 +82,21 @@
 
 
 
-/* Mint.css */
 
-/* Optional: Style for the preview containers */
 .image-preview-container,
 .video-preview-container {
   max-width: 100%;
-  margin: 0 auto; /* Center the container */
+  margin: 0 auto; 
 }
 
-/* Optional: Style for the image preview */
 .image-preview {
   max-width: 100%;
-  height: auto; /* Maintain aspect ratio */
+  height: auto; 
 }
 
-/* Optional: Style for the video preview */
 .video-preview {
   max-width: 100%;
-  height: auto; /* Maintain aspect ratio */
+  height: auto; 
 }
 
 

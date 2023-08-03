@@ -17,9 +17,9 @@
   max-width: 600px;
   margin: 0 auto;
   padding: 20px;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1); /* Slightly raise the container */
-  background-color: #f9f9f9; /* Change the background color */
-  border-radius: 10px; /* Add border radius */
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1); 
+  background-color: #f9f9f9; 
+  border-radius: 10px;
   transition: box-shadow 0.3s ease-in-out;
   animation: fadeIn 1s ease-in-out;
   margin-top: 105px;
@@ -50,56 +50,53 @@
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow to the image */
 }
 
-/* Styles for form group elements */
+
 .form-group {
-  margin-bottom: 20px; /* Increase the margin for better spacing */
+  margin-bottom: 20px; 
 }
 
-/* Styles for form group labels */
 .form-group label {
   display: block;
-  color: #777; /* Slightly lighten the label color */
-  margin-bottom: 10px; /* Increase the margin for better spacing */
+  color: #777; 
+  margin-bottom: 10px; 
 }
 
-/* Styles for form inputs and textarea */
 .form-group input[type="text"],
 .form-group input[type="email"],
 .form-group textarea {
   width: 100%;
-  padding: 12px; /* Increase the padding for better input field appearance */
+  padding: 12px; 
   border: 1px solid #ddd;
-  border-radius: 6px; /* Add a bit more border radius */
+  border-radius: 6px; 
   color: #333;
   transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
-/* Styles when form inputs and textarea are focused */
 .form-group input[type="text"]:focus,
 .form-group input[type="email"]:focus,
 .form-group textarea:focus {
   border-color: #007BFF;
   outline: none;
-  box-shadow: 0px 0px 12px rgba(0, 119, 255, 0.3); /* Adjust the focus shadow */
+  box-shadow: 0px 0px 12px rgba(0, 119, 255, 0.3);
 }
 
-/* Styles for textarea */
+
 .form-group textarea {
   resize: vertical;
-  min-height: 120px; /* Increase the minimum height for better user experience */
+  min-height: 120px; 
 }
 
-/* Styles for the update button */
+
 .update-btn {
   display: block;
   width: 100%;
-  padding: 12px; /* Increase the padding for better button appearance */
+  padding: 12px;
   border: none;
-  border-radius: 6px; /* Add a bit more border radius */
+  border-radius: 6px; 
   background-color: #007BFF;
   color: #fff;
   cursor: pointer;
-  margin-top: 30px; /* Increase the margin for better spacing */
+  margin-top: 30px; 
   font-size: 18px;
   transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
 }

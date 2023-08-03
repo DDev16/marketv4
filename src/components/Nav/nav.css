@@ -1,4 +1,3 @@
-/* nav.css */
 
 .navbar {
   display: flex;
@@ -70,7 +69,6 @@
   
   margin: 20px auto;
 }
-/* Styling for the network select container */
 .network-select-container {
   display: flex;
   align-items: center;
@@ -83,7 +81,6 @@
   margin: 20px auto;
 }
 
-/* Styling for the select dropdown */
 .network-select {
   font-family: Arial, sans-serif;
   font-size: 16px;
@@ -92,18 +89,17 @@
   outline: none;
   cursor: pointer;
   flex: 1;
-  padding: 20px; /* Increase the padding for better visual appearance */
-  background-color: #ffffff; /* Set a white background to make it more readable */
+  padding: 20px; 
+  background-color: #ffffff; 
   border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle box-shadow for depth */
-  transition: background-color 0.2s ease-in-out; /* Add a smooth transition effect */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s ease-in-out; 
 }
 
 .network-select:hover {
-  background-color: #f1f1f1; /* Change background color on hover for better interactivity */
+  background-color: #f1f1f1; 
 }
 
-/* Styling for the selected image */
 .logo-image {
   display: block;
   max-width: 50px;

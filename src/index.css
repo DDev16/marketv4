@@ -16,7 +16,7 @@ code {
   position: relative;
   height: 100vh;
   overflow: hidden;
-  background-color: #008080; /* Taskbar color */
+  background-color: #008080; 
 }
 
 
@@ -125,10 +125,9 @@ code {
 }
 
 
-/* styles.css */
 @media (max-width: 668px) {
   .logo {
-    marginTop: 0; /* Adjust margin for mobile */
+    marginTop: 0; 
   }
 }
 

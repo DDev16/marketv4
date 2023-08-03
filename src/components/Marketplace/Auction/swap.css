@@ -3,7 +3,7 @@
     padding: 20px;
     background-color: #f8f9fa;
     background-image: url("https://img.freepik.com/free-vector/abstract-low-poly-design-with-connecting-lines-dots_1048-9060.jpg?size=626&ext=jpg&ga=GA1.1.1715257389.1688125620&semt=ais");
-    background-size: cover; /* adjust the value to 'contain' */
+    background-size: cover; 
     background-position: center;
     background-repeat: no-repeat;
     box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -2px rgba(0, 0, 0, 0.05);

@@ -1,10 +1,9 @@
-/* ProgressBar.css */
 .progress-bar-container {
     background-color: #f0f0f0;
     border-radius: 4px;
-    height: 30px; /* Increased height for additional info */
+    height: 30px; 
     overflow: hidden;
-    border: 2px solid #5f27cd; /* Add a purple border to the progress bar container */
+    border: 2px solid #5f27cd; 
   }
   
   .progress-bar {
@@ -51,7 +50,6 @@
     font-size: 12px;
   }
   
-  /* Hover effect for the progress info section */
   .progress-info:hover {
     background-color: #4527a0;
   }
