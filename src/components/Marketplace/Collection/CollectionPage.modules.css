@@ -379,36 +379,7 @@ width:700px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3), 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 
-.buy-button:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 4px 8px rgba(0, 0, 0, 0.2);
-}
 
-.buy-button:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(68, 172, 73, 0.4);
-}
-
-.buy-button:before {
-  content: "";
-  position: absolute;
-  top: -4px;
-  right: -4px;
-  bottom: -4px;
-  left: -4px;
-  border-radius: 8px;
-  border: 2px solid #4caf50;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.buy-button:hover:before {
-  opacity: 1;
-}
-
-.buy-button:active:before {
-  opacity: 0;
-}
 
 
 /* Add some overall styling to the section */

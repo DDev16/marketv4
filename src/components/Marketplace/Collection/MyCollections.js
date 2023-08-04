@@ -127,6 +127,12 @@ const MyCollections = () => {
             <StyledImage src="https://cdn-icons-png.flaticon.com/128/1416/1416681.png" alt="A psychedelic image" />
 
             </div>
+            <div className={styles.collectionsContainer}>
+        <h1 className={styles.title}>My Collections</h1>
+        <div className={styles.cardsContainer}>
+          {renderCollections}
+        </div>
+      </div>
       <AddToCollection />
       <BulkAddToCollection />
       <ListAllTokens />
@@ -135,12 +141,7 @@ const MyCollections = () => {
       <MyTokens />
 
 
-      <div className={styles.collectionsContainer}>
-        <h1 className={styles.title}>My Collections</h1>
-        <div className={styles.cardsContainer}>
-          {renderCollections}
-        </div>
-      </div>
+      
     </div>
     
   );

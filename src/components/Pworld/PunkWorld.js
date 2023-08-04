@@ -4,8 +4,9 @@ import contractABI from '../../abi/Pworld.js';
 import ProgressBar from './ProgressBar';
 import './PunkWorld.css'; // Import your custom CSS for styling
 import punk2Gif from '../../assets/punk2.gif'; // Update the file path accordingly
+import Swal from 'sweetalert2';
 
-const contractAddress = '0x193521C8934bCF3473453AF4321911E7A89E0E12';
+const contractAddress = '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9';
 const maxSupply = 486;
 
 function PunkWorld() {
@@ -21,6 +22,8 @@ function PunkWorld() {
   const [successMessage, setSuccessMessage] = useState('');
   const [extraNFTsRemaining, setExtraNFTsRemaining] = useState(0);
   const [extraNFTRewards, setExtraNFTRewards] = useState([]);
+const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+const [showExtraNFTAlert, setShowExtraNFTAlert] = useState(false);
 
   useEffect(() => {
     async function fetchExtraNFTsRemaining() {
@@ -105,35 +108,45 @@ function PunkWorld() {
         value: web3.utils.toWei((fees * mintAmount).toString(), 'ether'), // Pay the minting fees in Ether
       });
   
-      // Handle the success of the transaction
       if (tx.status) {
-        setSuccessMessage(`Successfully minted ${mintAmount} NFT(s)`);
+        setSuccessMessage(`Successfully minted ${mintAmount} Voxel Vandal NFT(s)`);
   
         if (tx.events && tx.events.ExtraNFTReceived) {
           // Reset the extraNFTsRewards to an empty array before adding new rewards
           setExtraNFTRewards([]);
   
-          const newExtraNFTRewards = tx.events.ExtraNFTReceived;
-          if (Array.isArray(newExtraNFTRewards)) {
-            // Multiple extra NFTs received
-            setExtraNFTRewards((prevRewards) => [...prevRewards, ...newExtraNFTRewards.map((event) => event.returnValues.tokenId)]);
-          } else {
-            // Only 1 extra NFT received
-            setExtraNFTRewards((prevRewards) => [...prevRewards, newExtraNFTRewards.returnValues.tokenId]);
-          }
+          const newExtraNFTRewards = Array.isArray(tx.events.ExtraNFTReceived)
+            ? tx.events.ExtraNFTReceived
+            : [tx.events.ExtraNFTReceived];
+  
+          setExtraNFTRewards((prevRewards) => [
+            ...prevRewards,
+            ...newExtraNFTRewards.map((event) => event.returnValues.tokenId),
+          ]);
+  
+          setShowExtraNFTAlert(true);
         }
+  
+        setShowSuccessAlert(true);
   
         // Update total supply and remaining supply
         await Promise.all([getTotalSupply(), fetchExtraNFTsRemaining()]);
       } else {
-        setError('Transaction failed. Please try again.');
+        throw new Error('Transaction failed.');
       }
     } catch (error) {
       setError(getMintErrorMessage(error.message));
+    } finally {
+      setIsMinting(false);
     }
-  
-    setIsMinting(false);
   }
+  
+  
+  
+  
+  
+  
+  
   
   
   
@@ -156,6 +169,7 @@ function PunkWorld() {
     initWeb3();
   }, []);
 
+  
   useEffect(() => {
     if (web3) {
       setContractInstance(new web3.eth.Contract(contractABI, contractAddress));
@@ -213,10 +227,33 @@ function PunkWorld() {
   }, [contractInstance, account]);
   
 
+  useEffect(() => {
+    // Show the success message in a Swal alert
+    if (showSuccessAlert) {
+      Swal.fire({
+        icon: 'success',
+        title: successMessage,
+        showConfirmButton: false,
+        timer: 2000,
+      }).then(() => setShowSuccessAlert(false));
+    }
+  
+    // Show the extra NFT rewards in a Swal alert
+    if (showExtraNFTAlert) {
+      Swal.fire({
+        title: 'Congratulations! You received the following extra NFTs:',
+        text: 'You received the following extra NFTs:',
+        html: extraNFTRewards.map((tokenId) => `<p>Token ID: ${tokenId}</p>`).join(''),
+        icon: 'success',
+      }).then(() => setShowExtraNFTAlert(false));
+    }
+  }, [showSuccessAlert, showExtraNFTAlert, successMessage, extraNFTRewards]);
+  
+
   return (
     <div className="punk-world-container">
       <h1>Voxel Vandals of PunkWorld</h1>
-
+  
       {error && <p className="error-message">{error}</p>}
       {isLoading ? <p>Loading...</p> : (
         <>
@@ -224,17 +261,17 @@ function PunkWorld() {
           <p>Total Supply: {totalSupply}/{maxSupply} NFTs</p>
           <p>Remaining Supply: {getRemainingSupply()} NFTs</p>
           <p>Remaining Extra Rewards NFTs: {extraNFTsRemaining}</p>
-
+  
           <p>Minting fees: {fees} FLR</p>
           <p>
             Each Voxel Vandal NFT is a unique collectible that comes with exclusive features and benefits ie; Early Access to Punk world Metaverse, Airdrops, Staking and more. Mint your own
             Voxel Vandal NFT and join a community of passionate collectors!
           </p>
           <p>
-            Theres a Random Extra NFT rewards mechanism built in, there is a 75% chance you get rewarded an Extra NFT when minting!          </p>
-          {/* <p>
-            Voxel Vandal holders will recieve 5% of Marketplace fees for 6 months, paid on a monthly basis!
-          </p> */}
+            Theres a Random Extra NFT rewards mechanism built in, there is a 75% chance you get rewarded an Extra NFT when minting!
+          </p>
+          <p> Please make sure you are connected to Flare Networks before minting, Happy Minting! 🥳 </p>
+  
           <div className="mint-form">
             <input
               type="number"
@@ -244,32 +281,19 @@ function PunkWorld() {
               max={Math.min(getRemainingSupply(), 10)} // Limit the max mint to remaining supply or 10, whichever is lower
             />
             <button onClick={handleMint} disabled={!account || isMinting || getRemainingSupply() < mintAmount}>
-  {isMinting ? 'Minting...' : `Mint ${mintAmount} NFT(s)`}
-</button>
-
+              {isMinting ? 'Minting...' : `Mint ${mintAmount} NFT(s)`}
+            </button>
           </div>
-          {successMessage && <p className="success-message">{successMessage}</p>}
-
-          {extraNFTRewards.length > 0 &&  (
-   <div >
-    <p>Congratulations! You received the following extra NFTs:</p>
-    <ul className="mint-form">
-      {extraNFTRewards.map((tokenId) => (
-        <li  key={tokenId}>Token ID: {tokenId} </li>
-      ))}
-    </ul>
-  </div>
-)}
-
+          
           <div className="progress-bar-container">
             <ProgressBar value={totalSupply} max={maxSupply} />
           </div>
           <img src={punk2Gif} alt="Punk2 GIF" className="punk-gif" />
-
         </>
       )}
     </div>
   );
+  
 }
 
 export default PunkWorld;

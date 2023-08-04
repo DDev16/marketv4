@@ -469,9 +469,12 @@ const getCurrencySymbol = () => {
       <p className="description">{collection.description}</p>
   
       <div className="qrCode" ref={qrRef}>
-        {qrCodeUrl && <QRCode value={qrCodeUrl} />}
-        <button onClick={downloadQRCode}>Download QR Code</button>
-      </div>
+  {qrCodeUrl && <QRCode value={qrCodeUrl} />}
+  <button onClick={downloadQRCode}>
+    <span>🚀 Download Your QR Code 🚀</span>
+  </button>
+</div>
+
       <p className="owner">Collection owned by: {collection.owner}</p>
   
 <div>

@@ -100,7 +100,7 @@ const Mint = () => {
       // Add the sweet alert here
       Swal.fire(
         'Success!',
-        'Your token was minted successfully.',
+        'Your token was minted successfully, Sign-In to View Minted NFTs.',
         'success'
       );
     } catch (error) {

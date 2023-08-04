@@ -1,0 +1,53 @@
+/* Blockchains.css */
+.blockchain-banner {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding: 20px;
+}
+
+/* Blockchains.css */
+.blockchain-banner h2 {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+}
+
+.blockchain-slide {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 10px;
+    min-width: 120px; /* Set the minimum width of each slide */
+}
+
+.blockchain-slide img {
+    width: 100px; /* Set the size of the logo image */
+}
+
+/* Apply the animation to the Slider */
+.slick-list {
+    animation: slideAnimation 20s linear infinite; /* Adjust the animation duration as needed */
+}
+
+/* Hide the arrows for the custom slider */
+.custom-slider .slick-prev,
+.custom-slider .slick-next {
+    display: none !important;
+}
+
+/* Media Queries for Mobile Responsiveness */
+@media (max-width: 767px) {
+    .blockchain-slide {
+        min-width: auto; /* Remove the minimum width for mobile devices */
+    }
+
+    .blockchain-slide img {
+        width: 80px; /* Reduce the size of the logo image for smaller screens */
+    }
+}
+
+/* Add more media queries as needed for other screen sizes */

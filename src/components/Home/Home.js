@@ -7,7 +7,7 @@ import HottestCollections from '../Marketplace/Collection/Hot/HottestCollections
 import AllCollections from '../../components/Marketplace/Collection/GetAllCollections.js'
 import PunkWorld from '../Pworld/PunkWorld';
 import GetAllAuctions from '../../components/Marketplace/Auction/GetAllAuctions.js';
-
+import BlockchainBanner from '../Networks/BlockchainBanner';
 const Home = () => {
 
  
@@ -15,6 +15,8 @@ const Home = () => {
     
     <div style={styles.container}>
             <Hero />
+            <BlockchainBanner />
+
 
       
       <img src={brand} alt="Logo" style={{ ...styles.logo, ...styles.spinAnimation }} />
