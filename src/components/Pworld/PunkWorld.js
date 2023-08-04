@@ -248,7 +248,12 @@ const [showExtraNFTAlert, setShowExtraNFTAlert] = useState(false);
       }).then(() => setShowExtraNFTAlert(false));
     }
   }, [showSuccessAlert, showExtraNFTAlert, successMessage, extraNFTRewards]);
-  
+
+  function formatAddress(address) {
+    const start = address.slice(0, 6);
+    const end = address.slice(-4);
+    return `${start}...${end}`;
+  }
 
   return (
     <div className="punk-world-container">
@@ -257,7 +262,7 @@ const [showExtraNFTAlert, setShowExtraNFTAlert] = useState(false);
       {error && <p className="error-message">{error}</p>}
       {isLoading ? <p>Loading...</p> : (
         <>
-          <p>Connected account: {account}</p>
+          <p class="connected-account">Connected account: {formatAddress(account)}</p>
           <p>Total Supply: {totalSupply}/{maxSupply} NFTs</p>
           <p>Remaining Supply: {getRemainingSupply()} NFTs</p>
           <p>Remaining Extra Rewards NFTs: {extraNFTsRemaining}</p>

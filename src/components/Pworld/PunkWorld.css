@@ -62,6 +62,12 @@
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     transition: background-color 0.2s ease;
   }
+
+  
+  .connected-account {
+    word-break: break-all;
+  }
+  
   
   .punk-world-container p:hover {
     background-color: #5f27cd;
@@ -221,7 +227,7 @@
 
     .punk-world-container {
       font-size: 24px;
-      height:1300px;
+      height:1500px;
     }
   
     .punk-world-container p {
