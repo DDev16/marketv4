@@ -18,8 +18,6 @@ const BlockchainBanner = () => {
     variableWidth: true,
     swipeToSlide: true,
     focusOnSelect: true,
-    centerMode: true, // Enable center mode to display slides in the center
-    centerPadding: '0', // Set padding to 0 for the center slide
     responsive: [
       {
         breakpoint: 767, // Breakpoint for mobile devices
@@ -37,7 +35,7 @@ const BlockchainBanner = () => {
     <div className="blockchain-banner">
       <h2>Supported Blockchains</h2>
       {/* Add custom CSS class to the Slider component */}
-      <Slider className="custom-slider" {...settings} draggable={false} swipe={false}>
+      <Slider className="custom-slider" {...settings}>
         {duplicatedBlockchains.map((blockchain, index) => (
           <div key={index} className="blockchain-slide">
             <img src={blockchain.logo} alt={blockchain.name} />
