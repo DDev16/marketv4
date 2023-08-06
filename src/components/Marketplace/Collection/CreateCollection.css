@@ -16,7 +16,7 @@
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  margin-top:90px;
+  margin-top:0px;
   background-color: #f8f9fa;
   background-image: url("https://img.freepik.com/free-vector/geometric-background-with-polygonal-lines_1017-6448.jpg?size=626&ext=jpg&ga=GA1.2.1715257389.1688125620&semt=ais");
   background-size: contain; /* adjust the value to 'contain' */
@@ -29,7 +29,7 @@
 
 .create-collection-form h2 {
   font-size: 2.5em;
-  margin-bottom: 50px;
+  margin-top: 80px;
   color: #333;
   text-align: center;
   font-weight: 700;

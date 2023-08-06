@@ -154,7 +154,7 @@ const NavBar = () => {
 
       <Music />
       </div>
-      <div class="connected-account">
+      <div className="connected-account">
   Connected Account: <span>{shortenAddress(account)}</span>
 </div>
 <div className="network-select-container">

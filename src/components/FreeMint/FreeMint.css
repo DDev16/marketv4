@@ -1,0 +1,134 @@
+/* FreeMint.css */
+
+.Free-Mint {
+    width: 100%;
+    height: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-image: url("../../assets/monsters.png");
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .Free-Mint h1 {
+    font-size: 72px; /* Increase the font size for a bolder look */
+    margin-bottom: 20px;
+    color: #007bff;
+    font-family: "Arial Black", sans-serif; /* Use a bold font */
+    text-transform: uppercase; /* Convert the text to uppercase for added emphasis */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Add a subtle text shadow for depth */
+    position: relative; /* Enable positioning for the animation */
+    animation: animateHeading 1.5s ease-in-out infinite alternate; /* Add a bounce animation */
+    background: linear-gradient(45deg, #ffcc00, #00ffcc);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    transform: rotateY(5deg); /* Add a slight 3D rotation along the Y-axis */
+  }
+  
+  /* Keyframes for the heading animation */
+  @keyframes animateHeading {
+    from {
+      top: 0;
+    }
+    to {
+      top: -5px; /* Bounce the heading up by 5 pixels */
+    }
+  }
+  
+  .Free-Mint p {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .Free-Mint label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #555;
+  }
+  
+  .Free-Mint input[type="number"] {
+    width: 100%;
+    padding: 12px;
+    font-size: 18px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+  }
+  
+  .Free-Mint input[type="number"]:focus {
+    border-color: #007bff;
+  }
+  
+  .Free-Mint button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+    outline: none;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .Free-Mint button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .Free-Mint button:hover:not(:disabled) {
+    background-color: #0056b3;
+  }
+  
+  .Free-Mint div {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #007bff;
+  }
+  
+  .Free-Mint p:last-child,
+  .Free-Mint label:last-child {
+    margin-bottom: 0;
+  }
+  
+  /* Add media query for smaller screens */
+  @media screen and (max-width: 480px) {
+    .Free-Mint {
+      padding: 10px;
+    }
+    
+    .Free-Mint h1 {
+      font-size: 28px;
+    }
+    
+    .Free-Mint p {
+      font-size: 16px;
+    }
+    
+    .Free-Mint label {
+      font-size: 16px;
+    }
+    
+    .Free-Mint input[type="number"] {
+      font-size: 16px;
+    }
+    
+    .Free-Mint button {
+      font-size: 16px;
+    }
+  }
+  
+  /* Add any other media queries as needed for responsiveness and styling tweaks */
+  
