@@ -4,12 +4,12 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const webpack = require('webpack');
 
 module.exports = {
-  entry: './src/index.js', // Update the entry point with the correct path to your main JavaScript file
+  entry: './src/index.js',
   output: {
-    path: path.resolve(__dirname, 'dist'), // Update the output path as needed
-    filename: 'bundle.js', // Update the output filename as needed
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'bundle.js',
   },
-  mode: 'production', // Change to 'development' if you want a development build
+  mode: 'production',
   devtool: 'source-map',
   module: {
     rules: [
@@ -42,7 +42,6 @@ module.exports = {
       path: require.resolve('path-browserify'),
       os: require.resolve('os-browserify/browser'),
       crypto: require.resolve('crypto-browserify'),
-      // Add other fallbacks for missing modules here, if needed.
     },
   },
 };

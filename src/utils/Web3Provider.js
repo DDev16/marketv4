@@ -1,12 +1,32 @@
-
-
 import React, { useState, useEffect, createContext } from 'react';
 import Web3 from 'web3';
-import MyNFT from '../abi/MyNFT.js'; 
-import Marketplace from '../abi/Marketplace.js';
 import detectEthereumProvider from '@metamask/detect-provider';
 import Auction from '../abi/Auction.js'
+
+const myNFTAbi = JSON.parse(process.env.REACT_APP_MY_NFT_ABI);
+const MarketplaceAbi = JSON.parse(process.env.REACT_APP_MARKETPLACE_ABI);
+
 export const Web3Context = createContext();
+
+const contractAddresses = {
+  19: {
+    contract: process.env.REACT_APP_CONTRACT_ADDRESS_19,
+    marketplace: process.env.REACT_APP_MARKETPLACE_ADDRESS_19,
+  },
+  14: {
+    contract: process.env.REACT_APP_CONTRACT_ADDRESS_14,
+    marketplace: process.env.REACT_APP_MARKETPLACE_ADDRESS_14,
+  },
+  5: {
+    contract: process.env.REACT_APP_CONTRACT_ADDRESS_5,
+    marketplace: process.env.REACT_APP_MARKETPLACE_ADDRESS_5,
+  },
+  31337: {
+    contract: process.env.REACT_APP_CONTRACT_ADDRESS_31337,
+    marketplace: process.env.REACT_APP_MARKETPLACE_ADDRESS_31337,
+    auction: process.env.REACT_APP_AUCTION_ADDRESS_31337,
+  },
+};
 
 const Web3Provider = ({ children }) => {
   const [web3, setWeb3] = useState(null);
@@ -27,49 +47,39 @@ const Web3Provider = ({ children }) => {
 
           const web3Instance = new Web3(provider);
           setWeb3(web3Instance);
-          
+
           const networkId = await web3Instance.eth.net.getId();
-          let contractAddress = '';
-          let marketplaceAddress = '';
-          let auctionAddress = '';
 
-          if (networkId === 19) {
-            contractAddress = '0xa3e7F6e322281F945abE5cB82Fc2EbAd32756a87';
-            marketplaceAddress = '0x529e76715e99D02a34EDACD7E47415297012c00f';
-          } else if (networkId === 14) {
-            contractAddress = '0x8d1A663F84c5a7cf0c0458848089783d0a0A3b6A';
-            marketplaceAddress = '0x73710334E4E5CA4482F5526faBEa45bce503BD98';
-          } else if (networkId === 5) {
-            contractAddress = '0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0';
-            marketplaceAddress = '0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82';
-          } else if (networkId === 31337) {
-            contractAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
-             marketplaceAddress = '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512';
-             auctionAddress = '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0';
-          } 
+          if (networkId in contractAddresses) {
+            const { contract: contractAddress, marketplace: marketplaceAddress, auction: auctionAddress } = contractAddresses[networkId];
 
-          const contractInstance = new web3Instance.eth.Contract(
-            MyNFT.abi,
-            contractAddress
-          );
-          const marketplaceInstance = new web3Instance.eth.Contract(
-            Marketplace.abi,
-            marketplaceAddress
-          );
-          const auctionInstance = new web3Instance.eth.Contract(
-            Auction,
-            auctionAddress
-          );
-          setContract(contractInstance);
-          setMarketplaceContract(marketplaceInstance);
-          setAuctionContract(auctionInstance);
-          setInitialized(true);
+            const contractInstance = new web3Instance.eth.Contract(
+              myNFTAbi,
+              contractAddress
+            );
+
+            const marketplaceInstance = new web3Instance.eth.Contract(
+              MarketplaceAbi,
+              marketplaceAddress
+            );
+            const auctionInstance = new web3Instance.eth.Contract(
+              Auction,
+              auctionAddress
+            );
+            
+            setContract(contractInstance);
+            setMarketplaceContract(marketplaceInstance);
+            setAuctionContract(auctionInstance);
+            setInitialized(true);
+          } else {
+            window.alert('Unsupported network');
+          }
         } catch (error) {
           window.alert('Failed to connect to MetaMask');
         }
 
         const handleNetworkChange = () => {
-          setInitialized(false);  // Will cause the useEffect hook to re-run and re-initialize everything
+          setInitialized(false);
           initializeWeb3();
         };
 
@@ -89,7 +99,6 @@ const Web3Provider = ({ children }) => {
       if (connected) {
         provider.removeAllListeners('chainChanged');
         setContract(null);
-        
         setMarketplaceContract(null);
         setAuctionContract(null);
         setConnected(false);
@@ -108,8 +117,3 @@ const Web3Provider = ({ children }) => {
 };
 
 export default Web3Provider;
-
-
-
-
-

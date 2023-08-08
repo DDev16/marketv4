@@ -23,7 +23,7 @@ const StyledImage = styled('img')`
 `;
 
 const AddToCollection = () => {
-  const { web3, contract, marketplaceContract } = useContext(Web3Context);
+  const { web3, marketplaceContract, contract } = useContext(Web3Context);
   const [collectionId, setCollectionId] = useState(0);
   const [tokenId, setTokenId] = useState(0);
 
@@ -35,14 +35,12 @@ const AddToCollection = () => {
     setTokenId(event.target.value);
   };
 
-  // Hardcoded contract address
-  const hardcodedContractAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
+  
 
   const addToCollection = async () => {
     try {
       const accounts = await web3.eth.getAccounts();
-      await marketplaceContract.methods.addTokenToCollection(collectionId, hardcodedContractAddress, tokenId).send({ from: accounts[0] });
-
+      await marketplaceContract.methods.addTokenToCollection(collectionId, contract.options.address, tokenId).send({ from: accounts[0] });
       // Display success message with SweetAlert2
       Swal.fire({
         title: 'Success!',

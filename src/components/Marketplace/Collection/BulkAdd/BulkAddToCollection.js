@@ -50,7 +50,7 @@ const styles = (theme) => ({
 });
 
 const BulkAddToCollection = () => {
-  const { web3, marketplaceContract } = useContext(Web3Context);
+  const { web3, marketplaceContract, contract } = useContext(Web3Context);
   const [collectionId, setCollectionId] = useState('');
   const [tokenData, setTokenData] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -58,7 +58,7 @@ const BulkAddToCollection = () => {
   const parseTokenData = () => {
     const tokens = tokenData.split('\n').map(token => {
       const tokenId = token.trim();
-      return { contractAddress: '0x5FbDB2315678afecb367f032d93F642f64180aa3', tokenId };
+      return { contractAddress: contract.options.address, tokenId };
     });
 
     return tokens.filter(token => token.tokenId !== '');

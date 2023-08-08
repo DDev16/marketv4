@@ -280,7 +280,7 @@ async function placeBid(auctionIndex) {
             <button className="auctionbuy" onClick={() => buyNow(auction.auctionIndex, WeiToEther(auction.buyNowPrice))}>
               Buy Now
             </button>
-            <form onSubmit={e => { e.preventDefault(); placeBid(auction.auctionIndex); }} class="bid-form">
+            <form onSubmit={e => { e.preventDefault(); placeBid(auction.auctionIndex); }} className="bid-form">
               <input type="text" value={bidValue} onChange={e => setBidValue(e.target.value)} placeholder="Enter the amount to bid" />
               <input type="submit" value="Place Bid" />
             </form>

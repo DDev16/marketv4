@@ -33,9 +33,10 @@ const Home = () => {
       <button style={{ ...styles.button, ...styles.popButton }}>
         <a href="/mint" style={styles.buttonLink}>Click here to begin your creative expedition here</a>
       </button>
-   <FreeMint />
   
       <PunkWorld />
+      <FreeMint />
+
         <HottestCollections />
       <AllCollections />
   <MarketListings />

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Web3 from 'web3';
 import AuctionContractABI from '../../../../abi/Auction.js';
-import styles from '../../../../components/Marketplace/Auction/MyAuctions/MyAuctions.module.css';
+import styles from '../../../../components/Marketplace/Auction/MyAuctions/MyAuctions.css';
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import styled from 'styled-components';
@@ -9,144 +9,7 @@ import { keyframes } from 'styled-components';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import Swal from 'sweetalert2';
 
-const fadeIn = keyframes`
-  from { opacity: 0; }
-  to   { opacity: 1; }
-`;
 
-const StyledCarousel = styled(Carousel)`
-  font-family: 'Arial', sans-serif; /* Custom font */
-
-  .carousel {
-    animation: ${fadeIn} 1s ease; /* Fade-in animation */
-
-    .slide {
-      background: black;
-      
-    }
-
-    .carousel-slider {
-      .control-arrow:before {
-        border-top: 8px solid transparent;
-        border-bottom: 8px solid transparent;
-        transition: border-color 0.3s ease;  /* Transition effect */
-      }
-
-      .control-next.control-arrow:before {
-        border-left: 8px solid #2f3e9e;
-
-        &:hover {
-          border-left: 8px solid #4c5edf; /* Hover effect */
-        }
-      }
-
-      .control-prev.control-arrow:before {
-        border-right: 8px solid #2f3e9e;
-
-        &:hover {
-          border-right: 8px solid #4c5edf; /* Hover effect */
-        }
-      }
-    }
-
-    .thumbs-wrapper {
-      margin: 20px 0;
-      transition: margin 0.3s ease;  /* Transition effect */
-    }
-
-    .thumb {
-      border: none;
-      box-shadow: 0px 0px 10px rgba(0,0,0,0.15);  /* Box shadow for a better view */
-
-      &:hover {
-        box-shadow: 0px 0px 15px rgba(0,0,0,0.3); /* Hover effect */
-      }
-    }
-
-    .thumbs .selected {
-      border: none;
-      box-shadow: 0px 0px 15px rgba(47,62,158,0.5);  /* Box shadow for selected thumb */
-    }
-
-    .carousel-status {
-      color: #2f3e9e;
-      font-weight: bold;  /* Bold text for better visibility */
-    }
-  }
-`;
-
-
-const MyAuctionsContainer = styled.div`
-  padding: 20px;
-  background-color: #F6F6F6;
-  min-height: 100vh;
-  margin-top: 60px;
-
-  @media (max-width: 768px) {
-    /* Adjust padding and margin-top for smaller screens (e.g., mobile devices) */
-    padding: 10px;
-    margin-top: 0px;
-  }
-`;
-const Title = styled.h1`
-  color: #2F3E9E;
-  text-align: center;
-  font-size: 42px;
-  padding: 20px 0;
-`;
-
-
-
-const AuctionItemContainer = styled.div`
-  background-color: #fff;
-  border-radius: 10px;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-
-  /* Apply flexbox to have more control over the layout of the auction item */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const AuctionItemTitle = styled.h2`
-  color: #2F3E9E;
-  font-size: 24px;
-  margin-bottom: 20px;
-`;
-
-const AuctionItemDetail = styled.p`
-  font-size: 18px;
-  line-height: 1.5;
-  margin-bottom: 10px;
-  word-break: break-all; /* Add this line to break long text */
-
-`;
-
-// Update the ButtonContainer styles to align buttons to the center
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-`;
-
-const Button = styled.button`
-  background-color: #2F3E9E;
-  color: #FFFFFF;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 15px;
-  margin: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #4c5edf;
-  }
-`;
 const CONTRACT_ADDRESS = '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0';
 
 // ERC721 ABI
@@ -160,6 +23,158 @@ const ERC721_ABI = [
         type: 'function'
     }
 ];
+
+const MyAuctionsContainer = styled.div`
+    max-width: 1000px; /* Wider container for larger screens */
+    margin: 0 auto;
+    padding: 40px; /* More spacing for better readability */
+    background-color: #f9f9f9; /* Subtle background color */
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    border-radius: 10px; /* Rounded corners */
+`;
+const Title = styled.h1`
+    font-size: 40px; /* Further increased font size for a bold impact */
+    margin-bottom: 15px; /* Reduced margin for a tighter spacing */
+    color: #333; /* Opted for a slightly darker and warmer title color */
+    text-align: center; /* Center-align the title for a clean and balanced presentation */
+    text-transform: uppercase; /* Uppercase for a stronger visual presence */
+    letter-spacing: 1.5px; /* Increased letter spacing for better legibility */
+    font-weight: 700; /* Further increased font weight for maximum boldness */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Subtle text shadow for depth and contrast */
+    transition: font-size 0.3s, color 0.3s, transform 0.3s; /* Added smooth transitions for interactions */
+
+    &:hover {
+        font-size: 42px; /* Slightly larger font size on hover for a dynamic effect */
+        color: #555; /* Darker color on hover for a subtle interaction */
+        transform: scale(1.05); /* Slight scale-up effect on hover for interactivity */
+    }
+`;
+
+const AuctionItemContainer = styled.div`
+    border: 1px solid #ddd; /* Softer border color */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    padding: 30px;
+    margin-bottom: 30px;
+    background-color: #fff; /* White background for clarity */
+    border-radius: 8px; /* Rounded corners */
+`;
+
+const AuctionItemTitle = styled.h2`
+    font-size: 26px; /* Slightly larger title font size */
+    margin-bottom: 20px; /* Increased margin for spacing */
+    color: #333; /* Darker title color for better contrast */
+    text-align: center; /* Center-align the title */
+    font-weight: 600; /* Add a slightly bold weight for emphasis */
+    text-transform: uppercase; /* Convert text to uppercase for boldness */
+
+    &:after {
+        content: ""; /* Add an underline effect */
+        display: block;
+        width: 40px; /* Underline width */
+        height: 3px; /* Underline thickness */
+        background-color: #007bff; /* Blue underline color */
+        margin: 8px auto 0; /* Position the underline */
+    }
+`;
+const StyledCarousel = styled(Carousel)`
+    position: relative; /* Ensure position is set for absolute arrow placement */
+
+    .carousel-root {
+        border-radius: 8px;
+        overflow: hidden;
+        position: relative; /* Set position for relative arrow placement */
+    }
+
+    .carousel .slider-wrapper {
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .slide {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 300px;
+        background-color: #f5f5f5;
+        border-radius: 8px;
+    }
+
+    img {
+        max-width: 100%;
+        max-height: 300px;
+        object-fit: contain;
+    }
+
+    /* Customize carousel arrows */
+    .carousel .control-arrow {
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        padding: 0; /* Remove inner padding */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute; /* Set position for absolute arrow placement */
+        top: calc(50% - 16px); /* Vertically center the arrows */
+        z-index: 2; /* Ensure arrows are on top of the slides */
+        cursor: pointer;
+        transition: background-color 0.3s ease; /* Add transition for hover effect */
+
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        &.control-prev {
+            left: -20px; /* Position left arrow to the left of the carousel */
+        }
+
+        &.control-next {
+            right: -20px; /* Position right arrow to the right of the carousel */
+        }
+    }
+
+    /* Style carousel indicators */
+    .carousel .thumbs-wrapper {
+        display: none; /* Hide indicators */
+    }
+`;
+
+
+const AuctionItemDetail = styled.p`
+    margin: 10px 0;
+    font-size: 16px;
+    color: #666; /* Subdued text color */
+    line-height: 1.4; /* Slightly increased line height for readability */
+
+    &:first-child {
+        margin-top: 0; /* Remove top margin from the first detail */
+    }
+
+    strong {
+        font-weight: 600; /* Bolden key details */
+        color: #333; /* Darker color for strong elements */
+    }
+`;
+
+const ButtonContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+`;
+
+const Button = styled.button`
+    background-color: #007bff;
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+
+    &:hover {
+        background-color: #0056b3;
+    }
+`;
 
 const MyAuctions = () => {
     const [auctions, setAuctions] = useState([]);

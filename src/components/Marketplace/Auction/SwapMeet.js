@@ -16,7 +16,7 @@ const SwapMeet = () => {
   }, [web3.eth]);
 
   const calculateTimeLeft = () => {
-    const difference = +new Date('2023-8-14') - +new Date();
+    const difference = +new Date('2023-10-14') - +new Date();
     let timeLeft = {};
 
     if (difference > 0) {
@@ -103,7 +103,7 @@ const SwapMeet = () => {
   return (
     <div className="swap-meet">
       <p className="ptitle">Our NFT Swap Meet is Under Construction!</p>
-      <h3>Launching on 14th August, {year}</h3>
+      <h3>Launching on 14th October, {year} subject to be earlier!</h3>
       <div>
         Countdown: {timeLeft.days} days {timeLeft.hours} hours {timeLeft.minutes} minutes{' '}
         {timeLeft.seconds} seconds
@@ -120,9 +120,7 @@ const SwapMeet = () => {
       </div>
       <div className="leaderboard">
         <h2>Leaderboard</h2>
-        {/* <button onClick={clearLeaderBoard} className="clear-leaderboard">
-          Clear Leaderboard
-        </button> */}
+      
 
         <div className="flip-move">
           {leaderBoard.map(({ user, score, rank }) => (

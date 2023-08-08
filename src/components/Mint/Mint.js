@@ -3,6 +3,7 @@ import { Web3Context } from '../../utils/Web3Provider';
 import { NFTStorage, File } from 'nft.storage';
 import '../Mint/Mint.css';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 const client = new NFTStorage({
   token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDdGOTA4QjNBRDJGMDFGNjE2MjU1MTA0ODIwNjFmNTY5Mzc2QTg3MjYiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY3OTI5MDE5ODQyMCwibmFtZSI6Ik5FV0VTVCJ9.FGtIrIhKhgSx-10iVlI4sM_78o7jSghZsG5BpqZ4xfA', // Replace with your NFT Storage token
@@ -24,6 +25,7 @@ const Mint = () => {
   const [nftLink, setNftLink] = useState('');
   const [royaltyRecipient, setRoyaltyRecipient] = useState('');
   const [royaltyBasisPoints, setRoyaltyBasisPoints] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchFreeMints = async () => {
@@ -97,12 +99,13 @@ const Mint = () => {
       setIsMinting(false);
       setFormError('');
       
-      // Add the sweet alert here
       Swal.fire(
         'Success!',
         'Your token was minted successfully, Sign-In to View Minted NFTs.',
         'success'
-      );
+      ).then(() => {
+        navigate('/sign-in'); // Navigate to /sign-in
+      });
     } catch (error) {
       console.error(error);
       setIsMinting(false);

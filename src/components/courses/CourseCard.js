@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import "../../components/courses/learning.css"
-import Swal from 'sweetalert2';
 
 
 const LearningPlatform = () => {
@@ -426,7 +425,25 @@ const LearningPlatform = () => {
 
   return (
     <div className="learning-platform">
-      <div className="learn-title">Earn To Learn Platform</div>
+      <div className="learn-title">Earn To Learn Program</div>
+       <div className="earn-to-learn">
+                <p> ERC20 Reward not implementated yet, but will be soon ❤️   </p>
+                <p>
+                  Our "Earn to Learn" program is designed to encourage learning of blockchain technology among our community members. Through this program, you can earn company-issued ERC20 tokens by completing blockchain courses offered on this platform.
+                </p>
+                <p>
+                  Here's how it works:
+                </p>
+                <ul>
+                  <li>Choose a blockchain course from the list above and start learning.</li>
+                  <li>Once you complete a course, you will be given a quiz to test your knowledge.</li>
+                  <li>Successfully pass the quiz, and you will receive a reward in the form of our company's ERC20 tokens.</li>
+                  <li>Collect and accumulate these tokens as you complete more courses, and you can use them for various incentives and benefits within the company.</li>
+                </ul>
+                <p>
+                  The more you learn about blockchain technology, the more tokens you can earn. It's a win-win situation for both you and the company, as it fosters continuous learning and promotes expertise in this revolutionary technology.
+                </p>
+              </div>
       <div className="course-list">
         {courses.map((course) => (
           <div
@@ -444,6 +461,7 @@ const LearningPlatform = () => {
             <div className="course-details">
               <h2>{selectedCourse.title}</h2>
               <p>{selectedCourse.content}</p>
+              
             </div>
             <div className="course-slides">
               {selectedCourse.slides.map((slide) => (

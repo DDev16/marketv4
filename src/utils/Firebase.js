@@ -6,7 +6,8 @@ import { getStorage } from 'firebase/storage';
 import { getAnalytics } from 'firebase/analytics';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBKpT56HNiKPMTiKG0769XYo7o40wl0gMA",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  
   authDomain: "fftools-cc437.firebaseapp.com",
   projectId: "fftools-cc437",
   storageBucket: "fftools-cc437.appspot.com",

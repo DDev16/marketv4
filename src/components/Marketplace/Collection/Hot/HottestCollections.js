@@ -71,18 +71,16 @@ const formatTotalVolume = (totalVolume, currencySymbol) => {
     };
   
     useEffect(() => {
-      // Check if marketplaceContract is available
       if (marketplaceContract) {
         getTop10Collections();
       }
-    }, [marketplaceContract]);
+    }, [marketplaceContract]); 
     
   
   
     // Update carousel settings to show 10 slides at a time
     const carouselSettings = {
       dots: true,
-      infinite: true,
       speed: 1000,
       slidesToShow: Math.min(10, carouselItems.length), // Show up to 10 slides if available
       slidesToScroll: 1,

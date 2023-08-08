@@ -5,6 +5,7 @@ import Loading from '../Loading/Loading';
 import { Web3Context } from '../../utils/Web3Provider';
 import '../../components/Batch/BatchMint.css';
 import MintingLoading from '../../components/Mint/MintingLoading.js';
+import Swal from 'sweetalert2';
 
 const BatchMint = () => {
   const { web3, contract } = useContext(Web3Context);
@@ -161,13 +162,19 @@ const handleAllImagesUpload = async () => {
       setMintData([]);
       setMintSuccess(true);
       setError(null);
-    } catch (error) {
-      console.error('Error in batch minting:', error);
-      setError(`Error in batch minting: ${error.message}`);
-    } finally {
-      setLoading(false);
-    }
-  };
+     // Show success message using SweetAlert2
+     Swal.fire({
+      icon: 'success',
+      title: 'Success',
+      text: 'Batch minting successful!',
+    });
+  } catch (error) {
+    console.error('Error in batch minting:', error);
+    setError(`Error in batch minting: ${error.message}`);
+  } finally {
+    setLoading(false);
+  }
+};
 
 
   // Calculate the cost
@@ -326,8 +333,6 @@ const handleAllImagesUpload = async () => {
 }
 
         </form>
-        {mintSuccess && <p className="success-message">Batch minting successful!</p>}
-        {error && <p className="error-message">Error: {error}</p>}
       </div>
     </div>
   );

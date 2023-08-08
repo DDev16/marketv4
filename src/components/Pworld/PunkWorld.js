@@ -204,6 +204,7 @@ const [showExtraNFTAlert, setShowExtraNFTAlert] = useState(false);
       }
     }
 
+ 
     getFees();
   }, [contractInstance, web3]);
 
@@ -255,6 +256,12 @@ const [showExtraNFTAlert, setShowExtraNFTAlert] = useState(false);
     return `${start}...${end}`;
   }
 
+     // Define the function to handle the link click
+     function handleEnterPunkWorldClick() {
+      window.open('https://punkworld.vercel.app/', '_blank');
+    }
+  
+
   return (
     <div className="punk-world-container">
       <h1>Voxel Vandals of PunkWorld</h1>
@@ -262,7 +269,7 @@ const [showExtraNFTAlert, setShowExtraNFTAlert] = useState(false);
       {error && <p className="error-message">{error}</p>}
       {isLoading ? <p>Loading...</p> : (
         <>
-          <p class="connected-account">Connected account: {formatAddress(account)}</p>
+          <p className="connected-account">Connected account: {formatAddress(account)}</p>
           <p>Total Supply: {totalSupply}/{maxSupply} NFTs</p>
           <p>Remaining Supply: {getRemainingSupply()} NFTs</p>
           <p>Remaining Extra Rewards NFTs: {extraNFTsRemaining}</p>
@@ -289,6 +296,7 @@ const [showExtraNFTAlert, setShowExtraNFTAlert] = useState(false);
               {isMinting ? 'Minting...' : `Mint ${mintAmount} NFT(s)`}
             </button>
           </div>
+        <button onClick={handleEnterPunkWorldClick}>Enter Punk World</button>
           
           <div className="progress-bar-container">
             <ProgressBar value={totalSupply} max={maxSupply} />

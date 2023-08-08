@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
-import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, googleAuthProvider, signInWithPopup } from "../../utils/Firebase.js";
+import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "../../utils/Firebase.js";
 import styled, { keyframes } from "styled-components";
 import bgImage from "../../assets/stock_back_low.gif";
 import { fetchSignInMethodsForEmail } from "../../utils/Firebase.js";
@@ -285,7 +285,6 @@ const SignIn = ({ setUser }) => {
           <Button type="submit" disabled={loading}>
             {loading ? (
               <LoadingWrapper>
-                {/* Put your loading spinner or any loading component here */}
                 Loading...
               </LoadingWrapper>
             ) : (
