@@ -137,21 +137,7 @@ const getCurrencySymbol = () => {
     return sortedTokens;
   };
   
-  const sortTokensByListedStatus = (tokensToSort, sortByListed) => {
-    const sortedTokens = [...tokensToSort].sort((a, b) => {
-      if (sortByListed === 'listed') {
-        return a.isForSale === b.isForSale ? 0 : a.isForSale ? -1 : 1;
-      } else if (sortByListed === 'unlisted') {
-        return a.isForSale === b.isForSale ? 0 : a.isForSale ? 1 : -1;
-      } else {
-        return 0;
-      }
-    });
-  
-    return sortedTokens;
-  };
-  
-
+ 
   // Call the sorting functions when sortOrder or sortByListed changes, or tokens are fetched
   const sortedTokens = useMemo(() => {
     let filteredTokens = tokens;
@@ -421,15 +407,7 @@ const getCurrencySymbol = () => {
     return <div>Loading...</div>;
   }
 
-  const getFilteredTokens = () => {
-    if (sortByListed === 'all') {
-      return tokens; // Return all tokens
-    } else if (sortByListed === 'listed') {
-      return tokens.filter((token) => token.isForSale); // Return only listed tokens
-    } else {
-      return tokens.filter((token) => !token.isForSale); // Return only unlisted tokens
-    }
-  };
+ 
   
   return (
     <div className="collectionPage">

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import Web3 from 'web3';
-import AuctionContractABI from '../../../../abi/Auction.js';
 import styles from '../../../../components/Marketplace/Auction/MyAuctions/MyAuctions.css';
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
@@ -10,8 +9,8 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 import Swal from 'sweetalert2';
 
 
-const CONTRACT_ADDRESS = '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0';
-
+const CONTRACT_ADDRESS = process.env.REACT_APP_AUCTION_ADDRESS_31337;
+const AuctionContractABI = process.env.REACT_APP_AUCTION_ABI;
 // ERC721 ABI
 const ERC721_ABI = [
     {

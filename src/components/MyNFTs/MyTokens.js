@@ -5,7 +5,9 @@ import { Web3Context } from '../../utils/Web3Provider';
 import '../../components/MyNFTs/MyToken.css';
 import { styled } from '@mui/system';
 import Swal from 'sweetalert2';
-
+import IconButton from '@mui/material/IconButton';
+import FirstPageIcon from '@mui/icons-material/FirstPage';
+import LastPageIcon from '@mui/icons-material/LastPage';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -14,19 +16,23 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
+import PaginationItem from '@mui/material/PaginationItem';
+import { Link as MaterialUILink } from '@mui/material';
+
 
 
 const StyledImage = styled('img')`
-  width: 15%;
-  height: auto;
+  width: 25%;
+  height: 350px;
   margin-bottom: 20px;
-  
 
   @media (max-width: 768px) {
     width: 100%;
+    height: auto;
   }
 `;
-
 
 const MyTokens = () => {
   const { web3, contract, marketplaceContract } = useContext(Web3Context);
@@ -38,7 +44,41 @@ const MyTokens = () => {
   const [searchName, setSearchName] = useState('');
   const [searchId, setSearchId] = useState('');
   const [isListedFilter, setIsListedFilter] = useState('none');  // 'none' means no filter, 'true' means listed, 'false' means not listed
+  const [currentPage, setCurrentPage] = useState(1);
+  const tokensPerPage = 100; // Number of tokens to display per page
+ // Define the filteredTokens function before using it
+ const filteredTokens = () => {
+  return tokens.filter((token) => {
+    const matchesName = searchName === '' || token.name.toLowerCase().includes(searchName.toLowerCase());
+    const matchesId = searchId === '' || token.id.toString() === searchId;
+    const matchesListedFilter = 
+      isListedFilter === 'none' 
+        ? true 
+        : (isListedFilter === 'true' ? tokenStatuses[token.id] : !tokenStatuses[token.id]);
 
+    return matchesName && matchesId && matchesListedFilter;
+  });
+};
+
+const indexOfLastToken = currentPage * tokensPerPage;
+const indexOfFirstToken = indexOfLastToken - tokensPerPage;
+const currentTokens = filteredTokens().slice(indexOfFirstToken, indexOfLastToken);
+
+const totalPages = Math.ceil(filteredTokens().length / tokensPerPage);
+
+
+  const handleChangePage = (event, newPage) => {
+    setCurrentPage(newPage);
+  };
+
+ 
+  const handleFirstPage = () => {
+    setCurrentPage(1);
+  };
+
+  const handleLastPage = () => {
+    setCurrentPage(totalPages);
+  };
   const updateTokenStatus = async (contractAddress, tokenId) => {
     try {
       const forSale = await marketplaceContract.methods
@@ -51,18 +91,6 @@ const MyTokens = () => {
     }
   };
 
-  const filteredTokens = () => {
-    return tokens.filter((token) => {
-      const matchesName = searchName === '' || token.name.toLowerCase().includes(searchName.toLowerCase());
-      const matchesId = searchId === '' || token.id.toString() === searchId;
-      const matchesListedFilter = 
-        isListedFilter === 'none' 
-          ? true 
-          : (isListedFilter === 'true' ? tokenStatuses[token.id] : !tokenStatuses[token.id]);
-  
-      return matchesName && matchesId && matchesListedFilter;
-    });
-  };
   
 
 
@@ -220,7 +248,7 @@ const MyTokens = () => {
         aria-controls="panel1a-content"
         id="panel1a-header"
       >
- <Grid container justifyContent="center" style={styles.CenteredDiv}>
+ <Grid container justifyContent="center" >
       <Typography variant="h5">Click Here to view NFTs </Typography>
     </Grid>
          </AccordionSummary>
@@ -231,7 +259,6 @@ const MyTokens = () => {
             You can refresh your tokens, search them by name or token ID, list them for sale, or cancel their listing.
           </Typography>
           <button
-            style={isLoading ? styles.buttonDisabled : styles.button}
             onClick={fetchTokens}
             onError={(e) => console.error(e)}
             disabled={isLoading}
@@ -261,11 +288,38 @@ const MyTokens = () => {
             <option value="true">Show only listed tokens</option>
             <option value="false">Show only unlisted tokens</option>
           </select>
-          <div className="token-list" style={styles.loadingWrapper}>
+          <Stack spacing={2} direction="row" justifyContent="center" alignItems="center" className="pagination-container">
+        <IconButton
+    className="pagination-icon-button"
+    onClick={handleFirstPage}
+    disabled={currentPage === 1}
+  >
+    <FirstPageIcon />
+  </IconButton>
+        <Pagination
+          count={totalPages}
+          page={currentPage}
+          onChange={handleChangePage}
+          shape="rounded"
+          boundaryCount={2} // Show "First" and "Last" buttons
+          renderItem={(item) => (
+            <PaginationItem
+              component={MaterialUILink}
+              to="#"
+              {...item}
+            />
+          )}
+        />
+        <IconButton className="pagination-icon-button" onClick={handleLastPage} disabled={currentPage === totalPages} >
+          <LastPageIcon />
+        </IconButton>
+      </Stack>
+
+          <div className="token-list">
             {isLoading ? (
               <Loading />
             ) : (
-              filteredTokens().map((token) => {
+              currentTokens.map((token) => {
                 const tokenForSale = tokenStatuses[token.id];
                 return (
                   <div key={token.id} className="token-card">
@@ -295,7 +349,6 @@ const MyTokens = () => {
                         }
                       />
                       <button
-                        style={styles.button}
                         onClick={() =>
                           handleListToken(
                             token.contractAddress,
@@ -308,7 +361,6 @@ const MyTokens = () => {
                       </button>
                       {tokenForSale && (
                         <button
-                          style={styles.button}
                           onClick={() =>
                             cancelListing(token.contractAddress, token.id)
                           }
@@ -333,71 +385,8 @@ const MyTokens = () => {
 
 
 
-const styles = {
-
-  
-  
-  loadingContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
-    height: '80vh', // you can adjust this according to your needs
-  },
-  
-  spinAnimation: {
-    animation: 'spin 2s linear infinite',
-  },
-
-  loadingWrapper: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100%', 
-  },
-  
-  
-  button: {
-    padding: '10px 20px',
-    fontSize: '16px',
-    fontWeight: '600',
-    color: '#ffffff',
-    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-    border: 'none',
-    borderRadius: '6px',
-    transition: 'all 0.3s cubic-bezier(.25,.8,.25,1)',
-    cursor: 'pointer',
-    outline: 'none',
-    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-    marginBottom:'30px'
-  },
-  buttonHover: {
-    boxShadow: '0 7px 10px 2px rgba(255, 105, 135, .3)',
-    transform: 'scale(1.05)',
-  },
-  buttonDisabled: {
-    background: 'linear-gradient(45deg, #ccc 30%, #ccc 90%)',
-    cursor: 'not-allowed',
-  },
-
-  buttonLink: {
-    display: 'inline-block',
-    padding: '12px 24px',
-    backgroundColor: '#61dafb',
-    color: '#282c34',
-    fontSize: '18px',
-    fontWeight: 'bold',
-    textDecoration: 'none',
-    borderRadius: '8px',
-    transition: 'transform 0.3s ease-in-out',
-  },
-  popButton: {
-    transform: 'scale(1.1)',
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
-  },
 
 
-};
 
 
 export default MyTokens;

@@ -1,10 +1,12 @@
 import React, { useState, useEffect, createContext } from 'react';
 import Web3 from 'web3';
 import detectEthereumProvider from '@metamask/detect-provider';
-import Auction from '../abi/Auction.js'
 
 const myNFTAbi = JSON.parse(process.env.REACT_APP_MY_NFT_ABI);
 const MarketplaceAbi = JSON.parse(process.env.REACT_APP_MARKETPLACE_ABI);
+
+const AuctionAbi = JSON.parse(process.env.REACT_APP_AUCTION_ABI);
+
 
 export const Web3Context = createContext();
 
@@ -63,7 +65,7 @@ const Web3Provider = ({ children }) => {
               marketplaceAddress
             );
             const auctionInstance = new web3Instance.eth.Contract(
-              Auction,
+              AuctionAbi,
               auctionAddress
             );
             

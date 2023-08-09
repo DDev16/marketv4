@@ -24,6 +24,7 @@ contract NFTMarketplace is ReentrancyGuard, Ownable {
         string description;
         string category;
         address owner;
+        bool isHidden;
     }
 
     struct Token {
@@ -104,7 +105,9 @@ contract NFTMarketplace is ReentrancyGuard, Ownable {
             bannerIPFS,
             description,
             category,
-            msg.sender
+            msg.sender,
+            false // Set isHidden to false by default
+
         );
 
         emit CollectionCreated(collectionCount, msg.sender, name);
@@ -112,6 +115,12 @@ contract NFTMarketplace is ReentrancyGuard, Ownable {
         collectionCount++;
         totalCollections++; // Increment totalCollections here
     }
+
+    function toggleCollectionHiddenStatus(uint256 collectionId) public {
+    require(collections[collectionId].owner == msg.sender, "Only collection owner can toggle hidden status");
+    collections[collectionId].isHidden = !collections[collectionId].isHidden;
+}
+
 
     function getTokenPrice(address contractAddress, uint256 tokenId)
         public

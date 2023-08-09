@@ -24,8 +24,8 @@ const BatchMint = () => {
  const [royaltyRecipients, setRoyaltyRecipients] = useState([]);
  const [royaltyBPSs, setRoyaltyBPSs] = useState([]);
 
-  const nftStorageToken =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDdGOTA4QjNBRDJGMDFGNjE2MjU1MTA0ODIwNjFmNTY5Mzc2QTg3MjYiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY3OTI5MDE5ODQyMCwibmFtZSI6Ik5FV0VTVCJ9.FGtIrIhKhgSx-10iVlI4sM_78o7jSghZsG5BpqZ4xfA';
+  const nftStorageToken = process.env.REACT_APP_NFT_STORAGE;
+  
   const client = new NFTStorage({ token: nftStorageToken });
 
   const handleChange = (index, event) => {

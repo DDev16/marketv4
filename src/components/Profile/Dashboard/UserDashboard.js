@@ -4,7 +4,7 @@ import { FaWallet, FaFolder, FaCog, FaPlus, FaBox, FaGavel } from 'react-icons/f
 import '../Dashboard/UserDash.css';
 
 const UserDashboard = ({ user, signOutUser }) => {
-  const [showMenu, setShowMenu] = useState(false);
+  const [showMenu, setShowMenu] = useState(true);
   
   if (!user) {
     return null;
