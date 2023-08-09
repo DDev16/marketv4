@@ -337,12 +337,12 @@ const totalPages = Math.ceil(filteredTokens().length / tokensPerPage);
                       />
                     )}
                     <div className="token-info">
-                      <p className="token-name">{token.name}</p>
-                      <p className="token-description">{token.description}</p>
+                      <p className="token-name"> Name: {token.name}</p>
+                      <p className="token-description"> Description: {token.description}</p>
                       <p className="contract-address"> Contract Address: {token.contractAddress}</p>
                       <input
                         type="number"
-                        placeholder="Enter price in Native Token"
+                        placeholder="Enter price"
                         value={tokenPrices[token.id] || ''}
                         onChange={(e) =>
                           setTokenPrices({ ...tokenPrices, [token.id]: e.target.value })

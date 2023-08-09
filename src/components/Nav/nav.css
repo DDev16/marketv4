@@ -73,7 +73,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 350px;
+  width: 340px;
   border: 2px solid #ccc;
   border-radius: 5px;
   padding: 5px;
@@ -89,11 +89,13 @@
   outline: none;
   cursor: pointer;
   flex: 1;
+
   padding: 20px; 
   background-color: #ffffff; 
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: background-color 0.2s ease-in-out; 
+  
 }
 
 .network-select:hover {
@@ -203,4 +205,8 @@
   .network-select {
     margin-bottom: 10px;
   }
+
+  
+  
 }
+
