@@ -25,7 +25,7 @@ const customStyles = {
   control: (provided) => ({
     ...provided,
     borderRadius: 5,
-    width: '200px', // Increase the width of the control
+    width: '150px', // Increase the width of the control
     minHeight: '40px', // Increase the minimum height of the control
     border: '2px solid #ccc',
     boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)', // Slightly reduce the box-shadow
