@@ -9,7 +9,9 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/system';
-import ERC721ABI from '../../../abi/ERC721.js';
+
+
+const ERC721ABI = JSON.parse(process.env.REACT_APP_ERC721_ABI);
 
 const CustomTypography = styled(Typography)({
   color: 'black',

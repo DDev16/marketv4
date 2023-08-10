@@ -6,7 +6,7 @@ import QRCode from 'qrcode.react';
 import 'canvas-toBlob';
 import Confetti from 'react-confetti';
 import Swal from 'sweetalert2';
-
+import placeholder from "../../../assets/logo.png";
 const ERC721_ABI = [
   {
     constant: true,
@@ -61,6 +61,7 @@ const CollectionPage = () => {
  // Add a state for sorting by listed status
  const [sortByListed, setSortByListed] = useState('all'); // 'all' for both listed and unlisted, 'listed' for listed only, 'unlisted' for unlisted only
  const [networkId, setNetworkId] = useState(null);
+ const [isCollectionVisible, setIsCollectionVisible] = useState(true);
 
  useEffect(() => {
   // Function to fetch the network ID
@@ -174,10 +175,18 @@ const getCurrencySymbol = () => {
     
         const fetchedCollection = collectionDetails[0];
         const fetchedTokens = collectionDetails[1];
+
     
         if (fetchedCollection) {
           console.log('Fetched Collection:', fetchedCollection);
 
+
+                 // Fetch collection visibility status
+      const collectionVisibility = await marketplaceContract.methods
+      .isCollectionVisible(collectionId)
+      .call({ from: ownerAddress });
+
+    setIsCollectionVisible(collectionVisibility);
 
  const highestSalePrice = await marketplaceContract.methods
       .getHighestSalePrice(collectionId)
@@ -455,25 +464,39 @@ const getCurrencySymbol = () => {
 
       <p className="owner">Collection owned by: {collection.owner}</p>
   
+      <div>
+      <label htmlFor="sortOrder" style={{ color: 'white' }}>Sort Order:</label>
+  <select id="sortOrder" value={sortOrder} onChange={(e) => setSortOrder(e.target.value)}>
+    <option value="asc">Sort A-Z</option>
+    <option value="desc">Sort Z-A</option>
+  </select>
+</div>
 <div>
-      <button onClick={() => setSortOrder('asc')}>Sort A-Z</button>
-      <button onClick={() => setSortOrder('desc')}>Sort Z-A</button>
-    </div>
-    <div>
-      <button onClick={() => setSortByListed('all')}>All Tokens</button>
-      <button onClick={() => setSortByListed('listed')}>Listed Only</button>
-      <button onClick={() => setSortByListed('unlisted')}>Unlisted Only</button>
-    </div>
+  <label htmlFor="sortByListed" style={{ color: 'white' }}>Sort By Listed:</label>
+  <select id="sortByListed" value={sortByListed} onChange={(e) => setSortByListed(e.target.value)}>
+    <option value="all">All Tokens</option>
+    <option value="listed">Listed Only</option>
+    <option value="unlisted">Unlisted Only</option>
+  </select>
+</div>
 
 
     <div className="cardContainer">
-      {sortedTokens.map((token, index) => (
-          <div className="card" key={index}>
-            {token.image.toLowerCase().endsWith('.mp4') ? (
-              <video controls src={`https://ipfs.io/ipfs/${token.image.replace(/ipfs:\/\//g, '')}`} alt={`NFT Card ${index + 1}`} />
-            ) : (
-              <img src={`https://ipfs.io/ipfs/${token.image.replace(/ipfs:\/\//g, '')}`} alt={`NFT Card ${index + 1}`} />
-            )}
+  {sortedTokens.map((token, index) => (
+    <div className="card" key={index}>
+      {/* Check if the collection is visible before rendering the image */}
+      {isCollectionVisible ? (
+        token.image.toLowerCase().endsWith('.mp4') ? (
+          <video controls src={`https://ipfs.io/ipfs/${token.image.replace(/ipfs:\/\//g, '')}`} alt={`NFT Card ${index + 1}`} />
+        ) : (
+          <img src={`https://ipfs.io/ipfs/${token.image.replace(/ipfs:\/\//g, '')}`} alt={`NFT Card ${index + 1}`} />
+        )
+      ) : (
+        <img src={placeholder} alt="Placeholder" />
+      )}
+
+ 
+
   
   <div className="token-info">
     <p><span className="token-label">Token ID:</span> {token.tokenId}</p>

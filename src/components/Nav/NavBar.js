@@ -54,6 +54,7 @@ const customStyles = {
     color: '#333', // Change the color of the dropdown indicator arrow
     '&:hover': {
       color: '#ef5350', // Change the color on hover
+      
     },
   }),
 };
@@ -94,6 +95,21 @@ const NavBar = () => {
       }
     }
   };
+
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (isNavOpen && !event.target.closest('.navbar')) {
+        toggleNav();
+      }
+    };
+  
+    document.addEventListener('click', handleOutsideClick);
+  
+    return () => {
+      document.removeEventListener('click', handleOutsideClick);
+    };
+  }, [isNavOpen]);
+  
 
   const toggleNav = () => {
     setIsNavOpen((prevState) => !prevState);
@@ -142,6 +158,8 @@ const NavBar = () => {
     return address.substring(0, frontChars) + '...' + address.substring(length - backChars);
   }
 
+  
+
   return (
     <nav className="navbar">
       <div className="logo">
@@ -169,9 +187,16 @@ const NavBar = () => {
       </div>
 
 
-      <button className={`menu-button${isNavOpen ? ' open' : ''}`} onClick={toggleNav}>
-        {isNavOpen ? <FiX /> : <FiMenu />}
-      </button>
+      <button
+  className={`menu-button${isNavOpen ? ' open' : ''}`}
+  onClick={(event) => {
+    event.stopPropagation(); // Prevent the event from reaching the icon
+    toggleNav();
+  }}
+>
+  {isNavOpen ? <FiX /> : <FiMenu />}
+</button>
+
       {isNavOpen && (
         <ul className="nav-links">
           <li>

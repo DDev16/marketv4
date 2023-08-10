@@ -112,7 +112,7 @@ const Web3Provider = ({ children }) => {
   };
 
   return (
-    <Web3Context.Provider value={{ web3, contract, marketplaceContract, auction, disconnect: handleConnectDisconnect }}>
+    <Web3Context.Provider value={{ web3, contract, marketplaceContract, auction, AuctionAbi, disconnect: handleConnectDisconnect }}>
       {children}
     </Web3Context.Provider>
   );

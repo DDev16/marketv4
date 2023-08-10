@@ -161,7 +161,7 @@
 
 @media screen and (max-width: 480px) {
   .create-collection-form {
-    padding: 20px;
+    padding: 20px; 
   }
 
   .create-collection-form h2 {

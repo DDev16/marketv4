@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Web3Context } from '../../../utils/Web3Provider.js';
 import '../Batch/Batchlisting.css';
-import tokenContractABI from '../../../abi/ERC721.js';
+
+const tokenContractABI = JSON.parse(process.env.REACT_APP_ERC721_ABI)
+
 
 const BatchListing = () => {
   const { web3, marketplaceContract } = useContext(Web3Context);

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Web3 from 'web3';
-import contractABI from '../../abi/Pworld.js';
 import ProgressBar from './ProgressBar';
 import './PunkWorld.css'; // Import your custom CSS for styling
 import punk2Gif from '../../assets/punk2.gif'; // Update the file path accordingly
 import Swal from 'sweetalert2';
 
+
+const contractABI = JSON.parse(process.env.REACT_APP_PWOLRD_ABI);
 const contractAddress = '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9';
 const maxSupply = 486;
 

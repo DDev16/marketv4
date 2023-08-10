@@ -12,6 +12,7 @@ import '../../../components/Marketplace/Collection/MyCollections.module.css';
 import { styled } from '@mui/system';
 import MarketListings from '../../../components/Marketplace/Listing.js';
 import BatchTransfer from '../../../components/Batch/BatchTransfer.js'
+import Loading from '../../../components/Loading/Loading';
 
 
 const StyledImage = styled('img')`
@@ -27,9 +28,14 @@ const StyledImage = styled('img')`
 
 
 
-const CollectionCard = React.memo(({ collection, navigateToCollectionPage }) => {
+const CollectionCard = React.memo(({ collection, navigateToCollectionPage, toggleCollectionVisibility }) => {
   const handleClick = useCallback(() => navigateToCollectionPage(collection.id), [navigateToCollectionPage, collection.id]);
 
+  const handleToggleVisibilityClick = (e) => {
+    e.stopPropagation(); // Prevent the click event from reaching the card
+    toggleCollectionVisibility(collection.id);
+  };
+  
   return (
     <div className={styles.collectionCard} onClick={handleClick}>
       <p className={styles.collectionID}>Collection ID: {collection.id}</p>
@@ -37,7 +43,13 @@ const CollectionCard = React.memo(({ collection, navigateToCollectionPage }) => 
       <img src={`https://ipfs.io/ipfs/${collection.logoIPFS}`} alt="Logo" className={styles.collectionLogo} />
       <img src={`https://ipfs.io/ipfs/${collection.bannerIPFS}`} alt="Banner" className={styles.collectionBanner} />
       <p className={styles.collectionDescription}>{collection.description}</p>
+      <p className={styles.collectionVisibility}>
+        Visibility: {collection.Visible ? "Visible" : "Not Visible"}
+      </p>
       <button className={styles.collectionButton} onClick={handleClick}>View Collection</button>
+      <button className={styles.collectionButton} onClick={handleToggleVisibilityClick}>
+        Toggle Visibility
+      </button>
     </div>
   );
 });
@@ -46,7 +58,9 @@ const CollectionCard = React.memo(({ collection, navigateToCollectionPage }) => 
 CollectionCard.propTypes = {
   collection: PropTypes.object.isRequired,
   navigateToCollectionPage: PropTypes.func.isRequired,
+  toggleCollectionVisibility: PropTypes.func.isRequired, // Corrected line
 };
+
 
 const MyCollections = () => {
   const { web3, marketplaceContract } = useContext(Web3Context);
@@ -60,43 +74,67 @@ const MyCollections = () => {
     navigate(`/collections/${collectionId}`);
   }, [navigate]);
 
+  const toggleCollectionVisibility = async (collectionId) => {
+    try {
+      setIsLoading(true);
+  
+      const accounts = await web3.eth.getAccounts();
+      const ownerAddress = accounts[0];
+  
+      // Call the smart contract function to toggle visibility
+      await marketplaceContract.methods.toggleCollectionTokensVisibility(collectionId).send({
+        from: ownerAddress,
+      });
+  
+      // Refresh the collections data after toggling visibility
+      fetchCollections();
+    } catch (toggleError) {
+      console.error('Error toggling collection visibility:', toggleError);
+      setError(toggleError.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  
   useEffect(() => {
     if (web3 && marketplaceContract) {
       setIsWeb3Ready(true); // set readiness to true when web3 and contract are available
     }
   }, [web3, marketplaceContract]);
 
+  const fetchCollections = async () => {
+    if (!isWeb3Ready) {
+      console.error('Web3 or contract object is not initialized');
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+
+      const accounts = await web3.eth.getAccounts();
+      const ownerAddress = accounts[0];
+      const fetchedCollections = await marketplaceContract.methods.getCollectionsByOwner(ownerAddress).call();
+      const collectionsWithId = fetchedCollections.map((collection) => ({
+        ...collection,
+        id: collection.collectionId,
+      }));
+
+      setCollections(collectionsWithId);
+    } catch (fetchError) {
+      console.error('Error fetching collections:', fetchError);
+      setError(fetchError.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchCollections = async () => {
-      if (!isWeb3Ready) {
-        console.error('Web3 or contract object is not initialized');
-        return;
-      }
-
-      try {
-        setIsLoading(true);
-
-        const accounts = await web3.eth.getAccounts();
-        const ownerAddress = accounts[0];
-        const fetchedCollections = await marketplaceContract.methods.getCollectionsByOwner(ownerAddress).call();
-        const collectionsWithId = fetchedCollections.map((collection) => ({
-          ...collection,
-          id: collection.collectionId, // change index to collection.collectionId
-        }));
-
-        setCollections(collectionsWithId);
-      } catch (fetchError) {
-        console.error('Error fetching collections:', fetchError);
-        setError(fetchError.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     if (isWeb3Ready) {
       fetchCollections();
     }
   }, [isWeb3Ready, web3, marketplaceContract]);
+
   const renderCollections = useMemo(() => {
     if (collections.length === 0) {
       return <p>No collections found.</p>;
@@ -107,17 +145,20 @@ const MyCollections = () => {
         key={collection.id}
         collection={collection}
         navigateToCollectionPage={navigateToCollectionPage}
+        toggleCollectionVisibility={toggleCollectionVisibility}
       />
     ));
-  }, [collections, navigateToCollectionPage]);
+  }, [collections, navigateToCollectionPage, toggleCollectionVisibility]);
 
   if (error) {
     return <Alert variant="danger">{error}</Alert>;
   }
 
   if (isLoading) {
-    return <Spinner animation="border" />;
+    return <Loading/>;
   }
+
+
 
   return (
     

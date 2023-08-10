@@ -1,13 +1,12 @@
 // firebase.js
 import { initializeApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, fetchSignInMethodsForEmail } from 'firebase/auth';
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, fetchSignInMethodsForEmail, sendPasswordResetEmail } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import { getAnalytics } from 'firebase/analytics';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  
   authDomain: "fftools-cc437.firebaseapp.com",
   projectId: "fftools-cc437",
   storageBucket: "fftools-cc437.appspot.com",
@@ -24,4 +23,15 @@ const storage = getStorage(app);
 
 getAnalytics(app);
 
-export { auth, db, storage, googleAuthProvider, signInWithPopup, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, fetchSignInMethodsForEmail };
+export {
+  auth,
+  db,
+  storage,
+  googleAuthProvider,
+  signInWithPopup,
+  signOut,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  fetchSignInMethodsForEmail,
+  sendPasswordResetEmail  // Add this line to export the function
+};

@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Web3 from 'web3';
-import AuctionContractABI from '../../../abi/Auction.js';
-import ERC721ContractABI from '../../../abi/ERC721.js';
 import styled from 'styled-components';
 import Swal from 'sweetalert2'; // import SweetAlert2
 
@@ -78,8 +76,10 @@ const ErrorText = styled.span`
 `;
 
 
-// Contract address.
+// Contract address and abis 
 const AUCTION_CONTRACT_ADDRESS = process.env.REACT_APP_AUCTION_ADDRESS_31337;
+const AuctionContractABI = JSON.parse(process.env.REACT_APP_AUCTION_ABI);
+const ERC721ContractABI =JSON.parse(process.env.REACT_APP_ERC721_ABI)
 
 const AuctionComponent = () => {
     const [account, setAccount] = useState(null);

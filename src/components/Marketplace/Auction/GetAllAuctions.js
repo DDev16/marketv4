@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Web3 from 'web3';
-import AuctionContractABI from '../../../abi/Auction.js';
-import IERC721ABI from '../../../abi/ERC721.js';
 import '../../../components/Marketplace/Auction/GetAllAuctions.css';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; 
@@ -14,7 +12,9 @@ import Swal from 'sweetalert2';
 
 const AUCTION_CONTRACT_ADDRESS = process.env.REACT_APP_AUCTION_ADDRESS_31337;
 
+const AuctionContractABI = JSON.parse(process.env.REACT_APP_AUCTION_ABI);
 
+const IERC721ABI = JSON.parse(process.env.REACT_APP_ERC721_ABI)
 
 function parseAuctionData(auctionTuple, index) {
   return {

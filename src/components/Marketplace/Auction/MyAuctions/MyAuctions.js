@@ -10,7 +10,11 @@ import Swal from 'sweetalert2';
 
 
 const CONTRACT_ADDRESS = process.env.REACT_APP_AUCTION_ADDRESS_31337;
-const AuctionContractABI = process.env.REACT_APP_AUCTION_ABI;
+// Import the ABI from the environment variable
+const AuctionContractABI = JSON.parse(process.env.REACT_APP_AUCTION_ABI);
+
+// ... Rest of your code remains the same
+
 // ERC721 ABI
 const ERC721_ABI = [
     {

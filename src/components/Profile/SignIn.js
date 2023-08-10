@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
-import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "../../utils/Firebase.js";
+import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "../../utils/Firebase.js";
 import styled, { keyframes } from "styled-components";
 import bgImage from "../../assets/stock_back_low.gif";
 import { fetchSignInMethodsForEmail } from "../../utils/Firebase.js";
@@ -35,11 +35,11 @@ const LoginContainer = styled.div`
   width: 100%; /* Adjust the width based on your design */
   max-width: 450px; /* Add a maximum width to prevent it from stretching too much */
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 0px;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   transition: 0.3s;
   background: #ffffff;
-  margin-top: 50px;
+  margin-top: 0px;
   margin-bottom: 100px;
 `;
 
@@ -151,6 +151,8 @@ const SignIn = ({ setUser }) => {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
   const navigate = useNavigate();
 
+  
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(userAuth => {
       if (userAuth) {
@@ -208,6 +210,26 @@ const SignIn = ({ setUser }) => {
       console.error(`[${currentId}] Setting error message:`, handleErrorMessage(error.code));
     }
   };
+
+  const handleForgotPassword = async () => {
+    if (!email) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Please provide your email to reset the password.',
+      });
+      return;
+    }
+
+    try {
+      await sendPasswordResetEmail(auth, email);  // Use the function from Firebase
+      Swal.fire('Password Reset Email Sent', 'Check your email to reset your password.', 'success');
+    } catch (error) {
+      console.error('Error sending password reset email:', error);
+      Swal.fire('Error', 'An error occurred while sending the password reset email.', 'error');
+    }
+  };
+
 
   const handleSignIn = async (event) => {
     event.preventDefault();
@@ -297,6 +319,11 @@ const SignIn = ({ setUser }) => {
 
         </Form>
         <Error error={error}>{error}</Error>
+
+         {/* Add the "Forgot Password" button */}
+         <Button onClick={handleForgotPassword} style={{ marginTop: '10px' }}>
+          Forgot Password
+        </Button>
       </LoginContainer>
     </Wrapper>
   );
