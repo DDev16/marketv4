@@ -62,6 +62,7 @@
 
 
 
+
 .music {
   display: flex;
   align-items: center;
@@ -161,7 +162,9 @@
 }
 
 .nav-links li:hover {
-  background-color: #282828;
+  background-color: rgba(0, 0, 0, 0.5); /* Slight background color change on hover */
+  transform: scale(1.03); /* Slight scale change on hover */
+  cursor: pointer; /* Changes cursor to pointer on hover */
 }
 
 .nav-links li a {
@@ -180,10 +183,52 @@
   margin-right: 10px;
   color: #ef5350;
   transition: transform 0.3s ease;
+  
 }
 
 .nav-icon:hover {
   transform: scale(1.2);
+}
+
+.nav-links li {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px; /* Increased padding for a more comfortable clicking area */
+  border-radius: 4px; 
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Added transform to transition property for hover effect */
+  text-decoration: none;
+  color: inherit;
+  border-bottom: 1px solid #ef5350;
+
+  margin-bottom: 20px; 
+  font-size: 1rem; /* Responsive font-size for better readability on different devices */
+  position: relative; /* Added to help with after pseudo-element */
+}
+
+
+
+.nav-link::after {
+  /* Creates an indicator for active links */
+  content: "";
+  position: absolute;
+  height: 3px;
+  background-color: #ef5350;
+  width: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: width 0.3s ease;
+}
+
+.nav-link li.active::after {
+  /* Full width indicator for the active link */
+  width: 100%;
+}
+
+
+.nav-icon {
+  margin-right: 15px;
+  
 }
 
 @media (max-width: 768px) {
@@ -196,10 +241,12 @@
     width: 90%;
     padding: 20px 0;
     box-sizing: border-box;
+
   }
 
   .nav-links li {
     padding: 10px 0;
+
   }
 
   .network-select {
