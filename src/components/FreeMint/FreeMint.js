@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import Web3 from 'web3';
-import FreeMintABI from '../../abi/FreeMint.js';
-import IERC20ABI from '../../abi/IERC20.js';
+
 import "../../components/FreeMint/FreeMint.css";
 import "../../components/FreeMint/FreeMint.css";
 import exampleGif from '../../assets/example.gif'; // Import the GIF
 import Swal from 'sweetalert2';
 
 const contractAddress = '0x5d1a74EB382326E3C26322994F905a82e2A33C47';
-const contractAbi = FreeMintABI;
-const tokenAbi = IERC20ABI;
+const contractAbi = JSON.parse(process.env.REACT_APP_FREEMINT_ABI);
+const tokenAbi = JSON.parse(process.env.REACT_APP_IERC20_ABI);
 const maxSupply = 2478;
 const mintAmount = 1; // Change the minting amount if needed
-const pid = 1; // Placeholder value, replace this with the appropriate _pid value based on your application logic
+const pid = 2; // Placeholder value, replace this with the appropriate _pid value based on your application logic
 
 const FreeMint = () => {
   const [connectedAccount, setConnectedAccount] = useState('');
@@ -33,7 +32,7 @@ const FreeMint = () => {
   
           // Check if the connected network matches the expected network ID for Flare
           const networkId = await web3.eth.net.getId();
-          const expectedNetworkId = 14; // Replace 1234 with the network ID for Flare Network
+          const expectedNetworkId = 14; //  network ID for Flare Network
           if (networkId === expectedNetworkId) {
             const contractInstance = new web3.eth.Contract(contractAbi, contractAddress);
             setContractInstance(contractInstance);

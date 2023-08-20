@@ -6,8 +6,11 @@ import punk2Gif from '../../assets/punk2.gif'; // Update the file path according
 import Swal from 'sweetalert2';
 
 
+
+
 const contractABI = JSON.parse(process.env.REACT_APP_PWOLRD_ABI);
-const contractAddress = '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9';
+const contractAddress = '0x1F2904659a0638b76aF6d1579a65D3122f83d6A1';
+
 const maxSupply = 486;
 
 function PunkWorld() {
@@ -142,20 +145,13 @@ const [showExtraNFTAlert, setShowExtraNFTAlert] = useState(false);
     }
   }
   
-  
-  
-  
-  
-  
-  
-  
-  
+   
   
   useEffect(() => {
     async function initWeb3() {
       if (window.ethereum) {
         try {
-          await window.ethereum.enable();
+          await window.ethereum.request({ method: 'eth_requestAccounts' });
           setWeb3(new Web3(window.ethereum));
         } catch (error) {
           setError('User denied account access');
@@ -166,10 +162,10 @@ const [showExtraNFTAlert, setShowExtraNFTAlert] = useState(false);
         setError('Non-Ethereum browser detected. You should consider trying MetaMask!');
       }
     }
-
+  
     initWeb3();
   }, []);
-
+  
   
   useEffect(() => {
     if (web3) {
@@ -263,7 +259,9 @@ const [showExtraNFTAlert, setShowExtraNFTAlert] = useState(false);
     }
   
 
+
   return (
+
     <div className="punk-world-container">
       <h1>Voxel Vandals of PunkWorld</h1>
   
@@ -281,7 +279,7 @@ const [showExtraNFTAlert, setShowExtraNFTAlert] = useState(false);
             Voxel Vandal NFT and join a community of passionate collectors!
           </p>
           <p>
-            Theres a Random Extra NFT rewards mechanism built in, there is a 75% chance you get rewarded an Extra NFT when minting!
+            Theres a 100% chance you get rewarded an Extra NFT when minting!
           </p>
           <p> Please make sure you are connected to Flare Networks before minting, Happy Minting! 🥳 </p>
   
@@ -297,6 +295,8 @@ const [showExtraNFTAlert, setShowExtraNFTAlert] = useState(false);
               {isMinting ? 'Minting...' : `Mint ${mintAmount} NFT(s)`}
             </button>
           </div>
+          
+    
         <button onClick={handleEnterPunkWorldClick}>Enter Punk World</button>
           
           <div className="progress-bar-container">
@@ -306,6 +306,7 @@ const [showExtraNFTAlert, setShowExtraNFTAlert] = useState(false);
         </>
       )}
     </div>
+
   );
   
 }

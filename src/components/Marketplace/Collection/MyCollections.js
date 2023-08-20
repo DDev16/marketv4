@@ -174,12 +174,14 @@ const MyCollections = () => {
           {renderCollections}
         </div>
       </div>
+      <MyTokens />
+
+      <BatchTransfer />
+
       <AddToCollection />
       <BulkAddToCollection />
       <ListAllTokens />
       <MarketListings />
-      <BatchTransfer />
-      <MyTokens />
 
 
       

@@ -3,6 +3,7 @@
 /* Styles for the container */
 .hottest-collection {
   max-width: 100%;
+  width:100%;
   margin: 0 auto;
 }
 
@@ -33,8 +34,8 @@
 /* Styles for the image */
 .carousel-item img {
   width: 100%;
-  height: 200px;
-  object-fit: cover;
+  height: 100%;
+  object-fit: contain;
   border-radius: 15px;
   box-shadow: 0 10px 25px rgba(255, 255, 255, 1);
 }

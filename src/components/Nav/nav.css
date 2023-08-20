@@ -158,13 +158,19 @@
   padding: 10px;
   border-radius: 5px;
   transition: background-color 0.3s ease;
-  
+  display: block; /* Make the entire list item a clickable area */
+  transition: background-color 0.3s, transform 0.3s; /* Adding transitions */
 }
+
+
 
 .nav-links li:hover {
   background-color: rgba(0, 0, 0, 0.5); /* Slight background color change on hover */
   transform: scale(1.03); /* Slight scale change on hover */
   cursor: pointer; /* Changes cursor to pointer on hover */
+  display: block; /* Make the entire list item a clickable area */
+  transition: background-color 0.3s, transform 0.3s; /* Adding transitions */
+
 }
 
 .nav-links li a {

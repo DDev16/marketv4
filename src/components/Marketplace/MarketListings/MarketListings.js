@@ -185,9 +185,19 @@ const MarketListings = () => {
  const buyToken = async (contractAddress, tokenId, price) => {
   setIsBuying(true); // Set buying state to true when the purchase begins
   try {
+    Swal.fire({
+      title: 'Processing',
+      text: 'Transaction in progress. Please wait...',
+      allowOutsideClick: false,
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
     await marketplaceContract.methods.buyToken(contractAddress, tokenId).send({ value: price, from: account });
     const tokenData = tokens.find(token => token.tokenId === tokenId);
       setPurchaseSuccess(true);
+      
       
 
       setTimeout(() => {

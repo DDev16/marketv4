@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import Web3 from 'web3';
 import '../../../components/Marketplace/Auction/GetAllAuctions.css';
 import { Carousel } from 'react-responsive-carousel';
@@ -9,10 +9,9 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Typography from '@mui/material/Typography';
 import Swal from 'sweetalert2'; 
+import { Web3Context } from '../../../utils/Web3Provider.js';
 
-const AUCTION_CONTRACT_ADDRESS = process.env.REACT_APP_AUCTION_ADDRESS_31337;
 
-const AuctionContractABI = JSON.parse(process.env.REACT_APP_AUCTION_ABI);
 
 const IERC721ABI = JSON.parse(process.env.REACT_APP_ERC721_ABI)
 
@@ -45,10 +44,30 @@ function WeiToEther(wei) {
   return web3.utils.fromWei(wei, 'ether');
 }
 
+
+function GetAllAuctions() {
+  const { web3, auction } = useContext(Web3Context); // Access web3 and auction from the context
+
+  const [auctions, setAuctions] = useState([]);
+  const [sortedAuctions, setSortedAuctions] = useState([]);
+  const [sortingMethod, setSortingMethod] = useState('active');
+  const [loading, setLoading] = useState(true);
+  const [bidValue, setBidValue] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+
+
+  const filteredAuctions = sortedAuctions.filter((auction) =>
+  auction.auctionIndex.toString().includes(searchQuery)
+);
+
+
 async function buyNow(auctionIndex, price) {
   try {
-    const web3 = new Web3(window.ethereum);
-    const auctionContractInstance = new web3.eth.Contract(AuctionContractABI, AUCTION_CONTRACT_ADDRESS);
+    if (!web3 || !auction) {
+      console.error('Web3 or auction not initialized.');
+      return;
+    }
+
     const accounts = await web3.eth.getAccounts();
     const fromAccount = accounts[0];
 
@@ -62,7 +81,7 @@ async function buyNow(auctionIndex, price) {
       allowEscapeKey: false,
     });
 
-    const transaction = await auctionContractInstance.methods.buyNow(auctionIndex).send({ from: fromAccount, value: web3.utils.toWei(price, 'ether') });
+    const transaction = await auction.methods.buyNow(auctionIndex).send({ from: fromAccount, value: web3.utils.toWei(price, 'ether') });
     
     // Check if the transaction receipt has a status of 1 (successful transaction)
     if (transaction.status) {
@@ -96,18 +115,6 @@ async function buyNow(auctionIndex, price) {
   }
 }
 
-function GetAllAuctions() {
-  const [auctions, setAuctions] = useState([]);
-  const [sortedAuctions, setSortedAuctions] = useState([]);
-  const [sortingMethod, setSortingMethod] = useState('active');
-  const [loading, setLoading] = useState(true);
-  const [bidValue, setBidValue] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
-
-
-  const filteredAuctions = sortedAuctions.filter((auction) =>
-  auction.auctionIndex.toString().includes(searchQuery)
-);
 
   function sortAuctions(auctions, sortingMethod) {
     switch(sortingMethod) {
@@ -139,16 +146,26 @@ function GetAllAuctions() {
 
 async function placeBid(auctionIndex) {
   try {
-    const web3 = new Web3(window.ethereum);
-    const auctionContractInstance = new web3.eth.Contract(
-      AuctionContractABI,
-      AUCTION_CONTRACT_ADDRESS
-    );
+    if (!web3 || !auction) {
+      console.error('Web3 or auction not initialized.');
+      return;
+    }
+
+    Swal.fire({
+      icon: 'info',
+      title: 'Placing Bid...',
+      text: 'Please wait while we process your request.',
+      showConfirmButton: false,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+    });
+
+
     const accounts = await web3.eth.getAccounts();
     const fromAccount = accounts[0];
 
     // Check if the auction has ended before placing a bid
-    const auctionEnded = await auctionContractInstance.methods
+    const auctionEnded = await auction.methods
       .hasAuctionEnded(auctionIndex)
       .call();
 
@@ -161,7 +178,7 @@ async function placeBid(auctionIndex) {
       return;
     }
 
-    await auctionContractInstance.methods
+    await auction.methods
       .bid(auctionIndex)
       .send({ from: fromAccount, value: web3.utils.toWei(bidValue, 'ether') });
 
@@ -180,35 +197,39 @@ async function placeBid(auctionIndex) {
     });
   }
 }
-  useEffect(() => {
-    const web3 = new Web3(window.ethereum);
-    const auctionContractInstance = new web3.eth.Contract(AuctionContractABI, AUCTION_CONTRACT_ADDRESS);
+useEffect(() => {
+  // Check if web3 and auction contract are initialized
+  if (web3 && auction) {
+    const fetchAuctions = async () => {
+      try {
+        const result = await auction.methods.getAllAuctions().call();
+        const parsedAuctions = result[1].map(parseAuctionData);
 
-    async function fetchAuctions() {
-      const result = await auctionContractInstance.methods.getAllAuctions().call();
-      const parsedAuctions = result[1].map(parseAuctionData);
-
-      // Fetch token URIs and metadata for each auction
-      await Promise.all(parsedAuctions.map(async (auction) => {
-        const nftContractInstance = new web3.eth.Contract(IERC721ABI, auction.nftContract);
-        auction.tokenURIs = await Promise.all(auction.nftIds.map(id => nftContractInstance.methods.tokenURI(id).call()));
-        auction.metadata = await Promise.all(auction.tokenURIs.map(async (uri) => {
-          const res = await fetch(ipfsToHttp(uri));
-          const data = await res.json();
-          if (data.image && data.image.startsWith('ipfs:')) {
-            data.image = ipfsToHttp(data.image);
-          }
-          return data;
+        await Promise.all(parsedAuctions.map(async (auction) => {
+          const nftContractInstance = new web3.eth.Contract(IERC721ABI, auction.nftContract);
+          auction.tokenURIs = await Promise.all(auction.nftIds.map(id => nftContractInstance.methods.tokenURI(id).call()));
+          auction.metadata = await Promise.all(auction.tokenURIs.map(async (uri) => {
+            const res = await fetch(ipfsToHttp(uri));
+            const data = await res.json();
+            if (data.image && data.image.startsWith('ipfs:')) {
+              data.image = ipfsToHttp(data.image);
+            }
+            return data;
+          }));
         }));
-      }));
 
-      setAuctions(parsedAuctions);
-      setSortedAuctions(sortAuctions(parsedAuctions, sortingMethod));
-      setLoading(false);
-    }
+        setAuctions(parsedAuctions);
+        setSortedAuctions(sortAuctions(parsedAuctions, sortingMethod));
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching auctions:', error);
+      }
+    };
 
     fetchAuctions();
-  }, []);
+  }
+}, [web3, auction, sortingMethod]);
+
 
   useEffect(() => {
     setSortedAuctions(sortAuctions(auctions, sortingMethod));

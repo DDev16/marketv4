@@ -50,11 +50,24 @@ const CreateCollection = () => {
   }, [web3]);
 
   const handleCreateCollection = async (event) => {
+
+    
+    Swal.fire({
+      title: 'Processing',
+      html: 'Please wait...',
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      didOpen: () => {
+        Swal.showLoading()
+      },
+    });
     event.preventDefault();
     try {
       setLoading(true);
       setSuccess(false);
+      
 
+     
       const logoIPFS = await uploadToIPFS(logo);
       const bannerIPFS = await uploadToIPFS(banner);
 

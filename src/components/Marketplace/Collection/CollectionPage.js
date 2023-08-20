@@ -7,6 +7,7 @@ import 'canvas-toBlob';
 import Confetti from 'react-confetti';
 import Swal from 'sweetalert2';
 import placeholder from "../../../assets/logo.png";
+import Loading from '../../Loading/Loading.js';
 const ERC721_ABI = [
   {
     constant: true,
@@ -68,7 +69,6 @@ const CollectionPage = () => {
   const fetchNetworkId = async () => {
     try {
       const networkId = await web3.eth.net.getId();
-      console.log('Network ID:', networkId); // Log the networkId to see its value
       setNetworkId(networkId);
     } catch (error) {
       console.error('Error fetching network ID:', error);
@@ -178,7 +178,6 @@ const getCurrencySymbol = () => {
 
     
         if (fetchedCollection) {
-          console.log('Fetched Collection:', fetchedCollection);
 
 
                  // Fetch collection visibility status
@@ -238,13 +237,11 @@ const getCurrencySymbol = () => {
               const tokenOwner = await contract.methods.ownerOf(tokenId).call({ from: ownerAddress });
 
               const ipfsUrl = tokenURI.replace('ipfs://', '');
-              console.log(`Fetching IPFS data from: https://ipfs.io/ipfs/${ipfsUrl}`);
               const cardDetailsResponse = await fetch(`https://ipfs.io/ipfs/${ipfsUrl}`);
               const cardDetails = await cardDetailsResponse.json();
               cardDetails.image = cardDetails.image || cardDetails.imageUrl;
 
               const { name, description } = cardDetails;
-              console.log('Card Details:', cardDetails);
 
               const isForSale = await marketplaceContract.methods.isTokenForSale(contractAddress, tokenId).call({ from: ownerAddress });
               
@@ -409,11 +406,11 @@ const getCurrencySymbol = () => {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />; 
   }
-
+  
   if (!collection) {
-    return <div>Loading...</div>;
+    return <Loading />; 
   }
 
  

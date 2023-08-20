@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import Web3 from 'web3';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import Swal from 'sweetalert2'; // import SweetAlert2
-
+import { Web3Context } from '../../../utils/Web3Provider';
 
 const Container = styled.div`
     width: 70%;
@@ -77,13 +76,11 @@ const ErrorText = styled.span`
 
 
 // Contract address and abis 
-const AUCTION_CONTRACT_ADDRESS = process.env.REACT_APP_AUCTION_ADDRESS_31337;
 const AuctionContractABI = JSON.parse(process.env.REACT_APP_AUCTION_ABI);
 const ERC721ContractABI =JSON.parse(process.env.REACT_APP_ERC721_ABI)
 
 const AuctionComponent = () => {
     const [account, setAccount] = useState(null);
-    const [web3, setWeb3] = useState(null);
     const [nftContractAddress, setNftContractAddress] = useState("");
     const [nftIds, setNftIds] = useState("");
     const [startPrice, setStartPrice] = useState("");
@@ -92,38 +89,57 @@ const AuctionComponent = () => {
     const [bidIncrement, setBidIncrement] = useState("");
     const [auctionDuration, setAuctionDuration] = useState("");
     const [error, setError] = useState(null); // add this
+    const { web3, auction } = useContext(Web3Context); // Access the web3 and auction instances from the context
 
     useEffect(() => {
         const initWeb3 = async () => {
-            if(window.ethereum) {
-                const web3Instance = new Web3(window.ethereum);
-                setWeb3(web3Instance);
-    
-                // Request account access
+            if (window.ethereum) {
                 try {
-                    // Request account access
                     await window.ethereum.request({ method: 'eth_requestAccounts' });
                 } catch (error) {
-                    // User denied account access...
                     console.error("User denied account access")
                 }
-    
-                const accounts = await web3Instance.eth.getAccounts();
-                setAccount(accounts[0]);
-    
-                window.ethereum.on('accountsChanged', (accounts) => {
-                    setAccount(accounts[0]);
-                });
             } else {
                 alert("Please install MetaMask!");
             }
         }
         initWeb3();
-    }, []);
-    
+    }, []); // Removed [web3] dependency from here
+
+    const handleAccountsChanged = (accounts) => {
+        setAccount(accounts[0]);
+    };
+
+    useEffect(() => {
+        if (web3) {
+            web3.eth.getAccounts().then(accounts => {
+                setAccount(accounts[0]);
+            });
+
+            window.ethereum.on('accountsChanged', handleAccountsChanged);
+            return () => {
+                window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
+            };
+        }
+    }, [web3]);
 
     const createAuction = async (event) => {
         event.preventDefault();
+            
+        // Use web3 and auction instances from the context
+        if (!web3 || !auction) {
+            Swal.fire('Error', 'Web3 or auction contract not initialized', 'error');
+            return;
+        }
+         Swal.fire({
+        title: 'Creating Auction',
+        html: 'Please wait...',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        didOpen: () => {
+          Swal.showLoading()
+        },
+      });
 
         // Basic form validation
         if (!web3.utils.isAddress(nftContractAddress)) {
@@ -133,9 +149,9 @@ const AuctionComponent = () => {
 
         try {
             const nftContract = new web3.eth.Contract(ERC721ContractABI, nftContractAddress);
-            await nftContract.methods.setApprovalForAll(AUCTION_CONTRACT_ADDRESS, true).send({ from: account });
-            
-            const auctionContract = new web3.eth.Contract(AuctionContractABI, AUCTION_CONTRACT_ADDRESS);
+            await nftContract.methods.setApprovalForAll(auction.options.address, true).send({ from: account });
+            const auctionContract = new web3.eth.Contract(AuctionContractABI, auction.options.address); // Use auction.options.address
+            console.log("setaddressfirst",auction)
             await auctionContract.methods.createAuction(
                 nftContractAddress, 
                 nftIds.split(',').map(id => Number(id)), 

@@ -66,14 +66,18 @@ const [searchCategory, setSearchCategory] = useState(''); // new state for categ
         const totalCollections = await marketplaceContract.methods.getCollectionCount().call({ from: accounts[0] });
         const calculatedMaxPage = Math.ceil(totalCollections / collectionsPerPage);
         setMaxPage(calculatedMaxPage);
-
+    
         const startIndex = (currentPage - 1) * collectionsPerPage;
         if (startIndex < 0 || startIndex >= totalCollections) {
-          throw new Error("Start index out of range"); // throw error if start index is out of range
+          throw new Error("Start index out of range");
         }
-
+    
         const allCollections = await marketplaceContract.methods.getAllCollections(startIndex, collectionsPerPage).call({ from: accounts[0] });
-        const flattenedCollections = allCollections.map((collection, index) => {
+        
+        // Filter out deleted collections
+        const activeCollections = allCollections.filter(collection => !collection.isDeleted);
+    
+        const flattenedCollections = activeCollections.map((collection, index) => {
           return {
             id: index,
             name: collection.name,
@@ -81,19 +85,18 @@ const [searchCategory, setSearchCategory] = useState(''); // new state for categ
             bannerIPFS: collection.bannerIPFS,
             description: collection.description,
             collectionId: collection.collectionId,
-            category: collection.category // ensure your contract returns this field
+            category: collection.category
           };
         });
-        
-
-        const filteredCollections = flattenedCollections.filter(collection => {
+    
+        const filteredCollectionsWithSearch = flattenedCollections.filter(collection => {
           const nameMatch = collection.name.toLowerCase().includes(searchName.toLowerCase());
           const idMatch = collection.collectionId.includes(searchCollectionId);
-          const categoryMatch = searchCategory === '' || collection.category === searchCategory; // added check for category
+          const categoryMatch = searchCategory === '' || collection.category === searchCategory;
           return nameMatch && idMatch && categoryMatch;
         });
-
-        setCollections(filteredCollections);
+    
+        setCollections(filteredCollectionsWithSearch);
       } catch (error) {
         console.error(error);
         if (error.message === "Start index out of range") {
@@ -244,14 +247,17 @@ const [searchCategory, setSearchCategory] = useState(''); // new state for categ
               />
             </div>
             <div className={styles.myCollectionsList}>
-              {collections.map((collection, index) => (
-                <CollectionCard
-                  key={index}
-                  collection={collection}
-                  navigateToCollectionPage={navigateToCollectionPage}
-                />
-              ))}
-            </div>
+  {collections.map((collection, index) => (
+    (collection.logoIPFS && collection.bannerIPFS) ? (
+      <CollectionCard
+        key={index}
+        collection={collection}
+        navigateToCollectionPage={navigateToCollectionPage}
+      />
+    ) : null
+  ))}
+</div>
+
           </div>
         </AccordionDetails>
       </StyledAccordion>

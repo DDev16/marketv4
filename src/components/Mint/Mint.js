@@ -1,12 +1,14 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
 import { Web3Context } from '../../utils/Web3Provider';
 import { NFTStorage, File } from 'nft.storage';
 import '../Mint/Mint.css';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
+const nftStorageToken = process.env.REACT_APP_NFT_STORAGE;
+
 const client = new NFTStorage({
-  token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDdGOTA4QjNBRDJGMDFGNjE2MjU1MTA0ODIwNjFmNTY5Mzc2QTg3MjYiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY3OTI5MDE5ODQyMCwibmFtZSI6Ik5FV0VTVCJ9.FGtIrIhKhgSx-10iVlI4sM_78o7jSghZsG5BpqZ4xfA', // Replace with your NFT Storage token
+  token: nftStorageToken, 
 });
 
 const Mint = () => {
@@ -19,13 +21,89 @@ const Mint = () => {
   const [imagePreview, setImagePreview] = useState('');
   const [formError, setFormError] = useState('');
   const [freeMints, setFreeMints] = useState(0);
-  const mintingFee = 50;
   const [videoPreview, setVideoPreview] = useState('');
   const [imageOnly, setImageOnly] = useState(true);
   const [nftLink, setNftLink] = useState('');
   const [royaltyRecipient, setRoyaltyRecipient] = useState('');
   const [royaltyBasisPoints, setRoyaltyBasisPoints] = useState('');
   const navigate = useNavigate();
+  const [account, setAccount] = useState(null);
+  const [networkId, setNetworkId] = useState(null);
+  const [mintingFee, setMintingFee] = useState(0);
+
+  useEffect(() => {
+    // Function to fetch the network ID
+    const fetchNetworkId = async () => {
+      try {
+        const networkId = await web3.eth.net.getId();
+        setNetworkId(networkId);
+      } catch (error) {
+        console.error('Error fetching network ID:', error);
+      }
+    };
+  
+    if (web3) {
+      fetchNetworkId();
+    }
+  }, [web3]);
+  
+  // Function to get the appropriate currency symbol based on network ID
+  const getCurrencySymbol = () => {
+    switch (networkId) {
+      case 1: // Mainnet
+        return 'ETH';
+      case 19: // songbird
+        return 'SGB';
+      case 14: // Flare
+        return 'FLR';
+      case 4: // Rinkeby
+        return 'FLR';
+      case 42: // Kovan
+        return 'FLR';
+      case 56: // Binance Smart Chain Mainnet
+        return 'BNB';
+      case 97: // Binance Smart Chain Testnet
+        return 'BNB';
+      case 100: // xDAI
+        return 'DAI';
+      case 31337: // Hardhat Network
+        return 'HH';
+      // Add more cases for other networks if needed
+      default:
+        return 'SGB'; // Default to Songbird (SGB) network
+    }
+  };
+  // Function to fetch the minting fee from the contract
+  const fetchMintingFee = useCallback(async () => {
+    try {
+      if (contract) {
+        const fee = await contract.methods.getMintingFee().call();
+        setMintingFee(fee); // No need to convert since it's already in Wei
+      }
+    } catch (error) {
+      console.error('Error fetching minting fee:', error);
+    }
+  }, [contract]);
+
+  useEffect(() => {
+    fetchMintingFee();
+  }, [fetchMintingFee]);
+
+  useEffect(() => {
+    async function getAccount() {
+      if (web3) {
+        try {
+          const accounts = await web3.eth.getAccounts();
+          setAccount(accounts[0]);
+        } catch (error) {
+          console.error('Error fetching accounts:', error);
+        }
+      }
+    }
+
+    getAccount();
+  }, [web3]);
+  
 
   useEffect(() => {
     const fetchFreeMints = async () => {
@@ -130,8 +208,35 @@ const Mint = () => {
     <div className="background">
       <div className="mint-container">
         <h1 className="mint-title">
-          Mint Your NFT
+          Create and Mint Your Own NFT
         </h1>
+
+        <div className="account-info">Connected Account: {account}</div>
+
+        <p className="mint-description">
+          Welcome to our NFT creation platform! Here, you can turn your digital creations into unique NFTs that can be bought, sold, and traded on various NFT marketplaces. Follow the steps below to get started:
+        </p>
+
+        <div className="mint-fee">Minting Fee: {mintingFee} {getCurrencySymbol()}</div>
+
+            {/* Important Information */}
+      <div className="important-info">
+        <h2>Important Information</h2>
+        <p>
+          - Minting an NFT involves a one-time fee in the connected blockchains native token, which is shown above.
+        </p>
+        <p>
+          - You have a limited number of free mints available. Keep an eye on the remaining count.
+        </p>
+        <p>
+          - Make sure your uploaded content adheres to the platform's guidelines.
+        </p>
+        <p>
+          - Once minted, your NFT will be available for trading on NFT marketplaces.
+        </p>
+
+      </div>
+          
         <form className="mint-form" onSubmit={mintToken}>
           <label htmlFor="name" className="mint-label">
             Name:
@@ -178,13 +283,9 @@ const Mint = () => {
             value={royaltyBasisPoints}
             onChange={(e) => setRoyaltyBasisPoints(e.target.value)}
           />
-
-          {/* Display royalty as percentage */}
           <div className="royalty-percentage">
-            {royaltyBasisPoints &&
-              `Royalty: ${basisPointsToPercentage(royaltyBasisPoints)}%`}
+            {royaltyBasisPoints && `Royalty: ${basisPointsToPercentage(royaltyBasisPoints)}%`}
           </div>
-
           <label htmlFor="file" className="mint-label">
             {imageOnly ? 'Image' : 'Video'}:
           </label>
@@ -212,13 +313,15 @@ const Mint = () => {
           <div>
             <label className="mint-label mint-label-free">Remaining Free Mints: {freeMints}</label>
           </div>
-          <div className="mint-fee">Minting Fee: {mintingFee} ETH</div>
           {isUploading && <div className="loading-message">Uploading NFT...</div>}
+          
           {!isUploading && nftLink && <div className="completion-message">NFT is ready to mint.</div>}
+          
+       
           <button
             type="submit"
             className="mint-button"
-            disabled={isMinting || isUploading} // Disable mint button while uploading or minting
+            disabled={isMinting || isUploading}
           >
             {isMinting ? 'Minting...' : 'Mint'}
           </button>
@@ -226,6 +329,7 @@ const Mint = () => {
       </div>
     </div>
   );
+  
 };
 
 export default Mint;

@@ -1,5 +1,5 @@
 // App.js
-import React from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Web3Provider from './utils/Web3Provider';
 import UserContext from './utils/userContext.js';
@@ -30,8 +30,21 @@ import Gaming from './components/Gaming/Gaming';
 import MyAuctions from './components/Marketplace/Auction/MyAuctions/MyAuctions';
 import AllAuctions from './components/Marketplace/Auction/GetAllAuctions';
 import Hot from './components/Marketplace/Collection/Hot/HottestCollections';
+import Countdown from './components/Countdown/Countdown'; // Import the Countdown component
+
 function App() {
-  const [user, setUser] = React.useState(null);
+  const [user, setUser] = useState(null);
+  const [isAppReleased, setIsAppReleased] = useState(false);
+  
+  // Wrap launchReleaseDate in useMemo to prevent it from changing on every render
+  const launchReleaseDate = useMemo(() => new Date('2023-08-15T00:00:00Z'), []);
+
+  useEffect(() => {
+    const now = new Date();
+    if (now >= launchReleaseDate) {
+      setIsAppReleased(true);
+    }
+  }, [launchReleaseDate]);
 
   return (
     <UserContext.Provider value={user}>
@@ -42,7 +55,8 @@ function App() {
             <div className="dashboard-wrapper">
               <UserDashboard user={user} signOutUser={() => setUser(null)} />
               <div className="content">
-                <Routes>
+                {isAppReleased ? (
+                  <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/mint" element={<Mint />} />
                   <Route path="/batch-mint" element={<BatchMint />} />
@@ -67,10 +81,17 @@ function App() {
                   <Route path="/gaming" element={<Gaming />} />
                   <Route path="/profile-settings" element={<ProfileSettings />} />
                   <Route path="/sign-in" element={<SignIn setUser={setUser} />} />
-                </Routes>
-                
-              </div>
+                  </Routes>
+               ) : (
+                <Countdown launchReleaseDate={launchReleaseDate} /> 
+              )}
             </div>
+                  
+                
+              
+               
+           
+          </div>
           </div>
           <Footer />
         </Router>

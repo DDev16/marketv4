@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { File, NFTStorage } from 'nft.storage';
 import Loading from '../Loading/Loading';
@@ -15,14 +15,76 @@ const BatchMint = () => {
   const [mintSuccess, setMintSuccess] = useState(false);
   const [error, setError] = useState(null);
   const [useSharedData, setUseSharedData] = useState(false);
-  const [mintingFee] = useState(50); // Specify the minting fee in Ether
   const [allImagesUploaded, setAllImagesUploaded] = useState(false);
   const [allFieldsFilled, setAllFieldsFilled] = useState(false);
 
 
  // Additional state for royalty information
  const [royaltyRecipients, setRoyaltyRecipients] = useState([]);
- const [royaltyBPSs, setRoyaltyBPSs] = useState([]);
+ const [royaltyBPSs, setRoyaltyBPSs] = useState(new Array(mintData.length).fill(0));
+  // State variable to hold the dynamic minting fee
+  const [mintingFee, setMintingFee] = useState(0);
+  const [networkId, setNetworkId] = useState(null);
+
+  useEffect(() => {
+    // Function to fetch the network ID
+    const fetchNetworkId = async () => {
+      try {
+        const networkId = await web3.eth.net.getId();
+        setNetworkId(networkId);
+      } catch (error) {
+        console.error('Error fetching network ID:', error);
+      }
+    };
+  
+    if (web3) {
+      fetchNetworkId();
+    }
+  }, [web3]);
+  
+  // Function to get the appropriate currency symbol based on network ID
+  const getCurrencySymbol = () => {
+    switch (networkId) {
+      case 1: // Mainnet
+        return 'ETH';
+      case 19: // songbird
+        return 'SGB';
+      case 14: // Flare
+        return 'FLR';
+      case 4: // Rinkeby
+        return 'FLR';
+      case 42: // Kovan
+        return 'FLR';
+      case 56: // Binance Smart Chain Mainnet
+        return 'BNB';
+      case 97: // Binance Smart Chain Testnet
+        return 'BNB';
+      case 100: // xDAI
+        return 'DAI';
+      case 31337: // Hardhat Network
+        return 'HH';
+      // Add more cases for other networks if needed
+      default:
+        return 'SGB'; // Default to Songbird (SGB) network
+    }
+  };
+  // Function to fetch the minting fee from the contract
+  const fetchMintingFee = async () => {
+    try {
+      const fee = await contract.methods.getMintingFee().call();
+      setMintingFee(fee); // No need to convert since it's already in Wei
+    } catch (error) {
+      console.error('Error fetching minting fee:', error);
+    }
+  };
+
+ // Fetch minting fee when the component mounts
+ useEffect(() => {
+  if (contract) {
+    fetchMintingFee();
+  }
+}, [contract]);
+
 
   const nftStorageToken = process.env.REACT_APP_NFT_STORAGE;
   
@@ -31,29 +93,41 @@ const BatchMint = () => {
   const handleChange = (index, event) => {
     const { name, value } = event.target;
   
-    // Add conditional to handle changes to royaltyRecipients and royaltyBPSs fields
-    if (name === "royaltyRecipient") {
-      setRoyaltyRecipients((prevState) => {
-        const newState = [...prevState];
-        newState[index] = value;
-        return newState;
+    setMintData(prevState => {
+      const newState = prevState.map((data, dataIndex) => {
+        if (dataIndex === index) {
+          return { ...data, [name]: value };
+        }
+        return data;
       });
-    } else if (name === "royaltyBPS") {
-      setRoyaltyBPSs((prevState) => {
-        const newState = [...prevState];
-        newState[index] = Number(value);
-        return newState;
-      });
-    } else {
-      setMintData((prevState) => {
-        const newState = [...prevState];
-        newState[index][name] = value;
-        return newState;
-      });
-    }
-    setAllFieldsFilled(mintData.every(data => data.name && data.description));
-
+  
+      setAllFieldsFilled(newState.every(data => {
+        if (useSharedData) {
+          return newState[0].name && newState[0].description;
+        }
+        return data.name && data.description;
+      }));
+  
+      if (name === "royaltyRecipient") {
+        setRoyaltyRecipients(prevState => {
+          const newRecipients = [...prevState];
+          newRecipients[index] = value;
+          return newRecipients;
+        });
+      } else if (name === "royaltyBPS") {
+        setRoyaltyBPSs(prevState => {
+          const newBPSs = [...prevState];
+          newBPSs[index] = Number(value) || 0;
+          return newBPSs;
+        });
+      }
+  
+      return newState;
+    });
   };
+  
+
+  
 
 
   const handleFilesChange = (event) => {
@@ -100,23 +174,27 @@ const BatchMint = () => {
 
 
 const handleAllImagesUpload = async () => {
-  for (let i = 0; i < mintData.length; i++) {
-    if (mintData[i].file && !mintData[i].uri) {
-      await handleImageUpload(i);
+  const allFieldsFilled = mintData.every((data, index) => {
+    if (useSharedData) {
+      return mintData[0].name && mintData[0].description;
     }
+    return data.name && data.description;
+  });
+
+  if (allFieldsFilled) {
+    for (let i = 0; i < mintData.length; i++) {
+      if (mintData[i].file && !mintData[i].uri) {
+        await handleImageUpload(i);
+      }
+    }
+    // All images uploaded
+    setAllImagesUploaded(true);
   }
-  // All images uploaded
-  setAllImagesUploaded(true);
 };
 
-  const handleAddFields = () => {
-    setMintData((prevState) => {
-      const newState = [...prevState];
-      newState.push({ name: '', description: '', file: null, uri: '' });
-      return newState;
-    });
-  };
 
+
+  
   const handleRemoveFields = (index) => {
     setMintData((prevState) => {
       const newState = [...prevState];
@@ -126,8 +204,20 @@ const handleAllImagesUpload = async () => {
   };
 
   const handleToggle = () => {
-    setUseSharedData((prevState) => !prevState);
+    setUseSharedData((prevState) => {
+      // Calculate the new allFieldsFilled value based on the current state and useSharedData
+      const newAllFieldsFilled = useSharedData
+        ? mintData.every((data) => data.name && data.description)
+        : mintData.every((data) => data.name && data.description) && mintData.length > 0;
+  
+      // Set the new allFieldsFilled state
+      setAllFieldsFilled(newAllFieldsFilled);
+  
+      return !prevState;
+    });
   };
+  
+  
 
   const handleBatchMint = async (event) => {
     event.preventDefault();
@@ -145,7 +235,6 @@ const handleAllImagesUpload = async () => {
   
       const numNFTs = mintData.length;
       const calculatedFee = web3.utils.toWei((mintingFee * numNFTs).toString(), 'ether'); // Convert to Wei
-  
       // Create an array of royalty recipients and BPS values
       const royaltyRecipientsArray = useSharedData
         ? Array(mintData.length).fill(royaltyRecipients[0])
@@ -153,6 +242,8 @@ const handleAllImagesUpload = async () => {
       const royaltyBPSsArray = useSharedData
         ? Array(mintData.length).fill(royaltyBPSs[0])
         : royaltyBPSs;
+
+        
   
       // Call the contract method to mint NFTs with the calculated fee
       await contract.methods
@@ -193,15 +284,22 @@ const handleAllImagesUpload = async () => {
         <div className="Batch-Title">
           <h1>Batch Minting</h1>
         </div>
-        <p>To ensure the comprehensive sharing of data across all your minted NFTs, please diligently complete the initial form in its entirety. Upon completion, click on the 'Use Shared Data' toggle to facilitate the automatic data sharing with all NFTs.</p>
-        <p>If you choose not to share data, kindly proceed to manually input the required information for each NFT individually, ensuring that distinctive data is provided for each one.</p>
-
-        <h2>Minting Fee: {mintingFee} Ether</h2>
+        <p>
+          Transform your collection of digital artworks into NFTs effortlessly using our Batch Minting feature. This powerful tool enables you to mint multiple pieces of art into individual NFTs all at once. Follow the instructions below to begin the batch minting process:
+        </p>
+        <p>
+          To ensure uniformity across your minted NFTs, fill out the initial form completely. Once finished, toggle the 'Use Shared Data' option to automatically apply the same information to all the NFTs.
+        </p>
+        <p>
+          If you wish to give each NFT unique details, simply disable the 'Use Shared Data' option and input distinct information for each artwork.
+        </p>
+        <p>To ensure Successful Batch Mint, We recommend Batch minting in batches of 10, Anything more it will throw a gas error.</p>
+              
+        <h2>Minting Fee: {mintingFee}{getCurrencySymbol()}</h2>
         <h2>Number of NFTs: {mintData.length}</h2>
-        <h2>Total Cost: {totalCost} Ether</h2> {/* Display the total cost */}
+        <h2>Total Cost: {totalCost} {getCurrencySymbol()}</h2>
         <form onSubmit={handleBatchMint}>
           <div className="shared-data-toggle">
-            {/* Use Shared Data Tooltip */}
             <OverlayTrigger
               placement="top"
               overlay={<Tooltip id="shared-data-tooltip">Input name/description then toggle to share data across all Minted NFTs</Tooltip>}
@@ -210,7 +308,6 @@ const handleAllImagesUpload = async () => {
             </OverlayTrigger>
             <input type="checkbox" id="shared-data" checked={useSharedData} onChange={handleToggle} />
           </div>
-          {/* File Input Tooltip */}
           <OverlayTrigger placement="top" overlay={<Tooltip id="file-input-tooltip">Upload up to 50 at once</Tooltip>}>
             <input
               type="file"
@@ -225,6 +322,7 @@ const handleAllImagesUpload = async () => {
           {mintData.length > 0 &&
             mintData.map((mintField, index) => (
               <div key={index} className="mint-field">
+                {/* NFT Details */}
                 <label htmlFor={`name-${index}`}>Token Name:</label>
                 <input
                   type="text"
@@ -248,52 +346,50 @@ const handleAllImagesUpload = async () => {
                   aria-label="Token Description"
                   disabled={useSharedData}
                 />
-                 <label htmlFor={`royaltyRecipient-${index}`}>Royalty Recipient:</label>
-<input
-  type="text"
-  id={`royaltyRecipient-${index}`}
-  name="royaltyRecipient"
-  value={useSharedData ? royaltyRecipients[0] : royaltyRecipients[index] || ''}
-  onChange={(event) => handleChange(index, event)}
-  placeholder="Royalty Recipient Address"
-  required
-  aria-label="Royalty Recipient Address"
-  disabled={useSharedData}
-/>
+                {/* Royalty Information */}
+                <label htmlFor={`royaltyRecipient-${index}`}>Royalty Recipient:</label>
+                <input
+                  type="text"
+                  id={`royaltyRecipient-${index}`}
+                  name="royaltyRecipient"
+                  value={useSharedData ? royaltyRecipients[0] : royaltyRecipients[index] || ''}
+                  onChange={(event) => handleChange(index, event)}
+                  placeholder="Royalty Recipient Address"
+                  required
+                  aria-label="Royalty Recipient Address"
+                  disabled={useSharedData}
+                />
+                <label htmlFor={`royaltyBPS-${index}`}>Royalty Basis Points:</label>
+                <input
+                  type="number"
+                  id={`royaltyBPS-${index}`}
+                  name="royaltyBPS"
+                  value={useSharedData ? royaltyBPSs[0] : royaltyBPSs[index] || ''}
+                  onChange={(event) => handleChange(index, event)}
+                  placeholder="Royalty Percentage in BPS"
+                  required
+                  aria-label="Royalty Percentage in BPS"
+                  min={0}
+                  max={10000}
+                  disabled={useSharedData}
+                />
+                <div className="royalty-percentage">
+  {royaltyBPSs[index] && `Royalty: ${basisPointsToPercentage(royaltyBPSs[index])}%`}
+</div>
+                {/* Image Upload */}
+                {uploading ? <Loading /> : (
+                  // Inside the render method
+<button
+  type="button"
+  onClick={handleAllImagesUpload}
+  disabled={(uploading || !allFieldsFilled) && !useSharedData}
+>
+  Upload All Images
+</button>
 
-<label htmlFor="royaltyBasisPoints" className="mint-label">
-            Royalty Basis Points:
-            <span className="explanation">(e.g., 100 basis points = 1% royalty)</span>
-          </label><input
-  type="number"
-  id={`royaltyBPS-${index}`}
-  name="royaltyBPS"
-  value={useSharedData ? royaltyBPSs[0] : royaltyBPSs[index] || ''}
-  onChange={(event) => handleChange(index, event)}
-  placeholder="Royalty Percentage in BPS"
-  required
-  aria-label="Royalty Percentage in BPS"
-  min={0}
-  max={10000}
-  disabled={useSharedData}
-/>
 
-{/* Display royalty as percentage */}
-<div className="royalty-percentage">
-            {royaltyBPSs &&
-              `Royalty: ${basisPointsToPercentage(royaltyBPSs)}%`}
-          </div>
-
-                {
-  uploading 
-    ? <Loading /> 
-    : (
-      <button type="button" onClick={handleAllImagesUpload} disabled={uploading}>
-        Upload All Images
-      </button>
-    )
-}
-
+                
+                )}
                 {mintField.file && (
                   <div>
                     <img
@@ -303,6 +399,7 @@ const handleAllImagesUpload = async () => {
                     />
                   </div>
                 )}
+                {/* Token URI */}
                 <input
                   type="text"
                   name="uri"
@@ -311,27 +408,24 @@ const handleAllImagesUpload = async () => {
                   placeholder="Token URI"
                   aria-label="Token URI"
                 />
+                {/* Remove Button */}
                 <button type="button" onClick={() => handleRemoveFields(index)}>
                   Remove
                 </button>
               </div>
             ))}
+          {/* No Files Added */}
           {mintData.length === 0 && (
             <div className="mint-field">
               <p>No files added.</p>
             </div>
           )}
-        
-          {
-  loading 
-    ? <MintingLoading /> 
-    : (
-      <button type="submit" disabled={!allImagesUploaded}>
-        Batch Mint
-      </button>
-    )
-}
-
+          {/* Batch Mint Button */}
+          {loading ? <MintingLoading /> : (
+            <button type="submit" disabled={!allImagesUploaded}>
+              Batch Mint
+            </button>
+          )}
         </form>
       </div>
     </div>

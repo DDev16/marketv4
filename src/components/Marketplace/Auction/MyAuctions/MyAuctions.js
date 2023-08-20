@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Web3 from 'web3';
 import styles from '../../../../components/Marketplace/Auction/MyAuctions/MyAuctions.css';
 import { Carousel } from 'react-responsive-carousel';
@@ -7,13 +7,10 @@ import styled from 'styled-components';
 import { keyframes } from 'styled-components';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import Swal from 'sweetalert2';
+import { Web3Context } from '../../../../utils/Web3Provider.js';
 
 
-const CONTRACT_ADDRESS = process.env.REACT_APP_AUCTION_ADDRESS_31337;
-// Import the ABI from the environment variable
-const AuctionContractABI = JSON.parse(process.env.REACT_APP_AUCTION_ABI);
 
-// ... Rest of your code remains the same
 
 // ERC721 ABI
 const ERC721_ABI = [
@@ -34,6 +31,7 @@ const MyAuctionsContainer = styled.div`
     background-color: #f9f9f9; /* Subtle background color */
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
     border-radius: 10px; /* Rounded corners */
+    margin-top:50px;
 `;
 const Title = styled.h1`
     font-size: 40px; /* Further increased font size for a bold impact */
@@ -181,30 +179,22 @@ const Button = styled.button`
 
 const MyAuctions = () => {
     const [auctions, setAuctions] = useState([]);
-    const web3 = new Web3(window.ethereum);
+    const { web3, auction } = useContext(Web3Context); // Access web3 and auction from the context
+
     const [accounts, setAccounts] = useState(null); // <-- add this state
-    const auctionContract = new web3.eth.Contract(AuctionContractABI, CONTRACT_ADDRESS);
-
     const fetchAuctions = async () => {
-        if (window.ethereum) {
-            window.web3 = new Web3(window.ethereum);
-            try {
-                // Request account access
-                await window.ethereum.request({ method: 'eth_requestAccounts' });
-            } catch (error) {
-                // User denied account access...
-                console.error("User denied account access")
-            }
-        } else {
-            window.alert('Non-Ethereum browser detected. Please install MetaMask!');
-            return;
-        }
+      try {
+          // Request account access
+          await window.ethereum.request({ method: 'eth_requestAccounts' });
+      } catch (error) {
+          // User denied account access...
+          console.error("User denied account access");
+          return;
+      }
 
-        const web3 = window.web3;
         const accounts = await web3.eth.getAccounts();
         setAccounts(accounts);
-        const auctionContract = new web3.eth.Contract(AuctionContractABI, CONTRACT_ADDRESS);
-        const results = await auctionContract.methods.myAuctions().call({ from: accounts[0] });
+        const results = await auction.methods.myAuctions().call({ from: accounts[0] });
         const myActiveAuctions = results[0];
         const auctionIndexes = results[1];
 
@@ -254,7 +244,7 @@ const MyAuctions = () => {
           });
       
           try {
-            await auctionContract.methods.endAuction(auctionIndex).send({ from: accounts[0] });
+            await auction.methods.endAuction(auctionIndex).send({ from: accounts[0] });
             fetchAuctions();
             // Show a success message when the auction is successfully ended
             Swal.fire({
@@ -307,7 +297,7 @@ const MyAuctions = () => {
             }
           });
       
-          await auctionContract.methods.cancelAuction(auctionIndex).send({ from: accounts[0] });
+          await auction.methods.cancelAuction(auctionIndex).send({ from: accounts[0] });
           fetchAuctions();
           // Show a success message when the auction is successfully canceled
           Swal.fire({
@@ -325,9 +315,13 @@ const MyAuctions = () => {
         }
       };
       
+     
+    
       useEffect(() => {
-        fetchAuctions();
-      }, []);
+        if (web3 && auction) {
+          fetchAuctions();
+        }
+      }, [web3, auction]);
 
     return (
         <MyAuctionsContainer>

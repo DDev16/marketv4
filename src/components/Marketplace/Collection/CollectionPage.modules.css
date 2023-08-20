@@ -132,7 +132,7 @@
 .card video {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: fill;
 }
 
 .banner {
@@ -184,7 +184,7 @@ width:700px;
   box-shadow: var(--box-shadow-small);
   margin: var(--spacing-small);
   text-align: center;
-  width: 450px;
+  width: 350px;
 }
 
 .card img,

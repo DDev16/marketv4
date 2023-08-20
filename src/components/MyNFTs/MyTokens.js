@@ -122,15 +122,27 @@ const totalPages = Math.ceil(filteredTokens().length / tokensPerPage);
   };
 
   const handleListToken = async (contractAddress, tokenId, priceInWei) => {
+
+  
+    // Show the SweetAlert2 modal with a "Processing" message
+    
     try {
       const accounts = await web3.eth.getAccounts();
       const account = accounts[0];
-      const listingFee = web3.utils.toWei('0.01', 'ether');  // Convert 0.01 Ether to wei
-  
+      const listingFee = web3.utils.toWei('83', 'ether');  // Convert 0.01 Ether to wei
+      Swal.fire({
+        title: 'Processing',
+        text: 'Transaction in progress. Please wait...',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
       
     // Approve all tokens for marketplace contract
     await approveAllTokens();
-
+    
       // Call listToken method
       await marketplaceContract.methods
         .listToken(contractAddress, tokenId, priceInWei)
@@ -143,7 +155,11 @@ const totalPages = Math.ceil(filteredTokens().length / tokensPerPage);
   
       // Refetch tokens
       fetchTokens();
+      Swal.close();
+
     } catch (error) {
+      Swal.close();
+
       console.error('An error occurred while listing the token:', error);
     }
   };
@@ -152,6 +168,18 @@ const totalPages = Math.ceil(filteredTokens().length / tokensPerPage);
     try {
       const accounts = await web3.eth.getAccounts();
       const account = accounts[0];
+      Swal.fire({
+        title: 'Processing',
+        text: 'Transaction in progress. Please wait...',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+
+     
+
 
       await marketplaceContract.methods
         .cancelListing(contractAddress, tokenId)
@@ -161,7 +189,10 @@ const totalPages = Math.ceil(filteredTokens().length / tokensPerPage);
 
       // Update token status
       updateTokenStatus(contractAddress, tokenId);
+      Swal.close();
     } catch (error) {
+      Swal.close();
+
       console.error('An error occurred while cancelling the token listing:', error);
     }
   };

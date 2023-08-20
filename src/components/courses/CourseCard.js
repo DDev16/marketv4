@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useCallback } from 'react';
 import "../../components/courses/learning.css"
 
 
@@ -262,8 +262,11 @@ const LearningPlatform = () => {
         },
       ],
     },
+
+    
   ]);
 
+  
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState({});
@@ -294,22 +297,22 @@ const LearningPlatform = () => {
     setQuizCompleted(true);
   };
 
-  const calculateQuizResult = () => {
+  const calculateQuizResult = useCallback(() => {
     if (selectedCourse && selectedCourse.questions) {
       const questions = selectedCourse.questions;
       let correctCount = 0;
-
+  
       for (const question of questions) {
         if (selectedAnswers[question.id] === question.correctAnswer) {
           correctCount++;
         }
       }
-
+  
       const percentage = (correctCount / questions.length) * 100;
       setQuizResult(percentage);
     }
-  };
-
+  }, [selectedCourse, selectedAnswers]);
+  
   const handleNextQuestion = () => {
     setCurrentStep((prevStep) => prevStep + 1);
     setShowExplanation(false);
@@ -414,14 +417,16 @@ const LearningPlatform = () => {
         setTimeLeft((prevTime) => prevTime - 1);
       }, 1000);
     }
-
+  
     if (timeLeft === 0) {
       calculateQuizResult();
       setQuizCompleted(true);
     }
-
+  
     return () => clearTimeout(timer);
-  }, [quizStarted, timeLeft]);
+  }, [quizStarted, timeLeft, calculateQuizResult]);
+  
+  
 
   return (
     <div className="learning-platform">

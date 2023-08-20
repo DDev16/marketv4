@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext,useCallback } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import '../../../../components/Marketplace/Collection/Hot/HottestCollections.modules.css';
 import { Web3Context } from '../../../../utils/Web3Provider'; // Import the Web3Context from the correct path
-import Web3 from 'web3';
 import { useNavigate } from 'react-router-dom';
 
 const formatTotalVolume = (totalVolume, currencySymbol) => {
@@ -49,32 +48,39 @@ const formatTotalVolume = (totalVolume, currencySymbol) => {
       navigate(`/collections/${id}`);
     };
 
-    // Function to fetch the top 10 collections using the marketplaceContract
-    const getTop10Collections = async () => {
-      try {
-        const top10Collections = await marketplaceContract.methods.getTop10HottestCollections().call();
-        // Now 'top10Collections' will contain an array of Collection objects with name and imageUrl properties
-    
-        // Fetch total volume for each collection and add it to the collection object
-        const collectionsWithTotalVolume = await Promise.all(
-          top10Collections.map(async (collection) => {
+    // Wrap the getTop10Collections function using useCallback
+  const getTop10Collections = useCallback(async () => {
+    try {
+      const top10Collections = await marketplaceContract.methods.getTop10HottestCollections().call();
+
+      // Fetch total volume for each collection and add it to the collection object
+      const collectionsWithTotalVolume = await Promise.all(
+        top10Collections.map(async (collection) => {
+          try {
             const totalVolume = await marketplaceContract.methods.getTotalVolume(collection.collectionId).call();
             return { ...collection, totalVolume };
-          })
-        );
-    
-        console.log('Top 10 Collections:', collectionsWithTotalVolume); // Log the fetched data with total volume
-        setCarouselItems(collectionsWithTotalVolume);
-      } catch (error) {
-        console.error('Error fetching top 10 collections:', error);
-      }
-    };
-  
-    useEffect(() => {
-      if (marketplaceContract) {
-        getTop10Collections();
-      }
-    }, [marketplaceContract]); 
+          } catch (error) {
+            console.error(`Error fetching total volume for collection ${collection.collectionId}:`, error);
+            return null; // Skip this collection by returning null
+          }
+        })
+      );
+
+      // Filter out null entries (collections that had errors)
+      const validCollections = collectionsWithTotalVolume.filter(collection => collection !== null);
+
+      console.log('Top 10 Collections:', validCollections);
+      setCarouselItems(validCollections);
+    } catch (error) {
+      console.error('Error fetching top 10 collections:', error);
+    }
+  }, [marketplaceContract]);
+
+  useEffect(() => {
+    if (marketplaceContract) {
+      getTop10Collections();
+    }
+  }, [marketplaceContract, getTop10Collections]);
     
   
   
