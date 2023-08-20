@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
 
 
 const contractABI = JSON.parse(process.env.REACT_APP_PWOLRD_ABI);
-const contractAddress = '0x1F2904659a0638b76aF6d1579a65D3122f83d6A1';
+const contractAddress = '0xCDBf27671be6103d71452368B756791C4D7b2d5D';
 
 const maxSupply = 486;
 

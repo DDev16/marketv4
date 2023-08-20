@@ -10,14 +10,6 @@ const AuctionAbi = JSON.parse(process.env.REACT_APP_AUCTION_ABI);
 
 export const Web3Context = createContext();
 
-const rpcUrls = {
-  19: process.env.REACT_APP_RPC_URL_19,
-  14: process.env.REACT_APP_RPC_URL_14,
-  5: process.env.REACT_APP_RPC_URL_5,
-  31337: process.env.REACT_APP_RPC_URL_31337,
-};
-
-
 const contractAddresses = {
   19: {
     contract: process.env.REACT_APP_CONTRACT_ADDRESS_19,
@@ -55,57 +47,47 @@ const Web3Provider = ({ children }) => {
   useEffect(() => {
     const initializeWeb3 = async () => {
       console.log("Initializing Web3...");
-    
+
       const provider = await detectEthereumProvider();
-    
+
       if (provider) {
         try {
           console.log("Provider detected. Requesting accounts...");
           await provider.request({ method: 'eth_requestAccounts' });
           setConnected(true);
-    
+
           const web3Instance = new Web3(provider);
           setWeb3(web3Instance);
-    
+
           const networkId = await web3Instance.eth.net.getId();
           console.log("Detected network ID:", networkId);
-    
+
           if (networkId in contractAddresses) {
             const { contract: contractAddress, marketplace: marketplaceAddress, auction: auctionAddress } = contractAddresses[networkId];
-    
+
             console.log("Contract Address:", contractAddress);
             console.log("Marketplace Address:", marketplaceAddress);
             console.log("Auction Address:", auctionAddress);
-    
-            const rpcUrl = rpcUrls[networkId];
-            if (!rpcUrl) {
-              window.alert('RPC URL not defined for this network');
-              return;
-            }
-    
-            const customProvider = new Web3.providers.HttpProvider(rpcUrl);
-            const web3InstanceWithRpc = new Web3(customProvider);
-    
-            const contractInstance = new web3InstanceWithRpc.eth.Contract(
+
+            const contractInstance = new web3Instance.eth.Contract(
               myNFTAbi,
               contractAddress
             );
-    
-            const marketplaceInstance = new web3InstanceWithRpc.eth.Contract(
+
+            const marketplaceInstance = new web3Instance.eth.Contract(
               MarketplaceAbi,
               marketplaceAddress
             );
-    
-            const auctionInstance = new web3InstanceWithRpc.eth.Contract(
+            const auctionInstance = new web3Instance.eth.Contract(
               AuctionAbi,
               auctionAddress
             );
-    
+
             setContract(contractInstance);
             setMarketplaceContract(marketplaceInstance);
             setAuctionContract(auctionInstance);
             setInitialized(true);
-    
+
             console.log("Contracts initialized.");
           } else {
             window.alert('Unsupported network');
@@ -114,13 +96,13 @@ const Web3Provider = ({ children }) => {
           console.error('Failed to connect to MetaMask:', error);
           window.alert('Failed to connect to MetaMask');
         }
-    
+
         const handleNetworkChange = () => {
           console.log("Network change detected.");
           setInitialized(false);
           initializeWeb3();
         };
-    
+
         provider.on('chainChanged', handleNetworkChange);
       } else {
         console.error('MetaMask provider not found.');

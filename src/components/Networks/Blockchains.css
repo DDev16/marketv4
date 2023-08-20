@@ -33,6 +33,14 @@
     animation: slideAnimation 20s linear infinite; /* Adjust the animation duration as needed */
 }
 
+/* Styles for the blockchain name */
+.blockchain-slide p {
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff; /* Adjust the color as needed */
+    text-transform: uppercase;
+    margin: 0;
+  }
 /* Hide the arrows for the custom slider */
 .custom-slider .slick-prev,
 .custom-slider .slick-next {

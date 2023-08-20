@@ -140,21 +140,28 @@ const formatTotalVolume = (totalVolume, currencySymbol) => {
       <div className="hottest-collection">
         <h2>🔥 Top 10 Collections 🔥</h2>
         <Slider {...carouselSettings}>
-          {carouselItems.map((collection) => (
-            
-            <div key={collection.collectionId} className="carousel-item" onClick={() => navigateToCollectionPage(collection.collectionId)}>
-              {/* Construct the URL for the logo image using the IPFS gateway */}
-              <img
-                src={`https://ipfs.io/ipfs/${collection.logoIPFS}`}
-                alt={`Item ${collection.collectionId}`}
-              />
-              <div className="collection-name">{collection.name}</div>
-              <div className="total-volume">{`Total Volume: ${formatTotalVolume(
-              web3.utils.fromWei(collection.totalVolume, 'ether'),
-              getCurrencySymbol()
-            )}`}</div>
-            </div>
-          ))}
+        {carouselItems.map((collection) => (
+  <div key={collection.collectionId} className="carousel-item" onClick={() => navigateToCollectionPage(collection.collectionId)}>
+    {collection.logoIPFS && (
+      <>
+        {/* Construct the URL for the logo image using the IPFS gateway */}
+        <img
+          src={`https://ipfs.io/ipfs/${collection.logoIPFS}`}
+          alt={`Item ${collection.collectionId}`}
+          onError={(e) => {
+            e.target.onerror = null; // Reset the error event handler to prevent an infinite loop
+            e.target.src = ''; // Set a blank image source to prevent further attempts
+          }}
+        />
+        <div className="collection-name">{collection.name}</div>
+        <div className="total-volume">{`Total Volume: ${formatTotalVolume(
+          web3.utils.fromWei(collection.totalVolume, 'ether'),
+          getCurrencySymbol()
+        )}`}</div>
+      </>
+    )}
+  </div>
+))}
         </Slider>
       </div>
     );

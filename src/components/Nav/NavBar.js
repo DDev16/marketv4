@@ -13,9 +13,12 @@ const options= [
   { value: '14', label: 'Flare' },
   { value: '19', label: 'Songbird' },
   { value: '5', label: 'Goerli' },
+  { value: '8453', label: 'Base (Coming Soon)', disabled: true },
   { value: '1', label: 'Ethereum (Coming Soon)', disabled: true },
   { value: '13', label: 'Binance (Coming Soon)', disabled: true },
   { value: '5', label: 'Polygon (Coming Soon)', disabled: true },
+  { value: '5', label: 'Avalanche (Coming Soon)', disabled: true },
+
   { value: '31337', label: 'Localhost' },
 ];
 
