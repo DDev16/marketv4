@@ -57,7 +57,7 @@ function Countdown({ launchReleaseDate }) {
           Don't miss out on the excitement. Get ready to explore and trade your favorite NFTs like never before!
         </p>
         <p className="countdown-chains">
-          Supported Chains: Ethereum, Binance, Songbird, Flare, Polygon, Avalanche Base Network
+          Supported Chains: Ethereum, Binance, Songbird, Flare, Polygon, Avalanche, and Base Network. More to be integrated! 
         </p>
         <p className="countdown-features">
           Create your own art and turn them into NFTs, build collections, buy, sell, auction and trade across multiple networks.

@@ -293,7 +293,7 @@ const handleAllImagesUpload = async () => {
         <p>
           If you wish to give each NFT unique details, simply disable the 'Use Shared Data' option and input distinct information for each artwork.
         </p>
-        <p>To ensure Successful Batch Mint, We recommend Batch minting in batches of 10, Anything more it will throw a gas error.</p>
+        <p>To ensure Successful Batch Mint, We recommend Batch minting in batches of 10 on songbird and 4 on Flare to prevent gas estimation error, Anything more it will throw a gas error.</p>
               
         <h2>Minting Fee: {mintingFee}{getCurrencySymbol()}</h2>
         <h2>Number of NFTs: {mintData.length}</h2>
@@ -308,7 +308,7 @@ const handleAllImagesUpload = async () => {
             </OverlayTrigger>
             <input type="checkbox" id="shared-data" checked={useSharedData} onChange={handleToggle} />
           </div>
-          <OverlayTrigger placement="top" overlay={<Tooltip id="file-input-tooltip">Upload up to 50 at once</Tooltip>}>
+          <OverlayTrigger placement="top" overlay={<Tooltip id="file-input-tooltip">recommended to upload in small batches</Tooltip>}>
             <input
               type="file"
               name="file"
