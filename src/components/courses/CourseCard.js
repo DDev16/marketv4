@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import "../../components/courses/learning.css"
 
 
@@ -10,7 +10,6 @@ const LearningPlatform = () => {
       content: 'Blockchain is a decentralized distributed ledger that records transactions across multiple computers. In this course, you will learn the fundamentals of blockchain technology.',
       instructor: 'John Doe',
       imageUrl: 'https://source.unsplash.com/random/450x200?psychedelic',
-
       slides: [
         {
             id: 1,
@@ -62,7 +61,6 @@ const LearningPlatform = () => {
       content: 'Blockchain security is a critical aspect of maintaining the integrity and trustworthiness of blockchain networks. In this course, you will learn about various security threats and measures to protect blockchain systems.',
       instructor: 'Alice Johnson',
       imageUrl: 'https://source.unsplash.com/random/450x200?psychedelic',
-
       slides: [
         {
           id: 1,
@@ -262,11 +260,8 @@ const LearningPlatform = () => {
         },
       ],
     },
-
-    
   ]);
 
-  
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState({});
@@ -275,7 +270,6 @@ const LearningPlatform = () => {
   const [quizStarted, setQuizStarted] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
   const [quizCompleted, setQuizCompleted] = useState(false);
-
   const handleCourseSelection = (course) => {
     setSelectedCourse(course);
     setCurrentStep(0);
@@ -286,54 +280,48 @@ const LearningPlatform = () => {
     setTimeLeft(0);
     setQuizCompleted(false);
   };
-
   const handleStartQuiz = () => {
     setQuizStarted(true);
     setTimeLeft(1800); // 30 minutes in seconds
   };
-
   const handleQuizSubmit = () => {
     calculateQuizResult();
     setQuizCompleted(true);
   };
 
-  const calculateQuizResult = useCallback(() => {
+  const calculateQuizResult = () => {
     if (selectedCourse && selectedCourse.questions) {
       const questions = selectedCourse.questions;
       let correctCount = 0;
-  
+
       for (const question of questions) {
         if (selectedAnswers[question.id] === question.correctAnswer) {
           correctCount++;
         }
       }
-  
+
       const percentage = (correctCount / questions.length) * 100;
       setQuizResult(percentage);
     }
-  }, [selectedCourse, selectedAnswers]);
-  
+  };
+
   const handleNextQuestion = () => {
     setCurrentStep((prevStep) => prevStep + 1);
     setShowExplanation(false);
   };
-
   const handlePreviousQuestion = () => {
     setCurrentStep((prevStep) => prevStep - 1);
     setShowExplanation(false);
   };
-
   const handleOptionSelect = (questionId, optionId) => {
     setSelectedAnswers((prevAnswers) => ({
       ...prevAnswers,
       [questionId]: optionId,
     }));
   };
-
   const renderQuizContent = () => {
     if (selectedCourse) {
       const { title, content, questions } = selectedCourse;
-
       if (quizCompleted) {
         return (
           <div className="quiz-result">
@@ -344,11 +332,9 @@ const LearningPlatform = () => {
           </div>
         );
       }
-
       if (quizStarted) {
         const currentQuestion = questions[currentStep];
         const isLastQuestion = currentStep === questions.length - 1;
-
         return (
           <div className="quiz-content">
             <h3>{currentQuestion.text}</h3>
@@ -395,7 +381,6 @@ const LearningPlatform = () => {
           </div>
         );
       }
-
       return (
         <div className="course-details">
           <h2>{title}</h2>
@@ -406,10 +391,8 @@ const LearningPlatform = () => {
         </div>
       );
     }
-
     return null;
   };
-
   useEffect(() => {
     let timer;
     if (quizStarted && timeLeft > 0) {
@@ -417,16 +400,14 @@ const LearningPlatform = () => {
         setTimeLeft((prevTime) => prevTime - 1);
       }, 1000);
     }
-  
+
     if (timeLeft === 0) {
       calculateQuizResult();
       setQuizCompleted(true);
     }
-  
+
     return () => clearTimeout(timer);
-  }, [quizStarted, timeLeft, calculateQuizResult]);
-  
-  
+  }, [quizStarted, timeLeft]);
 
   return (
     <div className="learning-platform">
@@ -489,5 +470,4 @@ const LearningPlatform = () => {
     </div>
   );
 };
-
 export default LearningPlatform;

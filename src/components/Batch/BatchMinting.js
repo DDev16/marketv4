@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { File, NFTStorage } from 'nft.storage';
 import Loading from '../Loading/Loading';
@@ -69,21 +69,20 @@ const BatchMint = () => {
     }
   };
   // Function to fetch the minting fee from the contract
-  const fetchMintingFee = async () => {
+  const fetchMintingFee = useCallback(async () => {
     try {
       const fee = await contract.methods.getMintingFee().call();
-      setMintingFee(fee); // No need to convert since it's already in Wei
+      setMintingFee(fee);
     } catch (error) {
       console.error('Error fetching minting fee:', error);
     }
-  };
-
- // Fetch minting fee when the component mounts
- useEffect(() => {
-  if (contract) {
-    fetchMintingFee();
-  }
-}, [contract]);
+  }, [contract]);
+  
+  useEffect(() => {
+    if (contract) {
+      fetchMintingFee();
+    }
+  }, [contract, fetchMintingFee]);
 
 
   const nftStorageToken = process.env.REACT_APP_NFT_STORAGE;

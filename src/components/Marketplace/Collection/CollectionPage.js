@@ -8,6 +8,15 @@ import Confetti from 'react-confetti';
 import Swal from 'sweetalert2';
 import placeholder from "../../../assets/logo.png";
 import Loading from '../../Loading/Loading.js';
+import Pagination from '@mui/material/Pagination'; // Import Pagination component
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+
+
 const ERC721_ABI = [
   {
     constant: true,
@@ -63,7 +72,13 @@ const CollectionPage = () => {
  const [sortByListed, setSortByListed] = useState('all'); // 'all' for both listed and unlisted, 'listed' for listed only, 'unlisted' for unlisted only
  const [networkId, setNetworkId] = useState(null);
  const [isCollectionVisible, setIsCollectionVisible] = useState(true);
+ const [currentPage, setCurrentPage] = useState(1);
+ const [tokensPerPage, setTokensPerPage] = useState(100); // Default page size is 10
 
+ const indexOfLastToken = currentPage * tokensPerPage;
+const indexOfFirstToken = indexOfLastToken - tokensPerPage;
+
+ 
  useEffect(() => {
   // Function to fetch the network ID
   const fetchNetworkId = async () => {
@@ -155,6 +170,7 @@ const getCurrencySymbol = () => {
     }
   }, [tokens, sortOrder, sortByListed]);
   
+  const tokensToDisplay = sortedTokens.slice(indexOfFirstToken, indexOfLastToken);
 
   useEffect(() => {
     const fetchCollectionDetails = async () => {
@@ -413,7 +429,11 @@ const getCurrencySymbol = () => {
     return <Loading />; 
   }
 
- 
+  const totalPages = Math.ceil(sortedTokens.length / tokensPerPage);
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
   
   return (
     <div className="collectionPage">
@@ -477,10 +497,36 @@ const getCurrencySymbol = () => {
   </select>
 </div>
 
+ <Box className="pagination-container">
+  <Pagination
+    count={totalPages}
+    page={currentPage}
+    onChange={(event, newPage) => handlePageChange(newPage)}
+    className="pagination"
+  />
 
-    <div className="cardContainer">
-  {sortedTokens.map((token, index) => (
-    <div className="card" key={index}>
+  <FormControl>
+    <InputLabel id="page-size-label" className="pagination-label">
+      Page Size
+    </InputLabel>
+    <Select
+      labelId="page-size-label"
+      value={tokensPerPage}
+      onChange={(event) => setTokensPerPage(event.target.value)}
+      className="pagination-select"
+    >
+      <MenuItem value={10}>10</MenuItem>
+      <MenuItem value={20}>20</MenuItem>
+      <MenuItem value={50}>50</MenuItem>
+      <MenuItem value={100}>100</MenuItem>
+    </Select>
+  </FormControl>
+</Box>
+
+
+  <div className="cardContainer">
+        {tokensToDisplay.map((token, index) => (
+          <div className="card" key={index}>
       {/* Check if the collection is visible before rendering the image */}
       {isCollectionVisible ? (
         token.image.toLowerCase().endsWith('.mp4') ? (

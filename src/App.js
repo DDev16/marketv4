@@ -37,7 +37,7 @@ function App() {
   const [isAppReleased, setIsAppReleased] = useState(false);
   
   // Wrap launchReleaseDate in useMemo to prevent it from changing on every render
-  const launchReleaseDate = useMemo(() => new Date('2023-08-28T00:00:00Z'), []);
+  const launchReleaseDate = useMemo(() => new Date('2023-08-15T12:00:00Z'), []);
 
   useEffect(() => {
     const now = new Date();
