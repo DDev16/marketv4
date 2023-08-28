@@ -104,6 +104,8 @@ const Web3Provider = ({ children }) => {
         };
 
         provider.on('chainChanged', handleNetworkChange);
+
+        
       } else {
         console.error('MetaMask provider not found.');
         window.alert('Please install MetaMask!');

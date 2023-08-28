@@ -255,7 +255,7 @@ const [showExtraNFTAlert, setShowExtraNFTAlert] = useState(false);
 
      // Define the function to handle the link click
      function handleEnterPunkWorldClick() {
-      window.open('https://punkworld.vercel.app/', '_blank');
+      window.open('https://punkworlds-sandbox.vercel.app/', '_blank');
     }
   
 
@@ -275,7 +275,7 @@ const [showExtraNFTAlert, setShowExtraNFTAlert] = useState(false);
   
           <p>Minting fees: {fees} FLR</p>
           <p>
-            Each Voxel Vandal NFT is a unique collectible that comes with exclusive features and benefits ie; Early Access to Punk world Metaverse, Airdrops, Staking and more. Mint your own
+            Each Voxel Vandal NFT is a unique collectible that comes with exclusive features and benefits ie; Early Access to Punk world Metaverse, Airdrops, Soft-Staking, Blockchain Gaming and more. Mint your own
             Voxel Vandal NFT and join a community of passionate collectors!
           </p>
           <p>

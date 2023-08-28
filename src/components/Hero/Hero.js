@@ -112,7 +112,7 @@ const IconWrapper = styled.div`
 
 // Hero Component
 const Hero = () => {
-    const phrases = ['Welcome to Flare Fire Tools', 'Providing the Best Tools', 'Quality You Can Trust']; // add more phrases if needed
+    const phrases = ['Welcome to Flare Fire', 'Providing the Best Tools', 'Quality You Can Trust']; // add more phrases if needed
     const [index, setIndex] = useState(0);
 
     useEffect(() => {

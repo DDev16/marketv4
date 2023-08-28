@@ -31,13 +31,14 @@ import MyAuctions from './components/Marketplace/Auction/MyAuctions/MyAuctions';
 import AllAuctions from './components/Marketplace/Auction/GetAllAuctions';
 import Hot from './components/Marketplace/Collection/Hot/HottestCollections';
 import Countdown from './components/Countdown/Countdown'; // Import the Countdown component
+import Widget from "./components/widget/widget.js"
 
 function App() {
   const [user, setUser] = useState(null);
   const [isAppReleased, setIsAppReleased] = useState(false);
   
   // Wrap launchReleaseDate in useMemo to prevent it from changing on every render
-  const launchReleaseDate = useMemo(() => new Date('2023-08-28T12:00:00Z'), []);
+  const launchReleaseDate = useMemo(() => new Date('2023-08-28T00:00:00Z'), []);
 
   useEffect(() => {
     const now = new Date();
@@ -93,6 +94,7 @@ function App() {
            
           </div>
           </div>
+          <Widget />
           <Footer />
         </Router>
       </Web3Provider>

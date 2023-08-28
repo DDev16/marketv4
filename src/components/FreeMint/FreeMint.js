@@ -66,48 +66,35 @@ const FreeMint = () => {
   const handleMint = async () => {
     try {
       setIsMinting(true);
-
+  
       if (!web3) {
         throw new Error('Web3 not initialized');
       }
-
+  
       if (!connectedAccount) {
         throw new Error('No connected account found');
       }
-
-      const currentTime = Math.floor(Date.now() / 1000); // Current timestamp in seconds
-      const lastMintingTimestampStored = localStorage.getItem('lastMintingTimestamp');
-      const lastMintingTimestamp = lastMintingTimestampStored
-        ? parseInt(lastMintingTimestampStored)
-        : 0;
-
-      const timeSinceLastMint = currentTime - lastMintingTimestamp;
-      const oneDayInSeconds = 24 * 60 * 60; // One day in seconds
-
-      if (timeSinceLastMint < oneDayInSeconds) {
-        throw new Error('You can only mint one NFT per day');
-      }
-
+  
       // Fetch tokens and cost value
       const tokens = await contractInstance.methods.AllowedCrypto(pid).call();
       const paytokenAddress = tokens.paytoken;
       const paytoken = new web3.eth.Contract(tokenAbi, paytokenAddress);
       const costval = tokens.costvalue;
-
+  
       // Check total supply and mint amount
       const totalSupply = await contractInstance.methods.totalSupply().call();
       if (!totalSupply) {
         throw new Error('Error getting total supply');
       }
-      if (parseInt(totalSupply) + mintAmount > maxSupply) {
+      if (parseInt(totalSupply) + mintAmount > maxSupply) { // Parse the totalSupply to an integer
         throw new Error('Mint amount exceeds max supply');
       }
-
+  
       // Transfer tokens and mint
       const transferResult = await paytoken.methods
         .transferFrom(connectedAccount, contractAddress, costval)
         .send({ from: connectedAccount });
-
+  
       if (transferResult.status) {
         for (let i = 1; i <= mintAmount; i++) {
           const mintResult = await contractInstance.methods
@@ -115,10 +102,7 @@ const FreeMint = () => {
             .send({ from: connectedAccount });
           console.log('Minting result:', mintResult);
         }
-
-        // Update the last minting timestamp in localStorage
-        localStorage.setItem('lastMintingTimestamp', currentTime.toString());
-
+  
         // Transaction successful, provide user feedback here
         Swal.fire({
           icon: 'success',
@@ -128,26 +112,16 @@ const FreeMint = () => {
       }
     } catch (error) {
       console.error('Error while minting:', error);
-      if (error.message === 'You can only mint one NFT per day') {
-        // Display error message using SweetAlert2
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'You can only mint one NFT per day. Please try again later.',
-        });
-      } else {
-        // Display general error message
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'An error occurred while minting. Please try again later.',
-        });
-      }
+      // Provide user-friendly error feedback here
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'An error occurred while minting. Please try again later.',
+      });
     } finally {
       setIsMinting(false);
     }
   };
-  
   
   
   return (
