@@ -135,6 +135,9 @@ const FreeMint = () => {
       <p className="free-mint-info">
         Minting is completely free! You can mint your NFTs without any charges. The only cost involved is the gas fee required to process the transaction on the blockchain. Please make sure you are connected to Flare Networks to proceed with the minting process.
       </p>
+      <p className="free-mint-info">
+DONT BE GREEDY 
+      </p>
       <button
         onClick={handleMint}
         disabled={isMinting}
